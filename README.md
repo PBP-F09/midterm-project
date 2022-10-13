@@ -1,4 +1,4 @@
-# *HaloBund*
+# *HalowBund*
 
 ## Link to Heroku App
 [HalowBund](https://halowbund.herokuapp.com/)
@@ -37,3 +37,4 @@ Fitur yang kami kembangkan juga dapat menjembatani kepentingan tenaga kesehatan 
 2. Fadhlan Hasyim - 2106652215
 3. Iqbal Pahlevi Amin - 2106752281
 4. Shafa Najwa Nathania - 2106634414
+5. Mayfa Shadrina Siddi - 2106634616
