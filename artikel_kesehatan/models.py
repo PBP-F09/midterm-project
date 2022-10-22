@@ -6,6 +6,5 @@ class Artikel(models.Model):
     judul = models.CharField(max_length=100)
     isi = models.TextField()
     tanggal = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey('User', on_delete=models.CASCADE)
-    tag = models.ManyToManyField('Tag', related_name='artikel')
-    
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+
