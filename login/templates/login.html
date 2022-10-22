@@ -1,0 +1,27 @@
+{% extends 'base.html' %} {% block meta %}
+<title>Login</title>
+{% endblock meta %} {% block content %}
+
+<div>
+	<h1>LOGIN</h1>
+	<form method="POST" action="">
+		{% csrf_token %}
+		<table>
+			<tr>
+				<td>Username</td>
+				<td><input type="text" name="username" placeholder="Username" /></td>
+			</tr>
+			<tr>
+				<td>Password</td>
+				<td><input type="password" name="password" placeholder="Password" /></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Login" /></td>
+			</tr>
+		</table>
+	</form>
+	<p>Belum mempunyai akun? <a href="{% url 'login:registrasi_user' %}">Buat Akun</a></p>
+</div>
+
+{% endblock content %}
