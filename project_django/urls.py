@@ -21,4 +21,5 @@ urlpatterns = [
     path('', include('example_app.urls')),
     path('artikel-kesehatan/', include('artikel_kesehatan.urls')),
     path('beranda/', include('beranda.urls')),
+    path('', include('login.urls')),
 ]

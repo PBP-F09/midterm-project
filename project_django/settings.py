@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'example_app',
     'artikel_kesehatan',
     'beranda',
+    'login',
 ]
 
 MIDDLEWARE = [
