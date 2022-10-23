@@ -2,26 +2,26 @@
 <title>Login</title>
 {% endblock meta %} {% block content %}
 
-<div>
-	<h1>LOGIN</h1>
-	<form method="POST" action="">
+<div class="login w-[25rem] drop-shadow-2xl flex flex-col justify-center items-center bg-[#a7bed3] p-10 rounded-xl lg:scale-100 md:scale-90 scale-75">
+	<h1 class="text-3xl font-bold mb-3">LOGIN</h1>
+	<form method="POST" action="" class="mb-3 flex flex-col items-center justify-center">
 		{% csrf_token %}
-		<table>
-			<tr>
+		<table class="font-semibold">
+			<tr class="flex flex-col justify-center">
 				<td>Username</td>
-				<td><input type="text" name="username" placeholder="Username" /></td>
+				<td><input class="w-56 h-10 p-3 rounded-lg" type="text" name="username" placeholder="Username" class="form-control" /></td>
 			</tr>
-			<tr>
+			<tr class="flex flex-col justify-center">
 				<td>Password</td>
-				<td><input type="password" name="password" placeholder="Password" /></td>
+				<td><input class="w-56 h-10 p-3 rounded-lg" type="password" name="password" placeholder="Password" class="form-control" /></td>
 			</tr>
-			<tr>
+			<tr class="mt-2 flex flex-col justify-center items-center">
 				<td></td>
-				<td><input type="submit" value="Login" /></td>
+				<td><input class="btn rounded-lg hover:cursor-pointer h-10 w-28 bg-blue-500 hover:bg-blue-700 login_btn" type="submit" value="Login" /></td>
 			</tr>
 		</table>
 	</form>
-	<p>Belum mempunyai akun? <a href="{% url 'login:registrasi_user' %}">Buat Akun</a></p>
+	<p>Belum mempunyai akun? <a class="text-blue-700 underline hover:text-blue-800" href="{% url 'login:registrasi_user' %}">Buat Akun</a></p>
 </div>
 
 {% endblock content %}
