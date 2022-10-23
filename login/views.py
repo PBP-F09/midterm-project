@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from login.models import Admin, Faskes, Bumil
+from login.models import RoleUser
 
 # Create your views here.
 def registrasi_user(request):
@@ -13,18 +13,14 @@ def registrasi_user(request):
         if form.is_valid():
             role_user = request.POST.get('role_user')
             user = form.save()
-            new_user = None
+            new_user = RoleUser(user=user)
             if role_user == 'admin':
-                new_user = Admin(user=user)
+                new_user.is_admin = True
             elif role_user == 'faskes':
-                new_user = Faskes(user=user)
+                new_user.is_faskes = True
             elif role_user == 'bumil':
-                new_user = Bumil(user=user)
-            # user.save()
-            print(f'=========== {role_user}')
-            print(f'=========== {new_user}')
-            print(f'=========== {user}')
-            # messages.success(request, 'Registrasi Berhasil')
+                new_user.is_bumil = True
+            new_user.save()
             return redirect('login:login_user')
     context = {'form': form}
     return render(request, 'registrasi.html', context)
@@ -36,11 +32,11 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('beranda')
+            return redirect('/beranda')
     context = {}
     return render(request, 'login.html', context)
 
 @login_required(login_url='/login')
 def logout_user(request):
     logout(request)
-    return redirect('login_user')
+    return redirect('login:login_user')

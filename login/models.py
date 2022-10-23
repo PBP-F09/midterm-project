@@ -5,15 +5,6 @@ from django.contrib.auth.models import User
 # ROLE USER
 class RoleUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-class Admin(RoleUser):
-    def __init__(self, user):
-        super().__init__(user)
-        is_admin = True
-class Faskes(RoleUser):
-    def __init__(self, user):
-        super().__init__(user)
-        is_faskes = True
-class Bumil(RoleUser):
-    def __init__(self, user):
-        super().__init__(user)
-        is_bumil = True
+    is_admin = False
+    is_faskes = False
+    is_bumil = False
