@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 # ROLE USER
-class RoleUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    is_admin = False
-    is_faskes = False
-    is_bumil = False
+class MyUser(AbstractUser):
+    is_admin = models.BooleanField(default=False)
+    is_faskes = models.BooleanField(default=False)
+    is_bumil = models.BooleanField(default=False)
+    
