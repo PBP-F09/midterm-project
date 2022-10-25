@@ -1,7 +1,26 @@
 {% extends 'base.html' %} {% block meta %}
 <title>Artikel Kesehatan</title>
 <link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
+
+<!-- GET DATA ARTIKEL FROM JSON -->
+<script>
+	const getData = (data) => {
+		let content = "";
+		data.forEach((item) => {
+			content += `<h1>${item.title}</h1>`;
+		});
+		return content;
+	};
+
+	$(document).ready(function () {
+		$.get("/artikel-kesehatan/json/", function (data, status) {
+			let content = getData(data);
+			$(".content").html(content);
+		});
+	});
+</script>
 {% endblock meta %} {% block content %}
+
 <!-- NAVBAR -->
 <nav class="p-4 rounded-lg shadow-2xl m-3 md:flex md:items-center md:justify-between">
 	<div class="flex gap-2 md:w-full justify-between">
@@ -112,17 +131,11 @@
 			let judul = $("#judul").val();
 			let isi = $("#isi").val();
 			csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-			$.post(
-				"/artikel-kesehatan/tambah-artikel/",
-				{
-					judul: judul,
-					isi: isi,
-					csrfmiddlewaretoken: csrftoken,
-				},
-				function () {
-					alert("Artikel berhasil ditambahkan");
-				}
-			);
+			$.post("/artikel-kesehatan/tambah-artikel/", {
+				judul: judul,
+				isi: isi,
+				csrfmiddlewaretoken: csrftoken,
+			});
 		});
 	});
 </script>

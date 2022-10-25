@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
+from django.core import serializers
 from artikel_kesehatan.models import Artikel
 
 # Create your views here.
@@ -19,4 +20,7 @@ def tambah_artikel(request):
         new_artikel.save()
         return redirect('artikel_kesehatan:show_artikel')
     return render(request, 'artikel.html')
-    
+
+def show_artikel_json(requets):
+    artikel = Artikel.objects.all()
+    return HttpResponse(serializers.serialize('json', artikel), content_type='application/json')
