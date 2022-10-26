@@ -125,17 +125,31 @@
 		e.name === "menu" ? ((e.name = "close"), list.classList.remove("hidden")) : ((e.name = "menu"), list.classList.add("hidden"));
 	}
 </script>
+<!-- POST DATA ARTIKEL -->
 <script>
+	const postData = (judul, isi) => {
+		let csrftoken = $("input[name=csrfmiddlewaretoken]").val();
+		return $.post(
+			"/artikel-kesehatan/tambah-artikel/",
+			{
+				judul: judul,
+				isi: isi,
+				csrfmiddlewaretoken: csrftoken,
+			},
+			function () {
+				$.get("/artikel-kesehatan/json/", function (data, status) {
+					let content = getData(data);
+					$(".content").html(content);
+				});
+			}
+		);
+	};
+
 	$(document).ready(function () {
 		$(".add-artikel-button").click(function () {
 			let judul = $("#judul").val();
 			let isi = $("#isi").val();
-			csrftoken = $("input[name=csrfmiddlewaretoken]").val();
-			$.post("/artikel-kesehatan/tambah-artikel/", {
-				judul: judul,
-				isi: isi,
-				csrfmiddlewaretoken: csrftoken,
-			});
+			postData(judul, isi);
 		});
 	});
 </script>
