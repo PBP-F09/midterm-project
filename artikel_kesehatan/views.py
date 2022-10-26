@@ -21,6 +21,6 @@ def tambah_artikel(request):
         return redirect('artikel_kesehatan:show_artikel')
     return render(request, 'artikel.html')
 
-def show_artikel_json(requets):
+def show_artikel_json(request):
     artikel = Artikel.objects.all()
     return HttpResponse(serializers.serialize('json', artikel), content_type='application/json')
