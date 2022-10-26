@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from login.models import MyUser
+from login.models import RoleUser
 
 # Create your views here.
 def registrasi_user(request):
@@ -14,11 +14,12 @@ def registrasi_user(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             role_user = request.POST.get('role_user')
-            form.save()
-            user = form.cleaned_data.get('username')
-            user_role = MyUser.objects.get(user__username=user)
-            if role_user == 'faskes':
-                user_role.is_faskes = True
+            user = form.save()
+            new_user = RoleUser(user=user)
+            if role_user == 'admin':
+                new_user.is_admin = True
+            elif role_user == 'faskes':
+                new_user.is_faskes = True
             elif role_user == 'bumil':
                 new_user.is_bumil = True
             new_user.save()
