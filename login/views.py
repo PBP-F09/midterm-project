@@ -20,10 +20,10 @@ def registrasi_user(request):
             if role_user == 'faskes':
                 user_role.is_faskes = True
             elif role_user == 'bumil':
-                user_role.is_bumil = True
-            else:
-                user_role.is_admin = True
-            user_role.save()
+                new_user.is_bumil = True
+            new_user.save()
+            # print(new_user.is_bumil)
+            # print(new_user.is_faskes)
             return redirect('login:login_user')
     context = {'form': form}
     return render(request, 'registrasi.html', context)
@@ -35,9 +35,12 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            context = {'user':RoleUser(user=request.user)}
+            the_user = RoleUser.objects.get(user=user)
+            # print(the_user.is_admin)
+            # print(the_user.is_faskes)
+            # print(the_user.is_bumil)
+            context = {'user': the_user}
             return render(request, 'beranda.html', context)
-
     context = {}
     return render(request, 'login.html', context)
 

@@ -1,9 +1,5 @@
-{% extends 'base.html' %}
-
-{% block content %}
-{% if user.is_authenticated and user.is_bumil %}
+{% extends 'base.html' %} {% block content %} {% if user.is_bumil %}
 <h1>bumil {{ user.is_bumil }}</h1>
 {% else %}
-<h1>bukan bumil {{ user.is_bumil }}<</h1>
-{% endif %}
-{% endblock content %}
+<h1>bukan bumil {{ user.is_bumil }}</h1>
+{% endif %} {% endblock content %}
