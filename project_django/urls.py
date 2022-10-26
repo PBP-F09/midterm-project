@@ -20,5 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('example_app.urls')),
     path('beranda/', include('beranda.urls')),
-    path('', include('login.urls')),
+    path('qna/', include('qna.urls')),
+    path('login/', include('login.urls')),
 ]

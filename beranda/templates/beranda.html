@@ -1,38 +1,9 @@
-{% extends 'base.html' %} {% block content %}
-<nav class="p-4 rounded-lg shadow-2xl m-3 md:flex md:items-center md:justify-between">
-	<div class="flex gap-2 md:w-full justify-between">
-		<div class="text-2xl font-bold text-black flex items-center">Halow<span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-yellow-600">Bund!</span></div>
-		<div class="text-3xl cursor-pointer flex items-center md:hidden">
-			<ion-icon name="menu" onclick="menu(this)"></ion-icon>
-		</div>
-	</div>
-	<div id="list-navbar" class="text-base hidden md:show md:flex md:flex-row md:items-center md:justify-end">
-		<div class="md:mx-5 my-3 md:my-0">
-			<a href="/artikel-kesehatan" class="hover:text-yellow-600 duration-500">Baca</a>
-		</div>
-		<div class="md:mx-5 my-3 md:my-0">
-			<a href="#tanya" class="hover:text-yellow-600 duration-500">Tanya</a>
-		</div>
-		<div class="md:mx-5 my-3 md:my-0">
-			<a href="#periksa" class="hover:text-yellow-600 duration-500">Periksa</a>
-		</div>
-		<div class="md:mx-5 my-3 md:my-0">
-			<a href="#catat" class="hover:text-yellow-600 duration-500">Catat</a>
-		</div>
-		<div class="md:mx-5 my-3 md:my-0">
-			<a href="#diary" class="hover:text-yellow-600 duration-500">Diary</a>
-		</div>
-		<div class="md:ml-5 p-5 bg-black rounded-lg w-fit text-white text-base py-2 my-3 md:my-0">
-			<button><a href="/logout">Logout</a></button>
-		</div>
-	</div>
-</nav>
+{% extends 'base.html' %}
 
-<script>
-	function menu(e) {
-		console.log("hello");
-		let list = document.getElementById("list-navbar");
-		e.name === "menu" ? ((e.name = "close"), list.classList.remove("hidden")) : ((e.name = "menu"), list.classList.add("hidden"));
-	}
-</script>
+{% block content %}
+{% if user.is_authenticated and user.is_bumil %}
+<h1>bumil {{ user.is_bumil }}</h1>
+{% else %}
+<h1>bukan bumil {{ user.is_bumil }}<</h1>
+{% endif %}
 {% endblock content %}
