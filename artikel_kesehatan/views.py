@@ -27,9 +27,16 @@ def tambah_artikel(request):
         return redirect('artikel_kesehatan:show_artikel')
     return render(request, 'artikel.html')
 
-def show_artikel_by_id(request, id):
+def show_artikel_json_by_id(request, id):
     artikel = Artikel.objects.get(pk=id)
     return HttpResponse(serializers.serialize('json', [artikel]), content_type='application/json')
+
+def show_artikel_by_id(request, id):
+    artikel = Artikel.objects.get(pk=id)
+    context = {
+        'artikel': artikel
+    }
+    return render(request, 'artikel_by_id.html', context)
 
 def show_artikel_json(request):
     artikel = Artikel.objects.all()

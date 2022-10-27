@@ -1,1 +1,8 @@
-{% extends 'base.html' %} {% block meta %} {% endblock meta %} {% block content %} {% endblock content %}
+{% extends 'base.html' %} {% block meta %}
+<title>{{artikel.judul}}</title>
+{% endblock meta %} {% block content %}
+<main class="content p-10">
+	<h1 class="text-3xl font-bold">{{artikel.judul}}</h1>
+	<p class="text-lg">{{artikel.isi}}</p>
+</main>
+{% endblock content %}
