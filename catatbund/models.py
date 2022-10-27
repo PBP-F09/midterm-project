@@ -1,4 +1,5 @@
 from ast import mod
+from email.policy import default
 from django.db import models
 # Create your models here.
 from django.contrib.auth.models import User
@@ -9,7 +10,7 @@ class CatatbundModel(models.Model):
     date = models.DateField()
     weight  = models.FloatField()
     height  = models.FloatField()
-    bmi = 0
+    bmi = models.FloatField(default=0.00)
 
     def count_bmi(self):
         return self.weight / (self.height*self.height)

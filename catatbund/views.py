@@ -15,7 +15,7 @@ from django.urls import reverse
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseBadRequest
 
 from django.contrib.auth.decorators import login_required
 
@@ -46,17 +46,20 @@ def add_catatan(request):
             height = form.cleaned_data.get('height')
             catat = CatatbundModel.objects.create(weight = weight, height = height, date = datetime.date.today(), user = request.user)
             bmi = catat.count_bmi()
-            print(bmi)
+            catat.bmi = catat.count_bmi()
+            catat.save()
             result = {
                 'fields':{
                     'weight':catat.weight,
                     'height':catat.height,
                     'bmi':bmi,
                     'date':catat.date
+                    
                 },
                 'pk':catat.pk
             }
             return JsonResponse(result)
+        return HttpResponseBadRequest()
 
 # wesdrfgthjkl
 def register(request):
