@@ -7,7 +7,19 @@
 	const getData = (data) => {
 		let content = "";
 		data.forEach((item) => {
-			content += `<h1>${item.title}</h1>`;
+			let artikel = item.fields;
+			let readMore = "";
+			let isi = artikel.isi;
+			if (artikel.isi.length > 200) {
+				readMore = "read more";
+				isi = artikel.isi.substring(0, 200);
+			}
+			content += `
+				<div class="w-[50rem] bg-[#CFB997] p-5 m-2 rounded-xl border-2 border-red-400 hover:scale-105 duration-200">
+					<h1 class="font-bold text-lg">${artikel.judul}</h1>
+					<p>${isi} <a href="/artikel-kesehatan/${item.pk}" class="text-blue-500 hover:text-blue-700 hover:cursor-pointer">${readMore}</a></p>
+				</div>
+			`;
 		});
 		return content;
 	};
@@ -21,12 +33,6 @@
 </script>
 {% endblock meta %} {% block content %}
 
-<!-- ARTIKEL -->
-<main>
-	<h1>Title</h1>
-	<p>Isi <a>read more</a></p>
-</main>
-
 <!-- MODAL FORM -->
 <!-- Modal toggle -->
 <button
@@ -36,6 +42,9 @@
 >
 	Tambah Artikel
 </button>
+
+<!-- ARTIKEL -->
+<main class="content flex flex-col justify-center items-center"></main>
 
 <!-- Main modal -->
 <div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
