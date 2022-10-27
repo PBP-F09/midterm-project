@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'example_app',
     'beranda',
     'qna',
+    'catatbund',
 ]
 
 MIDDLEWARE = [
