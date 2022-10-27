@@ -1,0 +1,14 @@
+from django.urls import path
+from diarybund.views import show_diarybund
+from diarybund.views import show_json
+from diarybund.views import create_diary_ajax
+from diarybund.views import delete_ajax
+
+app_name = 'diarybund'
+
+urlpatterns = [
+    path('', show_diarybund, name='show_diarybund'),
+    path('delete/<int:id>', delete_ajax, name='delete_ajax'),
+    path('json/', show_json, name='show_json'),
+    path('create-ajax/', create_diary_ajax, name='create_task_ajax'),
+]
