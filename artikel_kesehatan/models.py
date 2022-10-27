@@ -7,4 +7,3 @@ class Artikel(models.Model):
     isi = models.TextField()
     tanggal = models.DateTimeField(auto_now_add=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-
