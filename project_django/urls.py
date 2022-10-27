@@ -22,4 +22,5 @@ urlpatterns = [
     path('beranda/', include('beranda.urls')),
     path('qna/', include('qna.urls')),
     path('', include('login.urls')),
+    path('artikel-kesehatan/', include('artikel_kesehatan.urls')),
 ]
