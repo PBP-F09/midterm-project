@@ -12,7 +12,7 @@
 			let isi = artikel.isi;
 			if (artikel.isi.length > 200) {
 				readMore = "read more";
-				isi = artikel.isi.substring(0, 200);
+				isi = artikel.isi.substring(0, 200) + "...";
 			}
 			content += `
 				<div class="w-[50rem] bg-[#CFB997] p-5 m-2 rounded-xl border-2 border-red-400 hover:scale-105 duration-200">
