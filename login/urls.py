@@ -4,7 +4,7 @@ from login.views import *
 app_name = 'login'
 
 urlpatterns = [
-    path('register/', registrasi_user, name='registrasi_user'),
-    path('', login_user, name='login_user'),
+    path('signup/', registrasi_user, name='registrasi_user'),
+    path('login/', login_user, name='login_user'),
     path('logout/', logout_user, name='logout_user'),
 ]
