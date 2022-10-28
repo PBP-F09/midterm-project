@@ -46,7 +46,36 @@ def add_catatan(request):
             height = form.cleaned_data.get('height')
             catat = CatatbundModel.objects.create(weight = weight, height = height, date = datetime.date.today(), user = request.user)
             bmi = catat.count_bmi()
-            catat.bmi = catat.count_bmi()
+            catat.bmi = round(catat.count_bmi(),2)
+            bmi = round(catat.bmi, 2)
+            catat.save()
+            result = {
+                'fields':{
+                    'weight':catat.weight,
+                    'height':catat.height,
+                    'bmi':bmi,
+                    'date':catat.date
+                    
+                },
+                'pk':catat.pk
+            }
+            return JsonResponse(result)
+        return HttpResponseBadRequest()
+
+@csrf_exempt
+def edit_catatan(request):
+    print(f"========== {request.POST}")
+    if request.method == 'POST':
+        form = TambahCatatanForm(request.POST)
+        print(form)
+        print(f"========== {request.POST}")
+        if form.is_valid():
+            weight = form.cleaned_data.get('weight')
+            height = form.cleaned_data.get('height')
+            catat = CatatbundModel.objects.create(weight = weight, height = height, date = datetime.date.today(), user = request.user)
+            bmi = catat.count_bmi()
+            catat.bmi = round(catat.count_bmi(),2)
+            bmi = round(catat.bmi, 2)
             catat.save()
             result = {
                 'fields':{
