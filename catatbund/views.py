@@ -64,10 +64,12 @@ def add_catatan(request):
 
 @csrf_exempt
 def edit_catatan(request, id):
-    print("etst ")
+    print(request.method)
     if request.method == 'POST':
+        print("haloo")
         form = TambahCatatanForm(request.POST)
         if form.is_valid():
+            print("haloo 222")
             weight = form.cleaned_data['weight']
             height = form.cleaned_data['height']
             catat = get_object_or_404(CatatbundModel, id = id)

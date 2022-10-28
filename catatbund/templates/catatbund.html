@@ -27,6 +27,7 @@
           function (data, status) {
             console.log("edit ")
             if (status == 'success') {
+              console.log("edit 33")
               $(`#weight-${id}`).text(`Berat badan(kg): ${data.fields.weight}`)
               $(`#height-${id}`).text(`Tinggi badan(m): ${data.fields.height}`)
               $(`#bmi-${id}`).text(`BMI: ${data.fields.bmi}`)
@@ -42,9 +43,9 @@
           $(".row").append(`<div class="flex justify-center">
             <div class="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
                 <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Tanggal: ${data[i].fields.date}</h5>
-                <p class="text-gray-700 text-base mb-4">Berat badan(kg): ${data[i].fields.weight}</p>
-                <p class="text-gray-700 text-base mb-4">Tinggi badan(m): ${data[i].fields.height}</p>
-                <p class="text-gray-700 text-base mb-4">BMI: ${data[i].fields.bmi}</p>
+                <p class="text-gray-700 text-base mb-4" id="weight-${data[i].pk}">Berat badan(kg): ${data[i].fields.weight}</p>
+                <p class="text-gray-700 text-base mb-4" id="height-${data[i].pk}">Tinggi badan(m): ${data[i].fields.height}</p>
+                <p class="text-gray-700 text-base mb-4" id="bmi-${data[i].pk}">BMI: ${data[i].fields.bmi}</p>
                 <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${data[i].pk}" type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Edit</button>
                 </div>
             </div>
@@ -62,19 +63,19 @@
                     <!-- di dalam modal-body terdapat 4 form input yang berisi data.
                     data-data tersebut ditampilkan sama seperti menampilkan data pada tabel. -->
                     <div class="modal-body">
-                        <form id="#input-form">
+                        <form id="#input-form[${data[i].pk}">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Berat badan(kg):</label>
-                                <input type="text" class="form-control" value="${data[i].fields.weight}">
+                                <input type="text" class="form-control" id="input-weight-${data[i].pk}" value="${data[i].fields.weight}">
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">Tinggi badan(m):</label>
-                                <input type="text" class="form-control" value="${data[i].fields.height}">
+                                <input type="text" class="form-control" id="input-height-${data[i].pk}" value="${data[i].fields.height}">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="save-btn">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="save-btn-${data[i].pk}" onClick="editCard(${data[i].pk})">Save changes</button>
                     </div>
                 </div>
             </div>
@@ -230,7 +231,5 @@
     
     
     <a href="{% url 'catatbund:logout' %}"><button class="button-logout">Logout</button></a>
-    
-    <button type="button" class="btn btn-primary" id="save-btn" onclick="editCard(48)">Save changes</button>
   </body>
   {% endblock content %}
