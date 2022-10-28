@@ -1,13 +1,4 @@
-{% extends 'base.html' %}
-{% load static %}
-
-
-{% block content %}
-<head>
-    <!-- Link for JavaScript function -->
-    <script src="{% static 'js/qna_logic.js' %}"></script>
-    <script>
-        const questionCard = (data) =>
+const questionCard = (data) =>
             `<div class="flex" id="quest-${data.pk}">
                 <div class="flex-shrink-0 mr-3">
                     <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
@@ -65,66 +56,3 @@
                     <p class="text-xs sm:text-sm">${data.fields.text}</p>
                 </div>
             </div>`
-    </script>
-    
-</head>
-
-
-<button type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"
-    class="fixed z-50 bottom-10 right-8 bg-[#FF8FB1] w-40 h-12 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-[#7A4495] hover:drop-shadow-2xl hover:animate-bounce duration-300">
-    <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block">
-        <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
-                                    C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
-                                    C15.952,9,16,9.447,16,10z" />
-    </svg>
-    <span class="text-xs font-bold">Tambah Pertanyaan</span>
-</button>
-
-<!-- modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content create-task rounded-2xl shadow-lg max-w-3xl p-5 bg-[#FF8FB1]">
-            <div class="modal-header">
-                {% if user.is_authenticated %}
-                <h5 class="modal-title text-white font-bold text-xl" id="exampleModalLongTitle">Tambah Pertanyaan</h5>
-                {% else %}
-                <h5 class="modal-title text-white font-bold text-xl" id="exampleModalLongTitle">Belum login?</h5>
-                {% endif %}
-                <button type="button" class="close co" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {% if user.is_authenticated %}
-                <form action="" method="POST" class="">
-                    {% csrf_token %}
-                    <textarea
-                        class="block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
-                    form-control px-3 py-1.5 text-base font-normal bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
-                        id="text" rows="3" placeholder="Apa pertanyaanmu?"></textarea>
-                </form>
-                {% else %}
-                <p class="text-xl text-white">Login untuk menambahkan pertanyaan</p>
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {% if user.is_authenticated %}
-                <button type="button" class="btn btn-primary" id="add-question">Add</button>
-                {% else %}
-                <button type="button" class="btn btn-primary" id="login-now"><a
-                        href="{% url 'login:login_user' %}">Login</a></button>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="antialiased mx-auto max-w-screen-sm m-2">
-    <h3 class="mb-4 text-lg font-semibold text-gray-900">TanyaBund</h3>
-
-    <div class="space-y-4 mb-3" id="quest"></div>
-
-</div>
-{% endblock content %}
