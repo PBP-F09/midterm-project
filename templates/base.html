@@ -15,55 +15,66 @@
     }
   </script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+  <!-- Link for CSS  -->
+  <link rel="stylesheet" type="text/css" href="{% static '/css/navbar.css' %}">
+
+  <!-- Link for JavaScript function -->
+  <link rel="stylesheet" type="text/javascript" href="{% static 'js/menu.js' %}">
+  
   {% block meta %}
   {% endblock meta %}
 </head>
 
-<body class="">
-  <nav class="sticky top-0 p-4 bg-[#FF8FB1] shadow-2xl md:flex md:items-center md:justify-between" id="navbar">
-    <div class="flex gap-2 md:w-full justify-between">
-      <a href="{% url 'beranda:show_beranda' %}">
-      <div class="text-2xl font-bold text-[#7A4495] flex items-center cursor-pointer">
-        Halow<span class="text-transparent bg-clip-text bg-gradient-to-r from-[#7A4495] to-[#B270A2]">Bund!</span>
+<body class="flex flex-col h-screen justify-between">
+  <div>
+    <nav class="sticky top-0 p-4 bg-[#FF8FB1] shadow-2xl md:flex md:items-center md:justify-between" id="navbar">
+      <div class="flex gap-2 md:w-full justify-between">
+        <a href="{% url 'beranda:show_beranda' %}">
+        <div class="text-2xl font-bold text-[#7A4495] flex items-center cursor-pointer">
+          Halow<span class="text-transparent bg-clip-text bg-gradient-to-r from-[#7A4495] to-[#B270A2]">Bund!</span>
+        </div>
+        </a>
+        <div class="text-3xl cursor-pointer flex items-center md:hidden">
+          <ion-icon name="menu" onclick="menu(this)"></ion-icon>
+        </div>
       </div>
-      </a>
-      <div class="text-3xl cursor-pointer flex items-center md:hidden">
-        <ion-icon name="menu" onclick="menu(this)"></ion-icon>
+      <div id="list-navbar"
+        class="text-base text-white font-semibold hidden md:show md:flex md:flex-row md:items-center md:justify-end">
+        <div class="md:mx-5 my-3 md:my-0">
+          <a href="#baca" class="hover:text-[#7A4495] duration-500">Baca</a>
+        </div>
+        <div class="md:mx-5 my-3 md:my-0">
+          <a href="{% url 'qna:show_qna' %}" class="hover:text-[#7A4495] duration-500">Tanya</a>
+        </div>
+        <div class="md:mx-5 my-3 md:my-0">
+          <a href="#periksa" class="hover:text-[#7A4495] duration-500">Periksa</a>
+        </div>
+        <div class="md:mx-5 my-3 md:my-0">
+          <a href="#catat" class="hover:text-[#7A4495] duration-500">Catat</a>
+        </div>
+        <div class="md:mx-5 my-3 md:my-0">
+          <a href="#diary" class="hover:text-[#7A4495] duration-500">Diary</a>
+        </div>
+        <div class="md:ml-5 p-5 bg-[#7A4495] rounded-lg w-fit text-white text-base py-2 my-3 md:my-0">
+          <button><a href="{% url 'login:logout_user' %}">Logout</a></button>
+        </div>
       </div>
-    </div>
-    <div id="list-navbar"
-      class="text-base text-white font-semibold hidden md:show md:flex md:flex-row md:items-center md:justify-end">
-      <div class="md:mx-5 my-3 md:my-0">
-        <a href="#baca" class="hover:text-[#7A4495] duration-500">Baca</a>
-      </div>
-      <div class="md:mx-5 my-3 md:my-0">
-        <a href="{% url 'qna:show_qna' %}" class="hover:text-[#7A4495] duration-500">Tanya</a>
-      </div>
-      <div class="md:mx-5 my-3 md:my-0">
-        <a href="#periksa" class="hover:text-[#7A4495] duration-500">Periksa</a>
-      </div>
-      <div class="md:mx-5 my-3 md:my-0">
-        <a href="#catat" class="hover:text-[#7A4495] duration-500">Catat</a>
-      </div>
-      <div class="md:mx-5 my-3 md:my-0">
-        <a href="#diary" class="hover:text-[#7A4495] duration-500">Diary</a>
-      </div>
-      <div class="md:ml-5 p-5 bg-[#7A4495] rounded-lg w-fit text-white text-base py-2 my-3 md:my-0">
-        <button><a href="{% url 'login:logout_user' %}">Logout</a></button>
-      </div>
-    </div>
-  </nav>
-  
-  <script>
-    function menu(e){
-      let list = document.getElementById('list-navbar');
-      e.name === 'menu' ? (e.name = "close", list.classList.remove('hidden')) :( e.name = "menu", list.classList.add('hidden'))
-    }
-  </script>
-
-  {% block content %}
-  {% endblock content %}
+    </nav>
+    {% block content %}
+    {% endblock content %}
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+
+  <footer class="p-4 bg-white rounded-lg shadow-xl md:flex md:items-center md:justify-between md:p-6">
+    <span class="text-sm text-gray-500 sm:text-center">© 2022 <a href="{% url 'beranda:show_beranda' %}" class="hover:underline">HalowBund</a>. All Rights Reserved.
+    </span>
+    <ul class="flex flex-wrap items-center mt-3 text-sm text-gray-500 dark:text-gray-400 sm:mt-0">
+        <li>
+            <a href="#" class="mr-4 hover:underline md:mr-6 ">About</a>
+        </li>
+    </ul>
+  </footer>
 
 </body>
 

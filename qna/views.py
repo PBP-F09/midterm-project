@@ -13,11 +13,11 @@ def show_qna(request):
 
 def json_qna(request):
     questions = Question.objects.all()
-    return HttpResponse(serializers.serialize("json", questions), content_type="application/json")
+    return HttpResponse(serializers.serialize("json", questions, use_natural_foreign_keys=True, use_natural_primary_keys=True), content_type="application/json")
 
 def json_answers(request):
     answers = Answer.objects.all()
-    return HttpResponse(serializers.serialize("json", answers), content_type="application/json")
+    return HttpResponse(serializers.serialize("json", answers, use_natural_foreign_keys=True, use_natural_primary_keys=True), content_type="application/json")
 
 @csrf_exempt
 def create_question(request):
@@ -29,7 +29,6 @@ def create_question(request):
             text = question.cleaned_data['text']
 
             user = get_object_or_404(User, id = request.user.id)
-            print(user)
 
             new_question = Question.objects.create(text=text, is_answered=False, user=user, date=datetime.date.today())
             new_question.save()
@@ -92,5 +91,5 @@ def delete_answer(request, id):
         answer = get_object_or_404(Answer, id = id)
         if request.user == answer.user:
             answer.delete()
-            return HttpResponse(status=202)
+            return HttpResponse(status=202, content=answer.question.pk)
     return HttpResponse(status=400)
