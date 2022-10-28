@@ -6,9 +6,12 @@ import datetime
 from django.http import JsonResponse
 from django.http import HttpResponse
 from django.core import serializers
+from diarybund.forms import TambahDiaryForm
+from login.decorators import allowed_users
+from django.shortcuts import get_object_or_404
 
 # Create your views here.
-# @login_required(login_url='/todolist/login/')
+@login_required(login_url='/login/')
 @csrf_exempt
 def create_diary_ajax(request):
     if request.method == 'POST':
@@ -23,13 +26,41 @@ def create_diary_ajax(request):
                 'fields' : {
                     'title' : diary.title,
                     'description' : diary.description,
+                    'abstract' : diary.abstract,
                     'emotion' : diary.emotion,
-                    'date' : diary.date
+                    'date' : diary.date,
+                }
+            }
+            return JsonResponse(context)
+
+@login_required(login_url='/login/')
+@csrf_exempt
+def edit_diary_ajax(request, id):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+        abstract = request.POST.get('abstract')
+        emotion = request.POST.get('emotion')
+        if title != "" or description != "" or abstract != "" or emotion != "":
+            diaryBaru = get_object_or_404(DiaryBund, id = id)
+            diaryBaru.title = title
+            diaryBaru.description = description
+            diaryBaru.abstract = abstract
+            diaryBaru.emotion = emotion
+            diaryBaru.save()
+            context = {
+                'pk' : diaryBaru.pk,
+                'fields' : {
+                    'title' : diaryBaru.title,
+                    'description' : diaryBaru.description,
+                    'abstract' : diaryBaru.abstract,
+                    'emotion' : diaryBaru.emotion,
+                    'date' : diaryBaru.date,
                 }
             }
             return JsonResponse(context)
         
-# @login_required(login_url='/todolist/login/')
+@login_required(login_url='/login/')
 @csrf_exempt
 def delete_ajax(request, id):
     if (request.method == 'DELETE'):
@@ -37,10 +68,18 @@ def delete_ajax(request, id):
         return HttpResponse(status=202)
     
 def show_json(request):
-    data_diary = DiaryBund.objects.all()
-    # data_diary = DiaryBund.objects.filter(user = request.user) #sesuai sama user yang lagi login
+    data_diary = DiaryBund.objects.filter(user = request.user)
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
 
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['bumil'])
 def show_diarybund(request):
-    context = {}
+    modelDiary = DiaryBund.objects.filter(user = request.user)
+    user_type = request.user.groups.all()[0].name
+    form = TambahDiaryForm()
+    context = {
+        'data' : modelDiary,
+        'form': form,
+        'user_type' : user_type,
+    }
     return render(request, 'diarybund.html', context)
