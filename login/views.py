@@ -40,7 +40,7 @@ def login_user(request):
     context = {}
     return render(request, 'login.html', context)
 
-@login_required(login_url='/login')
+# @login_required(login_url='')
 def logout_user(request):
     logout(request)
-    return redirect('login:login_user')
+    return redirect('beranda:show_beranda')
