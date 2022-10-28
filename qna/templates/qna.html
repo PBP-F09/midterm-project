@@ -1,78 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
-<head>
-</head>
 
 {% block content %}
-
 <head>
+    <!-- Link for JavaScript function -->
+    <script src="{% static 'js/qna_logic.js' %}"></script>
     <script>
-        $(document).ready(function () {
-            loadData();
-
-            $('#add-question').click(function () {
-                $.post(
-                    '/qna/add/',
-                    {
-                        text: $('#text').val(),
-                    },
-                    function (data, status) {
-                        if (status == 'success') {
-                            $(`#quest`).append(questionCard(data))
-                            $('#text').val('')
-                        }
-                    },
-                )
-            })
-        });
-
-        function deleteQuestion(id) {
-            $.ajax({
-                url: `/qna/delete/${id}`,
-                type: 'DELETE',
-                success: function (result) {
-                    $(`#quest-${id}`).remove()
-                },
-                error: function (result){
-                    alert("Tidak dapat menghapus post orang lain!")
-                }
-            });
-        }
-
-        function deleteAnswer(id) {
-            $.ajax({
-                url: `/qna/delete2/${id}`,
-                type: 'DELETE',
-                success: function (result) {
-                    $(`#answer-${id}`).remove()
-                    if ($(`#quest-answers-${result}`).children().length == 0){
-                        $(`#no-answer-${result}`).text('No answer yet.')
-                    }
-
-                },
-                error: function (result){
-                    alert("Tidak dapat menghapus post orang lain!")
-                }
-            });
-        }
-
-        function addAnswer(id) {
-            $.post(
-                `/qna/answer/${id}`,
-                {
-                    text: $(`#input-answer-${id}`).val(),
-                },
-                function (data, status) {
-                    if (status == 'success') {
-                        $(`#quest-answers-${id}`).append(answerCard(data))
-                        $(`#no-answer-${id}`).text('')
-                        $(`#input-answer-${id}`).val('')
-                    }
-                },
-            )
-        }
-
         const questionCard = (data) =>
             `<div class="flex" id="quest-${data.pk}">
                 <div class="flex-shrink-0 mr-3">
@@ -131,24 +65,12 @@
                     <p class="text-xs sm:text-sm">${data.fields.text}</p>
                 </div>
             </div>`
-
-        function loadData() {
-            $.get(`/qna/json`, function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    $(`#quest`).append(questionCard(data[i]));
-                }
-            });
-            $.get(`/qna/json2`, function (data) {
-                for (var i = 0; i < data.length; i++) {
-                    $(`#no-answer-${data[i].fields.question}`).text('')
-                    $(`#quest-answers-${data[i].fields.question}`).append(answerCard(data[i]));
-                }
-            });
-        }
     </script>
+    
 </head>
 
-<button onclick="buttonHandler()" type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"
+
+<button type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"
     class="fixed z-50 bottom-10 right-8 bg-[#FF8FB1] w-40 h-12 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-[#7A4495] hover:drop-shadow-2xl hover:animate-bounce duration-300">
     <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block">
         <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
@@ -178,9 +100,9 @@
                 <form action="" method="POST" class="">
                     {% csrf_token %}
                     <textarea
-                    class="block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
+                        class="block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
                     form-control px-3 py-1.5 text-base font-normal bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
-                    id="text" rows="3" placeholder="Apa pertanyaanmu?"></textarea>
+                        id="text" rows="3" placeholder="Apa pertanyaanmu?"></textarea>
                 </form>
                 {% else %}
                 <p class="text-xl text-white">Login untuk menambahkan pertanyaan</p>
@@ -191,7 +113,8 @@
                 {% if user.is_authenticated %}
                 <button type="button" class="btn btn-primary" id="add-question">Add</button>
                 {% else %}
-                <button type="button" class="btn btn-primary" id="login-now"><a href="{% url 'login:login_user' %}">Login</a></button>
+                <button type="button" class="btn btn-primary" id="login-now"><a
+                        href="{% url 'login:login_user' %}">Login</a></button>
                 {% endif %}
             </div>
         </div>
