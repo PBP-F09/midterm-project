@@ -7,19 +7,39 @@
 {% block content %}
 
 <style>
-    body {
-       background-color: rgb(194, 21, 128);
-    }   
+  body {
+    background-color: rgb(194, 21, 128);
+  }
 </style>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script>
-  $(document).ready(function(){
-    //ini kan buat nampilin data yang dulu udh ada gt kn
-      $.get("/catatbund/json/", function(data) {
+<head>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script>
+    function editCard(id) {
+      console.log("================ edit function");
+        $.post(
+          `/catatbund/edit/${id}`,
+          {
+            weight: $(`#input-weight-${id}`).val(),
+            height: $(`#input-height-${id}`).val(),
+          },
+          function (data, status) {
+            console.log("edit ")
+            if (status == 'success') {
+              $(`#weight-${id}`).text(`Berat badan(kg): ${data.fields.weight}`)
+              $(`#height-${id}`).text(`Tinggi badan(m): ${data.fields.height}`)
+              $(`#bmi-${id}`).text(`BMI: ${data.fields.bmi}`)
+            }
+          },
+        )
+      }
+    $(document).ready(function () {
+      //ini kan buat nampilin data yang dulu udh ada gt kn
+      $.get("/catatbund/json/", function (data) {
         console.log(data)
-        for (i=0; i < data.length; i++){
-            $(".row").append(`<div class="flex justify-center">
+        for (i = 0; i < data.length; i++) {
+          $(".row").append(`<div class="flex justify-center">
             <div class="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
                 <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Tanggal: ${data[i].fields.date}</h5>
                 <p class="text-gray-700 text-base mb-4">Berat badan(kg): ${data[i].fields.weight}</p>
@@ -59,19 +79,19 @@
                 </div>
             </div>
         </div>`)
-            }
+        }
       });
 
-      $("#unggah-btn").click(function(){
-      $.post("/catatbund/add/", 
-        $('#input-form').serialize(),
-        function (res){
-          $(".row").append(`<div class="flex justify-center">
+      $("#unggah-btn").click(function () {
+        $.post("/catatbund/add/",
+          $('#input-form').serialize(),
+          function (res) {
+            $(".row").append(`<div class="flex justify-center">
             <div class="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
                 <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Tanggal: ${res.fields.date}</h5>
-                <p class="text-gray-700 text-base mb-4">Berat badan(kg): ${res.fields.weight}</p>
-                <p class="text-gray-700 text-base mb-4">Tinggi badan(m): ${res.fields.height}</p>
-                <p class="text-gray-700 text-base mb-4">BMI: ${res.fields.bmi}</p>
+                <p class="text-gray-700 text-base mb-4" id="weight-${res.pk}">Berat badan(kg): ${res.fields.weight}</p>
+                <p class="text-gray-700 text-base mb-4" id="height-${res.pk}">Tinggi badan(m): ${res.fields.height}</p>
+                <p class="text-gray-700 text-base mb-4" id="bmi-${res.pk}">BMI: ${res.fields.bmi}</p>
                 <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${res.pk}" type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Edit</button>
                 </div>
             </div>
@@ -89,87 +109,88 @@
                     <!-- di dalam modal-body terdapat 4 form input yang berisi data.
                     data-data tersebut ditampilkan sama seperti menampilkan data pada tabel. -->
                     <div class="modal-body">
-                        <form id="#input-form">
+                        <form id="#input-form[${res.pk}">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Berat badan(kg):</label>
-                                <input type="text" class="form-control" value="${res.fields.weight}">
+                                <input type="text" id="input-weight-${res.pk}" class="form-control" value="${res.fields.weight}">
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">Tinggi badan(m):</label>
-                                <input type="text" class="form-control" value="${res.fields.height}">
+                                <input type="text" id="input-height-${res.pk}" class="form-control" value="${res.fields.height}">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="save-btn">Save changes</button>
+                        <button type="button" class="btn btn-primary" id="save-btn-${res.pk}" onClick="editCard(${res.pk})">Save changes</button>
                     </div>
                 </div>
             </div>
         </div>`)
-        })
+          })
       });
 
-      $("#save-btn").click(function(){
-      $.post("/catatbund/edit/", 
-        $('#input-form').serialize(),
-        function (res){
-          $(".row").append(`<div class="flex justify-center">
-            <div class="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
-                <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Tanggal: ${res.fields.date}</h5>
-                <p class="text-gray-700 text-base mb-4">Berat badan(kg): ${res.fields.weight}</p>
-                <p class="text-gray-700 text-base mb-4">Tinggi badan(m): ${res.fields.height}</p>
-                <p class="text-gray-700 text-base mb-4">BMI: ${res.fields.bmi}</p>
-                <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${res.pk}" type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Edit</button>
-                </div>
-            </div>
+      // $("#save-btn").click(function () {
+      //   $.post("/catatbund/edit/<int:id>",
+      //     $('#input-form').serialize(),
+      //     function (res) {
+      //       $(".row").append(`<div class="flex justify-center">
+      //       <div class="block p-6 rounded-lg shadow-lg bg-white max-w-sm">
+      //           <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Tanggal: ${res.fields.date}</h5>
+      //           <p class="text-gray-700 text-base mb-4">Berat badan(kg): ${res.fields.weight}</p>
+      //           <p class="text-gray-700 text-base mb-4">Tinggi badan(m): ${res.fields.height}</p>
+      //           <p class="text-gray-700 text-base mb-4">BMI: ${res.fields.bmi}</p>
+      //           <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${res.pk}" type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Edit</button>
+      //           </div>
+      //       </div>
             
-            <div class="modal fade" id="modal-${res.pk}" tabindex="-1" aria-labelledby="exampleModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <!-- di dalam modal-body terdapat 4 form input yang berisi data.
-                    data-data tersebut ditampilkan sama seperti menampilkan data pada tabel. -->
-                    <div class="modal-body">
-                        <form id="#input-form">
-                            <div class="form-group">
-                                <label for="exampleFormControlInput1">Berat badan(kg):</label>
-                                <input type="text" class="form-control" value="${res.fields.weight}">
-                            </div>
-                            <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Tinggi badan(m):</label>
-                                <input type="text" class="form-control" value="${res.fields.height}">
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="save-btn">Save changes</button>
-                    </div>
-                </div>
-            </div>
-        </div>`)          
-        }) 
-      })
-
-  });
-</script>
+      //       <div class="modal fade" id="modal-${res.pk}" tabindex="-1" aria-labelledby="exampleModalLabel"
+      //       aria-hidden="true">
+      //       <div class="modal-dialog">
+      //           <div class="modal-content">
+      //               <div class="modal-header">
+      //                   <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+      //                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+      //                       <span aria-hidden="true">&times;</span>
+      //                   </button>
+      //               </div>
+      //               <!-- di dalam modal-body terdapat 4 form input yang berisi data.
+      //               data-data tersebut ditampilkan sama seperti menampilkan data pada tabel. -->
+      //               <div class="modal-body">
+      //                   <form id="#input-form">
+      //                       <div class="form-group">
+      //                           <label for="exampleFormControlInput1">Berat badan(kg):</label>
+      //                           <input type="text" class="form-control" value="${res.fields.weight}">
+      //                       </div>
+      //                       <div class="form-group">
+      //                           <label for="exampleFormControlTextarea1">Tinggi badan(m):</label>
+      //                           <input type="text" class="form-control" value="${res.fields.height}">
+      //                       </div>
+      //                   </form>
+      //               </div>
+      //               <div class="modal-footer">
+      //                   <button type="button" class="btn btn-primary" id="save-btn">Save changes</button>
+      //               </div>
+      //           </div>
+      //       </div>
+      //   </div>`)
+      //     })
+      // })
+    });
+  </script>
+</head>
 
 <body>
-<h1>Catatbund</h1>
-<h3>Hi {{user}}</h3>
-<br>
-
-<div class="row p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
-
-</div>
-
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">Tambah Catatan</button>
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <h1>Catatbund</h1>
+  <h3>Hi {{user}}</h3>
+  <br>
+  
+  <div class="row p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+    
+  </div>
+  
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+  data-bs-whatever="@mdo">Tambah Catatan</button>
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -179,7 +200,7 @@
         <div class="modal-body">
           <form id="input-form">
             <div class="mb-3">
-              <label for="recipient-name" class="col-form-label" >Berat Badan(kg):</label>
+              <label for="recipient-name" class="col-form-label">Berat Badan(kg):</label>
               <br>
               {{ form.weight }}
             </div>
@@ -196,19 +217,20 @@
       </div>
     </div>
   </div>
-
-
-<!-- ?????????????????????????????????????????????????????????????????????????????? -->
-<!-- membuat tombol dengan ukuran small berwarna biru  -->
-        <!-- data-target setiap modal harus berbeda, karena akan menampilkan data yang berbeda pula
-        caranya membedakannya, gunakan id_barang sebagai pembeda data-target di setiap modal -->
-        
-        <!-- untuk melihat bentuk-bentuk modal kalian bisa mengunjungi laman bootstrap dan cari modal di kotak pencariannya -->
-        <!-- id setiap modal juga harus berbeda, cara membedakannya dengan menggunakan id_barang -->
-        
-        
-
-<a href="{% url 'catatbund:logout' %}"><button class="button-logout">Logout</button></a>
   
-</body>
-{% endblock content %}
+  
+  <!-- ?????????????????????????????????????????????????????????????????????????????? -->
+  <!-- membuat tombol dengan ukuran small berwarna biru  -->
+  <!-- data-target setiap modal harus berbeda, karena akan menampilkan data yang berbeda pula
+    caranya membedakannya, gunakan id_barang sebagai pembeda data-target di setiap modal -->
+    
+    <!-- untuk melihat bentuk-bentuk modal kalian bisa mengunjungi laman bootstrap dan cari modal di kotak pencariannya -->
+    <!-- id setiap modal juga harus berbeda, cara membedakannya dengan menggunakan id_barang -->
+    
+    
+    
+    <a href="{% url 'catatbund:logout' %}"><button class="button-logout">Logout</button></a>
+    
+    <button type="button" class="btn btn-primary" id="save-btn" onclick="editCard(48)">Save changes</button>
+  </body>
+  {% endblock content %}

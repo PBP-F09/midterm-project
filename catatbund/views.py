@@ -63,16 +63,16 @@ def add_catatan(request):
         return HttpResponseBadRequest()
 
 @csrf_exempt
-def edit_catatan(request):
-    print(f"========== {request.POST}")
+def edit_catatan(request, id):
+    print("etst ")
     if request.method == 'POST':
         form = TambahCatatanForm(request.POST)
-        print(form)
-        print(f"========== {request.POST}")
         if form.is_valid():
-            weight = form.cleaned_data.get('weight')
-            height = form.cleaned_data.get('height')
-            catat = CatatbundModel.objects.create(weight = weight, height = height, date = datetime.date.today(), user = request.user)
+            weight = form.cleaned_data['weight']
+            height = form.cleaned_data['height']
+            catat = get_object_or_404(CatatbundModel, id = id)
+            catat.weight=weight
+            catat.height=height
             bmi = catat.count_bmi()
             catat.bmi = round(catat.count_bmi(),2)
             bmi = round(catat.bmi, 2)
@@ -83,7 +83,6 @@ def edit_catatan(request):
                     'height':catat.height,
                     'bmi':bmi,
                     'date':catat.date
-                    
                 },
                 'pk':catat.pk
             }
