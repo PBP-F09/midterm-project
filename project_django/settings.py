@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'beranda',
     'qna',
     'informasi',
+    'login',
 ]
 
 MIDDLEWARE = [
