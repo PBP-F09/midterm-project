@@ -5,12 +5,15 @@ from django.core import serializers
 from artikel_kesehatan.models import Artikel
 from django.contrib.auth.decorators import login_required
 from login.decorators import allowed_users
+from artikel_kesehatan.forms import TambahArtikelForm
 
 # Create your views here.
 def show_artikel(request):
     user_type = request.user.groups.all()[0].name
+    form = TambahArtikelForm()
     context = {
-        'user_type': user_type
+        'user_type': user_type,
+        'form': form
     }
     return render(request, 'artikel.html', context)
 
