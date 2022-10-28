@@ -8,10 +8,14 @@ from login.decorators import allowed_users
 
 # Create your views here.
 def show_artikel(request):
-    return render(request, 'artikel.html')
+    user_type = request.user.groups.all()[0].name
+    context = {
+        'user_type': user_type
+    }
+    return render(request, 'artikel.html', context)
 
 @login_required(login_url='/login')
-@allowed_users(allowed_roles=['admin', 'faskes'])
+@allowed_users(allowed_roles=['admin'])
 def tambah_artikel(request):
     if request.method == 'POST':
         judul = request.POST.get('judul')
