@@ -4,7 +4,7 @@
 [HalowBund](https://halowbund.herokuapp.com/)
 
 ## Deskripsi Aplikasi
-HaloBund merupakan sebuah website yang dapat membantu ribuan Ibu di seluruh Indonesia mengenai pengetahuan motherhood dan juga mengedukasi kesehatan Ibu & Anak di Indonesia. Pada aplikasi ini, Ibu dapat membaca artikel-artikel mengenai pengetahuan keibuan dan juga mengajukan pertanyaan terkait kehamilan dan tumbuh-kembang anak pada forum diskusi dengan berinteraksi dengan dokter spesialis, perawat, atau Ibu lainnya. Selain itu, Ibu juga dapat mencari informasi terkait tempat dan waktu dilaksanakannya kegiatan posyandu dan imunisasi di lingkungan terdekatnya.
+HaloBund merupakan sebuah website yang dapat membantu ribuan Ibu di seluruh Indonesia mengenai pengetahuan *motherhood* dan juga mengedukasi kesehatan Ibu & Anak di Indonesia. Pada aplikasi ini, Ibu dapat membaca artikel-artikel mengenai pengetahuan keibuan dan juga mengajukan pertanyaan terkait kehamilan dan tumbuh-kembang anak pada forum diskusi dengan berinteraksi dengan dokter spesialis, perawat, atau Ibu lainnya. Selain itu, Ibu juga dapat mencari informasi terkait tempat dan waktu dilaksanakannya kegiatan posyandu dan imunisasi di lingkungan terdekatnya.
 
 Fitur yang kami kembangkan juga dapat menjembatani kepentingan tenaga kesehatan seperti dokter spesialis anak & kandungan serta perawat dalam memberikan informasi yang akurat dengan menjawab pertanyaan-pertanyaan terkait tumbuh-kembang anak yang diberikan oleh Ibu.
 
