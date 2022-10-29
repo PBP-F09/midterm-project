@@ -9,7 +9,10 @@ from artikel_kesehatan.forms import TambahArtikelForm
 
 # Create your views here.
 def show_artikel(request):
-    user_type = request.user.groups.all()[0].name
+    try:
+        user_type = request.user.groups.all()[0].name
+    except:
+        user_type = 'non_logged_in'
     form = TambahArtikelForm()
     context = {
         'user_type': user_type,
