@@ -9,6 +9,8 @@ class Question(models.Model):
     text = models.TextField()
     is_answered = models.BooleanField(default=False)
     date = models.DateField()
+    total_like = models.IntegerField(default=0)
+    total_answer = models.IntegerField(default=0)
 
 class Answer(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
