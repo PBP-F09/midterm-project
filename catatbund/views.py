@@ -23,7 +23,8 @@ from login.decorators import allowed_users
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 # Create your views here.
-@allowed_users(allowed_roles=['bumil'], path='/login/')
+
+@login_required(login_url='/login/')
 def show_catatbund(request):
     model_catatbund = CatatbundModel.objects.filter(user = request.user)
     form = TambahCatatanForm()
@@ -39,6 +40,7 @@ def show_json(request):
     model_catatbund = CatatbundModel.objects.filter(user = request.user)
     return HttpResponse(serializers.serialize("json", model_catatbund), content_type="application/json")
 
+@login_required(login_url='/login/')
 @csrf_exempt
 def add_catatan(request):
     if request.method == 'POST':
@@ -65,6 +67,7 @@ def add_catatan(request):
             return JsonResponse(result)
         return JsonResponse({'status':"error"})
 
+@login_required(login_url='/login/')
 @csrf_exempt
 def edit_catatan(request, id):
     print(request.method)
