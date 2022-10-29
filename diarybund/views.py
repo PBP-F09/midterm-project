@@ -72,7 +72,6 @@ def show_json(request):
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
 
 @login_required(login_url='/login/')
-@allowed_users(allowed_roles=['bumil'])
 def show_diarybund(request):
     modelDiary = DiaryBund.objects.filter(user = request.user)
     user_type = request.user.groups.all()[0].name
