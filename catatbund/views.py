@@ -18,11 +18,13 @@ from django.contrib.auth import logout
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 
 from django.contrib.auth.decorators import login_required
+from login.decorators import allowed_users
 
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 # Create your views here.
-@login_required(login_url='/catatbund/login/')
+@login_required(login_url='/login/')
+@allowed_users(allowed_roles=['bumil'])
 def show_catatbund(request):
     model_catatbund = CatatbundModel.objects.filter(user = request.user)
     form = TambahCatatanForm()
@@ -91,40 +93,40 @@ def edit_catatan(request, id):
             return JsonResponse(result)
         return JsonResponse({'status':"error"})
 
-# wesdrfgthjkl
-def register(request):
-    form = UserCreationForm()
+# # wesdrfgthjkl
+# def register(request):
+#     form = UserCreationForm()
 
-    if request.method == "POST":
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Akun telah berhasil dibuat!')
-            return redirect('catatbund:login')
+#     if request.method == "POST":
+#         form = UserCreationForm(request.POST)
+#         if form.is_valid():
+#             form.save()
+#             messages.success(request, 'Akun telah berhasil dibuat!')
+#             return redirect('catatbund:login')
     
-    context = {'form':form}
-    return render(request, 'register.html', context)
+#     context = {'form':form}
+#     return render(request, 'register.html', context)
 
-def login_user(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user) # melakukan login terlebih dahulu
-            response = HttpResponseRedirect(reverse("catatbund:show_catatbund")) # membuat response
-            response.set_cookie('last_login', str(datetime.datetime.now())) # membuat cookie last_login dan menambahkannya ke dalam response
-            return response
-        else:
-            messages.info(request, 'Username atau Password salah!')
-    context = {}
-    return render(request, 'login.html', context)
+# def login_user(request):
+#     if request.method == 'POST':
+#         username = request.POST.get('username')
+#         password = request.POST.get('password')
+#         user = authenticate(request, username=username, password=password)
+#         if user is not None:
+#             login(request, user) # melakukan login terlebih dahulu
+#             response = HttpResponseRedirect(reverse("catatbund:show_catatbund")) # membuat response
+#             response.set_cookie('last_login', str(datetime.datetime.now())) # membuat cookie last_login dan menambahkannya ke dalam response
+#             return response
+#         else:
+#             messages.info(request, 'Username atau Password salah!')
+#     context = {}
+#     return render(request, 'login.html', context)
 
-def logout_user(request):
-    logout(request)
-    response = HttpResponseRedirect(reverse('catatbund:login'))
-    response.delete_cookie('last_login')
-    return response
+# def logout_user(request):
+#     logout(request)
+#     response = HttpResponseRedirect(reverse('catatbund:login'))
+#     response.delete_cookie('last_login')
+#     return response
 
 # def edit(request):
 #     pk = request.GET.get('pk')
