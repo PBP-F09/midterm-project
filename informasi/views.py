@@ -1,33 +1,18 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from login.decorators import allowed_users
 from .models import Note
 from .forms import NoteForm
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import get_object_or_404
 
 def show_json(request):
     data = Note.objects.all()
     return HttpResponse(serializers.serialize("json", data), content_type="application/json")
 
-@csrf_exempt
-def ajax_add(request):
-    print(f'=========== ajax add')
-    if request.method == "POST":
-        lokasi = request.POST.get("lokasi")
-        tanggal = request.POST.get("tanggal")
-        waktu = request.POST.get("waktu")
-        print(lokasi)
-        print(tanggal)
-        print(waktu)
-        kapasitas_balita = request.POST.get("kapasitas_balita")
-        Note.objects.create(lokasi=lokasi, tanggal=tanggal, waktu=waktu, kapasitas_balita=kapasitas_balita)
-        return HttpResponse()
-    else:
-        print("here")
-        return redirect("informasi:index")
-
-
+@allowed_users(allowed_roles=['faskes'], path='/periksa/main')
 def index(request):
    # create object of note
    form = NoteForm(request.POST or None, request.FILES or None)
@@ -49,6 +34,15 @@ def index(request):
    }
    return render(request, "notes_page.html", context)
 
+def viewInformasi(request):
+   # create object of note
+   form = NoteForm(request.POST or None, request.FILES or None)
+        
+   context = {
+      'form': form,
+   }
+   return render(request, "view_informasi.html", context)
+
 def load_notes_view(request):
 # if request.is_ajax():
    notes = Note.objects.all()
@@ -59,24 +53,51 @@ def load_notes_view(request):
          'tanggal': obj.tanggal,
          'waktu': obj.waktu,
          'kapasitas_balita': obj.kapasitas_balita,
-
          'uploaded': obj.uploaded
       }
       data.append(item)
    return JsonResponse({'data':data})
 
 @csrf_exempt
+def ajax_add(request):
+    if request.method == "POST":
+        lokasi = request.POST.get("lokasi")
+        tanggal = request.POST.get("tanggal")
+        waktu = request.POST.get("waktu")
+        kapasitas_balita = request.POST.get("kapasitas_balita")
+        Note.objects.create(lokasi=lokasi, tanggal=tanggal, waktu=waktu, kapasitas_balita=kapasitas_balita)
+        return HttpResponse()
+    else:
+        print("here")
+        return redirect("informasi:index")
+
+@csrf_exempt
 def delete_ajax(request, id):
-   print("========= delete ajax")
-   #  if (request.method == 'DELETE'):
-      #   print("========== inside if")
    Note.objects.filter(id=id).delete()
    return redirect("informasi:index")
 
-def editInfos(request):
-   infos = Note.objects.get(id=id)
-   infos.kapasitas = request.POST['kapasitas']
-   infos.isi = request.POST['isi']
-   infos.save()
+@csrf_exempt
+def editInfos(request, id):
+   print("EDITINFOSSSS1")
+   form = NoteForm(request.POST)
+   
+   if form.is_valid():
+      print("EDITINFOSSSS3")
+      infos = get_object_or_404(Note, id=id)
 
+      infos.lokasi = form.cleaned_data['lokasi']
+      infos.tanggal = form.cleaned_data['tanggal']
+      infos.waktu = form.cleaned_data['waktu']
+      infos.kapasitas_balita = form.cleaned_data['kapasitas_balita']
+      infos.save()
+      result = {
+            'fields':{
+               'lokasi':infos.lokasi,
+               'tanggal':infos.tanggal,
+               'waktu':infos.waktu,
+               'kapasitas_balita':infos.kapasitas_balita
+            },
+            'pk':infos.pk
+      }
+      return redirect("informasi:index")
    return redirect("informasi:index")

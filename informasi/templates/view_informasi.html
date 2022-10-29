@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block scripts %}
+<title>Info Posyandu & Vaksin</title>
+
+<!-- Passing variable -->
+
+<!-- CSS Stylesheet -->
+<link 
+    rel="stylesheet" 
+    href="{% static '/css/style.css' %}" />
+></link>
+
+<!-- jQuery -->
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+></script>
+
+<!-- Custom JS -->
+<script 
+    src="{% static '/js/function.js' %}" 
+    defer
+></script>
+
+<script 
+    type="text/javascript"
+    src="{% static '/js/csrf.js' %}" 
+    defer
+></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+{% endblock scripts %}
+
+{% block meta %}
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+    
+function updateTable(){
+    // clear table
+    var itemCount = $(".table > tbody").children().length;
+    for(var i = itemCount; i >= 2; i--){ // remove data dari 2, karena 1 uuntuk header
+        $(".table > tbody > tr:nth-child(" + i + ")").remove();
+    }
+    // fill table
+    $.get('/periksa/json/', function(data) {
+        for(var i = 0; i < data.length; i++){
+        // buat row
+        var tr = document.createElement("tr");
+
+        // buat cell
+        var cellLokasi = document.createElement("td");
+        var cellTanggal = document.createElement("td");
+        var cellWaktu = document.createElement("td");
+        var cellKapasitasBalita = document.createElement("td");
+
+
+
+        // append data ke cell
+        cellLokasi.append(data[i].fields.lokasi);
+        cellTanggal.append(data[i].fields.tanggal);
+        cellWaktu.append(data[i].fields.waktu);
+        cellKapasitasBalita.append(data[i].fields.kapasitas_balita);
+    
+        
+        // append cell ke row
+        tr.append(cellLokasi);
+        tr.append(cellTanggal);
+        tr.append(cellWaktu);
+        tr.append(cellKapasitasBalita);
+        
+        // add ke tabel
+        $(".table").append(tr);
+        }
+    });
+}
+
+</script>
+
+{% endblock meta %}
+
+{% block content %}
+
+<style>
+    p {
+        margin-left: 470px;  
+      }
+    
+    p3 {
+        margin: 35px;
+        margin-left: 595px;
+      }
+    
+    h3 {
+        margin-left:582px;
+        margin-top:35px;
+    }
+</style>
+
+<h3 class="mb-4 text-lg font-semibold text-gray-900">PeriksaBund</h3>
+{% if user.is_authenticated %}
+<div class="container row">
+
+    <table class="table table-bordered">
+        <tr>
+        <th>Lokasi</th>
+        <th>Tanggal</th>
+        <th>Waktu</th>
+        <th>Kapasitas Balita</th>
+        </tr>
+        
+    </table>
+
+</div>
+{% else %}
+
+<p class="mb-3 text-sm">Login untuk melihat informasi posyandu & vaksin!</p>
+
+<p3 button type="button" class="btn btn-primary" id="login-now"><a
+    href="{% url 'login:login_user' %}">Login</a></button></p3>
+
+{% endif %}
+
+<script>
+    $(document).ready(function(){
+        updateTable()
+        
+        $('#add_info').click(function(){
+            alert('clicked');
+            var lokasi = $("#id_lokasi").val();
+            var tanggal = $("#id_tanggal").val();
+            var waktu = $("#id_waktu").val();
+            var kapasitas_balita = $("#id_kapasitas_balita").val();
+
+            $.post('/periksa/ajax/submit/',{
+                lokasi,
+                tanggal,
+                waktu,
+                kapasitas_balita,
+            },
+            function(data, status){
+                console.log("add success");
+                updateTable();
+                $("#id_lokasi").val("");
+                $("#id_tanggal").val("");
+                $("#id_waktu").val("");
+                $("#id_kapasitas_balita").val("");
+            });
+        })
+    })
+</script>
+
+{% endblock %}
