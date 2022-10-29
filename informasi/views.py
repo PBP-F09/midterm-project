@@ -78,6 +78,7 @@ def delete_ajax(request, id):
 
 @csrf_exempt
 def editInfos(request, id):
+
    print("EDITINFOSSSS1")
    form = NoteForm(request.POST)
    
@@ -101,3 +102,4 @@ def editInfos(request, id):
       }
       return redirect("informasi:index")
    return redirect("informasi:index")
+      

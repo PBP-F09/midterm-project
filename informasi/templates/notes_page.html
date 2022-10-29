@@ -32,30 +32,7 @@
     defer
 ></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 
-<script>
-    function editInfo(id) {
-        $.post(
-          `/periksa/edit/${id}`,
-          {
-            lokasi: $(`#id_lokasi-${id}`).val(),
-            tanggal: $(`#id_tanggal-${id}`).val(),
-            waktu: $(`#id_waktu-${id}`).val(),
-            kapasitas_balita: $(`#id_kapasitas_balita-${id}`).val(),
-          },
-          function (data, status) {
-            console.log("edit ")
-            if (status == 'success') {
-              $(`#lokasi-${id}`).val(`${data.fields.lokasi}`)
-              $(`#tanggal-${id}`).val(`${data.fields.tanggal}`)
-              $(`#waktu-${id}`).val(`${data.fields.waktu}`)
-              $(`#kapasitas_balita-${id}`).val(`${data.fields.kapasitas_balita}`)
-            }
-          },
-        )
-      }
-</script>
 
 {% endblock scripts %}
 
@@ -64,7 +41,36 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+
+
+
+
 <script>
+
+function editInfo(id) {
+   console.log("kepanggil gak")
+    $.post(
+        `/periksa/edit/${id}`,
+        {
+        lokasi: $(`#id_lokasi`).val(),
+        tanggal: $(`#id_tanggal`).val(),
+        waktu: $(`#id_waktu`).val(),
+        kapasitas_balita: $(`#id_kapasitas_balita`).val(),
+        },
+        function (data, status) {
+        console.log("edit ")
+        if (status == 'success') {
+            $(`#lokasi-${id}`).val(`${data.fields.lokasi}`)
+            $(`#tanggal-${id}`).val(`${data.fields.tanggal}`)
+            $(`#waktu-${id}`).val(`${data.fields.waktu}`)
+            $(`#kapasitas_balita-${id}`).val(`${data.fields.kapasitas_balita}`)
+        }
+        },
+    )
+    }
+
 function updateTable(){
     // clear table
     var itemCount = $(".table > tbody").children().length;
@@ -85,6 +91,7 @@ function updateTable(){
         
         var cellDelete = document.createElement("td");
         var cellEdit = document.createElement("td");
+        
 
         var buttonDelete = document.createElement("button");
         var linkDelete = document.createElement('a');
@@ -93,9 +100,10 @@ function updateTable(){
         buttonDelete.innerText = "Delete";
 
         var buttonEdit = document.createElement("button");
-        var linkEdit = document.createElement('b');
+        var linkEdit = document.createElement('a');
+
         linkEdit.append(buttonEdit);
-        linkEdit.setAttribute("href", `/periksa/edit/${data[i].pk}`)
+        // linkEdit.setAttribute("href", `/periksa/edit/${data[i].pk}`)
         buttonEdit.setAttribute(`data-bs-toggle`, "modal")
         buttonEdit.setAttribute(`data-bs-target`, "#editModal")
         buttonEdit.innerText = "Edit";
@@ -114,7 +122,7 @@ function updateTable(){
         tr.append(cellWaktu);
         tr.append(cellKapasitasBalita);
         tr.append(cellDelete);
-        tr.append(cellEdit);
+        tr.append(cellEdit);  
         
         // add ke tabel
         $(".table").append(tr);
@@ -216,7 +224,7 @@ function updateTable(){
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary" id="editInfok">Simpan Perubahan</button>
+                        <button type="submit" class="btn btn-primary" id="editInfo" >Simpan Perubahan</button>
                     </div>
                 </div>
             </form>
