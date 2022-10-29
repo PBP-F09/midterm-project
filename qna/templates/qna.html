@@ -3,60 +3,77 @@
 
 
 {% block content %}
+
 <head>
     <!-- Link for JavaScript function -->
     <script src="{% static 'js/qna_logic.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/qna.css' %}">
+
+    <!-- This functions use django syntax so it can't be placed externally -->
     <script>
         const questionCard = (data) =>
             `<div class="flex" id="quest-${data.pk}">
                 <div class="flex-shrink-0 mr-3">
                     <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
                 </div>
-                <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                <div class="flex-1 border border-merah-tua rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed bg-cream-tua">
                     <div class="flex justify-between">
                         <span class="text-xs text-gray-400 mt-0">${data.fields.date}</span>
-                        <ion-icon name="trash-outline" id="delete-icon" class="cursor-pointer" onclick="deleteQuestion(${data.pk})"></ion-icon>
+                        <ion-icon name="trash" id="delete-icon" class="cursor-pointer" onclick="deleteQuestion(${data.pk})"></ion-icon>
                     </div>
                     <strong>${data.fields.user}</strong>
                     <p class="text-sm">${data.fields.text}</p>
 
-                    <div class="flex justify-between items-center">
-                        <form action="" method="POST" class="w-full">
-                            {% csrf_token %}
+                    <div class="flex-grow border-t border-black mt-4"></div>
+                    <div class="flex justify-evenly items-center mt-2">
+                        <div class="flex items-center justify-center">
                             {% if user.is_authenticated %}
-                            <input type="text" name="title" id="input-answer-${data.pk}"
-                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
-                            placeholder="Jawab di sini">
+                            <ion-icon name="heart" class="cursor-pointer w-4 h-4 mr-2" size="large" onclick="likeQuestion(${data.pk})"></ion-icon>
                             {% else %}
-                            <input type="text" name="title" id="input-answer-${data.pk}" aria-label="disabled input"
-                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
-                            placeholder="Login untuk menjawab" disabled>
+                            <ion-icon name="heart" class="cursor-pointer pointer-events-none w-4 h-4 mr-2" size="large" onclick="likeQuestion(${data.pk})"></ion-icon>
                             {% endif %}
-                        </form>
-                    
-                        {% if user.is_authenticated %}
-                        <button type="submit" class="ml-1 inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100" onclick="addAnswer(${data.pk})">
-                            <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
-                        </button>
-                        {% endif %}
+                            <span id="total-likes-${data.pk}">${data.fields.total_like}</span>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <ion-icon name="chatbox-ellipses" class="cursor-pointer w-4 h-4 mr-2" onclick="showAnswer(${data.pk})"></ion-icon>
+                            <span id="total-answers-${data.pk}">${data.fields.total_answer}</span>
+                        </div>
                     </div>
-                    
-                    <h4 class="my-5 uppercase tracking-wide text-gray-400 font-bold text-xs">Answers</h4>
 
-                    <h6 class="text-sm" id='no-answer-${data.pk}'>No answer yet.</h6>
-
-                    <div class="space-y-4" id='quest-answers-${data.pk}'></div>
+                    <div id="all-answers-${data.pk}" class="hidden">
+                        <div class="flex-grow border-t border-black mt-2"></div>
+                        <div class="flex justify-between items-center">
+                            <form action="" method="POST" class="w-full">
+                                {% csrf_token %}
+                                {% if user.is_authenticated %}
+                                {{ answer_form.text }}
+                                {% else %}
+                                <div class="mt-4"></div>
+                                {% endif %}
+                            </form>
+                        
+                            {% if user.is_authenticated %}
+                            <button type="submit" class="ml-1 inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100" onclick="addAnswer(${data.pk})">
+                                <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                            </button>
+                            {% endif %}
+                        </div>
+                        
+                        <h6 class="text-sm p-1" id='no-answer-${data.pk}'>No answer yet.</h6>
+        
+                        <div class="space-y-4" id='quest-answers-${data.pk}'></div>
+                    </div>
             
                 </div>
             </div>`
-        
+
         const answerCard = (data) =>
             `<div class="flex" id='answer-${data.pk}'>
                 <div class="flex-shrink-0 mr-3">
                     <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8"
                         src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
                 </div>
-                <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                <div class="flex-1 bg-cream-muda rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
                     <div class="flex justify-between">
                         <span class="text-xs text-gray-400">${data.fields.date}</span>
                         <ion-icon name="trash-outline" id="delete-icon" class="cursor-pointer" onclick="deleteAnswer(${data.pk})"></ion-icon>
@@ -66,65 +83,65 @@
                 </div>
             </div>`
     </script>
-    
 </head>
 
-
-<button type="button" data-bs-toggle="modal" data-bs-target="#exampleModalCenter"
-    class="fixed z-50 bottom-10 right-8 bg-[#FF8FB1] w-40 h-12 rounded-full drop-shadow-lg flex justify-center items-center text-white text-4xl hover:bg-[#7A4495] hover:drop-shadow-2xl hover:animate-bounce duration-300">
-    <svg viewBox="0 0 20 20" enable-background="new 0 0 20 20" class="w-6 h-6 inline-block">
-        <path fill="#FFFFFF" d="M16,10c0,0.553-0.048,1-0.601,1H11v4.399C11,15.951,10.553,16,10,16c-0.553,0-1-0.049-1-0.601V11H4.601
-                                    C4.049,11,4,10.553,4,10c0-0.553,0.049-1,0.601-1H9V4.601C9,4.048,9.447,4,10,4c0.553,0,1,0.048,1,0.601V9h4.399
-                                    C15.952,9,16,9.447,16,10z" />
-    </svg>
-    <span class="text-xs font-bold">Tambah Pertanyaan</span>
-</button>
-
-<!-- modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content create-task rounded-2xl shadow-lg max-w-3xl p-5 bg-[#FF8FB1]">
-            <div class="modal-header">
-                {% if user.is_authenticated %}
-                <h5 class="modal-title text-white font-bold text-xl" id="exampleModalLongTitle">Tambah Pertanyaan</h5>
-                {% else %}
-                <h5 class="modal-title text-white font-bold text-xl" id="exampleModalLongTitle">Belum login?</h5>
-                {% endif %}
-                <button type="button" class="close co" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                {% if user.is_authenticated %}
-                <form action="" method="POST" class="">
-                    {% csrf_token %}
-                    <textarea
-                        class="block p-4 w-full text-gray-900 bg-gray-50 rounded-lg border border-gray-300 sm:text-md focus:ring-blue-500 focus:border-blue-500 
-                    form-control px-3 py-1.5 text-base font-normal bg-clip-padding border-solid transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:outline-none"
-                        id="text" rows="3" placeholder="Apa pertanyaanmu?"></textarea>
-                </form>
-                {% else %}
-                <p class="text-xl text-white">Login untuk menambahkan pertanyaan</p>
-                {% endif %}
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                {% if user.is_authenticated %}
-                <button type="button" class="btn btn-primary" id="add-question">Add</button>
-                {% else %}
-                <button type="button" class="btn btn-primary" id="login-now"><a
-                        href="{% url 'login:login_user' %}">Login</a></button>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+<div class="my-10 md:ml-20 ml-2">
+    <h3 class="text-xl font-semibold text-gray-900">TanyaBund</h3>
+    {% if user_type == 'bunda' %}
+    <p class="mt-3">Sedang memikirkan apa Bunda? Yuk, beritahu yang lain~</p>
+    {% endif %}
+    {% if user_type == 'faskes' %}
+    <p class="mt-3">Semangat para faskes dalam melakukan kebaikan!</p>
+    {% endif %}
+    {% if user_type == 'non_login' %}
+    <p class="mt-3">Belum login? Login untuk menambahkan dan menjawab pertanyaan.</p>
+    {% endif %}
 </div>
 
-<div class="antialiased mx-auto max-w-screen-sm m-2">
-    <h3 class="mb-4 text-lg font-semibold text-gray-900">TanyaBund</h3>
-
+<div class="antialiased mx-auto my-2 max-w-screen-md">
+    {% if not user_type == 'non_login' %}
+    <div>
+        <div class="mt-2">
+            <form action="" method="POST" class="">
+                {% csrf_token %}
+                {{ question_form.text }}
+            </form>
+        </div>
+        <div class="flex items-center justify-end">
+            <button id="add-questions" type="button" class="bg-merah-tua w-fit text-white p-2 rounded-lg flex items-center justify-center mt-3 mb-10">
+                Tambah
+            </button>
+        </div>
+    </div>
+    {% endif %}
     <div class="space-y-4 mb-3" id="quest"></div>
+</div>
 
+<div class="position-fixed top-20 end-0 p-3" style="z-index: 11">
+  <div id="liveToast" class="toast hide bg-merah-muda" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-merah-tua">
+        <svg class="flex-shrink-0 w-5 h-5 text-red-700" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+      <strong class="me-auto text-white ml-2">Alert!</strong>
+      <small class="text-white">Just now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body text-white">
+      Kamu tidak dapat menghapust post orang lain.
+    </div>
+  </div>
+</div>
+
+<div class="position-fixed top-20 end-0 p-3" style="z-index: 11">
+  <div id="liveToast2" class="toast hide bg-cream-muda" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header bg-cream-tua">
+        <svg class="flex-shrink-0 w-5 h-5 text-black" fill="black" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+      <strong class="me-auto text-black ml-2">Success!</strong>
+      <small class="text-black">Just now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body text-black">
+      Pertanyaan berhasil ditambahkan.
+    </div>
+  </div>
 </div>
 {% endblock content %}
