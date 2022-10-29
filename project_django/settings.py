@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'qna',
     'diarybund',
     'login',
+    'artikel_kesehatan',
 ]
 
 MIDDLEWARE = [
