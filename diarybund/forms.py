@@ -42,3 +42,6 @@ class TambahDiaryForm(forms.ModelForm):
                 'placeholder':"Deskripsi"
             }),
         }
+        error_messages = {
+            'required':"Mohon isi informasi diary secara lengkap!"
+        }

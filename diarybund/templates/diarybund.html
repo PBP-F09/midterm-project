@@ -61,6 +61,7 @@
         //console.log(3)
         //console.log("{{user_type}}")
         $("#untukNonBumil").hide();
+        $("#login").hide();
         $.get( "/diarybund/json/", function( data ) {
           console.log(data)
           for (let i = 0; i < data.length; i++) {
@@ -145,6 +146,9 @@
                       <p id = "${data[i].pk}--descriptionBaca" class="text-black text-base mb-4">
                         ${data[i].fields.description}
                       </p>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Tutup</button>
                     </div>
                   </div>
                 </div>
@@ -285,6 +289,9 @@
                           ${data.fields.description}
                         </p>
                       </div>
+                      <div class="modal-footer">
+                        <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Tutup</button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -331,6 +338,8 @@
               $('#title').val('')
               $('#description').val('')
               $('#abstract').val('')
+            } else {
+              console.log("{{error_message}}")
             }
           })
         })
@@ -352,7 +361,8 @@
   <div class = "px-4 sm:px-8 md:px-16">
     <h5 class = "text-3xl font-bold text-black py-4">Halow, {{user.get_username}}!</h5>
     <p id="untukBumil" class = "text-lg text-black py-4">Bagaimana rutinitas Bunda dan Si Kecil hari ini? Yuk, ceritakan sekarang juga~</p>
-    <p id="untukNonBumil" class = "text-lg text-black py-4">Mohon maaf. Anda tidak dapat mengakses halaman ini :(</p>
+    <p id="untukNonBumil" class = "text-lg text-black py-4">Maaf, fitur DiaryBund hanya dapat diakses oleh Bunda!</p>
+    <button id="login" class="btn bg-merah-tua text-white"><a href="/login">Log In sebagai Bunda</a></button>
     <button id="tulisDiary" class="btn bg-merah-tua text-white" data-bs-toggle="modal" data-bs-target="#modalTambah">Tulis Diary</button>
     <div class = "grid md:grid-cols-2 lg:grid-cols-3 w-full gap-5 mt-8 sm:mt-5" id = "diarybund">
   </div>
