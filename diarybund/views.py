@@ -22,6 +22,7 @@ def create_diary_ajax(request):
             abstract = form.cleaned_data.get('abstract')
             emotion = form.cleaned_data.get('emotion')
             diary = DiaryBund.objects.create(title = title, abstract = abstract, description = description, emotion = emotion, date = datetime.datetime.now(), user = request.user)
+            diary.save()
             context = {
                 'pk' : diary.pk,
                 'fields' : {
@@ -33,6 +34,7 @@ def create_diary_ajax(request):
                 }
             }
             return JsonResponse(context)
+        return JsonResponse({'status':"error"})
 
 @login_required(login_url='/login/')
 @csrf_exempt
@@ -40,15 +42,11 @@ def edit_diary_ajax(request, id):
     if request.method == 'POST':
         form = TambahDiaryForm(request.POST)
         if form.is_valid():
-            title = form.cleaned_data.get('title')
-            description = form.cleaned_data.get('description')
-            abstract = form.cleaned_data.get('abstract')
-            emotion = form.cleaned_data.get('emotion')
             diaryBaru = get_object_or_404(DiaryBund, id = id)
-            diaryBaru.title = title
-            diaryBaru.description = description
-            diaryBaru.abstract = abstract
-            diaryBaru.emotion = emotion
+            diaryBaru.title = form.cleaned_data.get('title')
+            diaryBaru.description = form.cleaned_data.get('description')
+            diaryBaru.abstract = form.cleaned_data.get('abstract')
+            diaryBaru.emotion = form.cleaned_data.get('emotion')
             diaryBaru.save()
             context = {
                 'pk' : diaryBaru.pk,
@@ -59,8 +57,9 @@ def edit_diary_ajax(request, id):
                     'emotion' : diaryBaru.emotion,
                     'date' : diaryBaru.date,
                 }
-            }
+            } 
             return JsonResponse(context)
+        return JsonResponse({'status':"error"})
         
 @login_required(login_url='/login/')
 @csrf_exempt
@@ -83,6 +82,5 @@ def show_diarybund(request):
         'data' : modelDiary,
         'form': form,
         'user_type' : user_type,
-        'error_message' : 'Mohon isi formulir DiaryBund dengan lengkap!',
     }
     return render(request, 'diarybund.html', context)

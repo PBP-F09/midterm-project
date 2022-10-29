@@ -21,13 +21,15 @@ class TambahDiaryForm(forms.ModelForm):
             'title': forms.TextInput(attrs={
                 'required': True,
                 'type':"text",
-                'name':"title",
+                'label_tag':"Judul",
+                'name':"Judul",
                 'id':"title",
                 'class':"form-control",
                 'placeholder':"Judul"
             }),
             'abstract': forms.TextInput(attrs={
                 'required': True,
+                'label_tag':"Judul",
                 'name':"abstract",
                 'id':"abstract",
                 'placeholder':"Deskripsi Singkat",
@@ -36,12 +38,18 @@ class TambahDiaryForm(forms.ModelForm):
             'description': forms.Textarea(attrs={
                 'required': True,
                 'type':"text",
+                'label_tag':"Judul",
                 'name':"description",
                 'id':"description",
                 'class':"form-control",
                 'placeholder':"Deskripsi"
             }),
-        }
-        error_messages = {
-            'required':"Mohon isi informasi diary secara lengkap!"
+            'emotion': forms.Select(attrs={
+                'required': True,
+                'label_tag':"Judul",
+                'name':"emotion",
+                'id':"emotion",
+                'placeholder':"Deskripsi Singkat",
+                'class':"form-control"			
+            }, choices=CHOICES),
         }
