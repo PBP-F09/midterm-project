@@ -60,7 +60,7 @@ def add_catatan(request):
                 'pk':catat.pk
             }
             return JsonResponse(result)
-        return HttpResponseBadRequest()
+        return JsonResponse({'status':"error"})
 
 @csrf_exempt
 def edit_catatan(request, id):
@@ -89,7 +89,7 @@ def edit_catatan(request, id):
                 'pk':catat.pk
             }
             return JsonResponse(result)
-        return HttpResponseBadRequest()
+        return JsonResponse({'status':"error"})
 
 # wesdrfgthjkl
 def register(request):
