@@ -9,7 +9,7 @@
 
 <style>
   body {
-    background-color: rgb(154, 0, 0);
+    background-color: rgb(255, 255, 255);
   }
 
   .card {
@@ -19,7 +19,8 @@
 
 <head>
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>\
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://kit.fontawesome.com/yourcode.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
   <script>
     function editCard(id) {
@@ -43,16 +44,26 @@
       }
     $(document).ready(function () {
       //ini kan buat nampilin data yang dulu udh ada gt kn
+      let context = "{{ user_type }}";
+      if (context != "bumil") {
+        $("#tambah-btn").hide();
+      } else {
       $.get("/catatbund/json/", function (data) {
         console.log(data)
         for (i = 0; i < data.length; i++) {
-          $(".row").append(`<div class="flex justify-center">
-            <div class="block p-4 rounded-lg shadow-lg bg-white max-w-sm">
-                <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Tanggal: ${data[i].fields.date}</h5>
-                <p class="text-gray-700 text-base mb-4" mb-4" id="weight-${data[i].pk}">Berat badan(kg): ${data[i].fields.weight}</p>
-                <p class="text-gray-700 text-base mb-4" mb-4" id="height-${data[i].pk}">Tinggi badan(m): ${data[i].fields.height}</p>
-                <p class="text-gray-700 text-base mb-4" mb-4" id="bmi-${data[i].pk}">BMI: ${data[i].fields.bmi}</p>
-                <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${data[i].pk}" type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Edit</button>
+          $("#row").append(`<div class="flex justify-center">
+            <div class="rounded-lg pl-10 pr-6 w-full py-5 bg-cream-muda shadow-md hover:shadow-xl">
+                <p class="text-gray-700 text-base mb-3 text-xs font-bold">${data[i].fields.date}</p>
+                <p class="text-gray-700 text-base mb-3 text-sm" id="weight-${data[i].pk}">Berat badan(kg): ${data[i].fields.weight}</p>
+                <p class="text-gray-700 text-base mb-3 text-sm" id="height-${data[i].pk}">Tinggi badan(m): ${data[i].fields.height}</p>
+                <div class="flex justify-between">
+                  <p class="text-gray-700 text-base mb-3 text-sm" id="bmi-${data[i].pk}"><span class = "text-sm sm:text-md bg-black text-white py-2 px-3 sm: px-3 rounded-full">BMI: ${data[i].fields.bmi}</span></p>
+                <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${data[i].pk}" type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                  </svg>
+                  </button>
+                </div>
                 </div>
             </div>
             
@@ -87,7 +98,7 @@
             </div>
         </div>`)
         }
-      });
+      })};
 
       $("#unggah-btn").click(function () {
         $.post("/catatbund/add/",
@@ -97,13 +108,18 @@
               console.log("hahahahaah")
               alert("isi dengan benar")
             } else {
-            $(".row").append(`<div class="flex justify-center">
-            <div class="block p-6 max-w-sm bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
-                <h5 class="text-gray-900 text-xl leading-tight font-medium mb-2">Tanggal: ${res.fields.date}</h5>
-                <p class="text-gray-700 text-base mb-4" mb-4" id="weight-${res.pk}">Berat badan(kg): ${res.fields.weight}</p>
-                <p class="text-gray-700 text-base mb-4" mb-4" id="height-${res.pk}">Tinggi badan(m): ${res.fields.height}</p>
-                <p class="text-gray-700 text-base mb-4" mb-4" id="bmi-${res.pk}">BMI: ${res.fields.bmi}</p>
-                <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${res.pk}" type="button" class=" inline-block px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out">Edit</button>
+            $("#row").append(`<div class="flex justify-center">
+            <div class="rounded-lg pl-10 pr-6 w-full py-5 bg-cream-muda shadow-md hover:shadow-xl">
+                <p class="text-gray-700 text-base mb-3 text-xs font-bold">${res.fields.date}</p>
+                <p class="text-gray-700 text-base mb-3 text-sm" id="weight-${res.pk}">Berat badan(kg): ${res.fields.weight}</p>
+                <p class="text-gray-700 text-base mb-3 text-sm" id="height-${res.pk}">Tinggi badan(m): ${res.fields.height}</p>
+                <div class="flex justify-between">
+                <p class="text-gray-700 text-base mb-3 text-sm" id="bmi-${res.pk}"><span class = "text-sm sm:text-md bg-black text-white py-2 px-3 sm: px-3 rounded-full">BMI: ${res.fields.bmi}</span></p>
+                <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${res.pk}" type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                        <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
+                  </svg></button>
+                </div>
                 </div>
             </div>
             
@@ -147,19 +163,15 @@
   </script>
 </head>
 
-<body>
+<body class = "text-black">
   <div class = "px-4 sm:px-8 md:px-16">
-    <div class = "d-flex justify-content-between">
-      <h5 class = "text-3xl font-bold text-black py-4">Halow, {{user}}!</h5>
-      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
-  data-bs-whatever="@mdo">Tambah Catatan</button>
+    <h5 class = "text-3xl font-bold text-black py-4">Halow, {{user}}!</h5>
+    <button type="button" class="btn bg-merah-tua text-white" data-bs-toggle="modal" data-bs-target="#exampleModal" id="tambah-btn">
+      Tambah Catatan
+    </button>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8 sm:mt-5" id="row">
     </div>
-    <div class = "grid md:grid-cols-2 lg:grid-cols-3 w-full gap-5 mt-8 sm:mt-5">
-  </div>
-  
-  <div class="row p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2">
-    
-  </div>
+</div>
   
   <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">

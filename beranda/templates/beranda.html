@@ -67,10 +67,12 @@
                 <div class="p-4">
                     <h2 class="font-bold mb-3">CatatBund</h2>
                     <p class="mb-3 text-sm">Platform untuk mengamati perkembangan dan pertumbuhan anak yang dinilai dari keseimbangan Body Mass Index (BMI)</p>
-                    <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
-                        Catat Sekarang
-                        <i class="fa fa-arrow-circle-right ml-2" style="font-size:20px;color:white"></i>
-                    </button>
+                    <a href="{% url 'catatbund:show_catatbund' %}">
+                        <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
+                            Catat Sekarang
+                            <i class="fa fa-arrow-circle-right ml-2" style="font-size:20px;color:white"></i>
+                        </button>
+                    </a>
                 </div>
                 <img src="{% static 'images/baby.png' %}" class="w-25 mr-3">
             </div>

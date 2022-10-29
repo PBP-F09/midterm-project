@@ -23,14 +23,15 @@ from login.decorators import allowed_users
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 # Create your views here.
-@login_required(login_url='/login/')
-@allowed_users(allowed_roles=['bumil'])
+@allowed_users(allowed_roles=['bumil'], path='/login/')
 def show_catatbund(request):
     model_catatbund = CatatbundModel.objects.filter(user = request.user)
     form = TambahCatatanForm()
+    user_type = request.user.groups.all()[0].name
     context = {
     'data_catatbund': model_catatbund,
-    'form' : form 
+    'form' : form,
+    'user_type' : user_type,
     }
     return render(request, "catatbund.html", context)
 
