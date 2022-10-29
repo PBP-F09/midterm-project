@@ -15,7 +15,6 @@ const addButton = document.getElementById('add_info')
 
 
 
-
 function updateTable(){
     // clear table
     var itemCount = $(".table > tbody").children().length;

@@ -97,7 +97,7 @@ function updateTable(){
       }
     
     h3 {
-        margin-left:582px;
+        margin-left:575px;
         margin-top:35px;
     }
 </style>
@@ -108,10 +108,10 @@ function updateTable(){
 
     <table class="table table-bordered">
         <tr>
-        <th>Lokasi</th>
-        <th>Tanggal</th>
-        <th>Waktu</th>
-        <th>Kapasitas Balita</th>
+        <th class="bg-cream-tua">Lokasi</th>
+        <th class="bg-cream-tua">Tanggal</th>
+        <th class="bg-cream-tua">Waktu</th>
+        <th class="bg-cream-tua">Kapasitas Balita</th>
         </tr>
         
     </table>
@@ -121,7 +121,7 @@ function updateTable(){
 
 <p class="mb-3 text-sm">Login untuk melihat informasi posyandu & vaksin!</p>
 
-<p3 button type="button" class="btn btn-primary" id="login-now"><a
+<p3 button type="button" class="bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center" id="login-now"><a
     href="{% url 'login:login_user' %}">Login</a></button></p3>
 
 {% endif %}

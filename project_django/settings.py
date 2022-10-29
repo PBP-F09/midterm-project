@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'qna',
     'informasi',
     'login',
-    'bootstrap_datepicker_plus',
+   
+    
 ]
 
 MIDDLEWARE = [

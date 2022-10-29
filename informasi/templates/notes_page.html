@@ -6,7 +6,6 @@
 
 <!-- Passing variable -->
 
-
 <!-- CSS Stylesheet -->
 <link 
     rel="stylesheet" 
@@ -51,6 +50,7 @@
 
 function editInfo(id) {
    console.log("kepanggil gak")
+   alert("adasdasd")
     $.post(
         `/periksa/edit/${id}`,
         {
@@ -92,11 +92,16 @@ function updateTable(){
         var cellDelete = document.createElement("td");
         var cellEdit = document.createElement("td");
         
+        // var hiddenInput = document.createElement("input");
+        // hiddenInput.setAttribute("type", "hidden");
+        // hiddenInput.setAttribute("class", `buat-get-${id}`);
+        // hiddenInput.setAttribute("value", data[i].pk);
 
         var buttonDelete = document.createElement("button");
         var linkDelete = document.createElement('a');
         linkDelete.append(buttonDelete);
         linkDelete.setAttribute("href", `/periksa/delete/${data[i].pk}`)
+        linkDelete.setAttribute("class", `bg-merah-tua w-fit text-white p-1 font-bold rounded-lg flex items-center justify-center`)
         buttonDelete.innerText = "Delete";
 
         var buttonEdit = document.createElement("button");
@@ -123,6 +128,7 @@ function updateTable(){
         tr.append(cellKapasitasBalita);
         tr.append(cellDelete);
         tr.append(cellEdit);  
+        // tr.append(hiddenInput);
         
         // add ke tabel
         $(".table").append(tr);
@@ -136,7 +142,6 @@ function updateTable(){
         updateTable()
         
         $('#add_info').click(function(){
-            alert('clicked');
             var lokasi = $("#id_lokasi").val();
             var tanggal = $("#id_tanggal").val();
             var waktu = $("#id_waktu").val();
@@ -149,7 +154,7 @@ function updateTable(){
                 kapasitas_balita,
             },
             function(data, status){
-                console.log("add success");
+                alert('Sukses menambahkan informasi!');
                 updateTable();
                 $("#id_lokasi").val("");
                 $("#id_tanggal").val("");
@@ -187,12 +192,12 @@ function updateTable(){
                         </div>
                     {% endfor %}
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" id= "add_info" class="btn btn-primary">Unggah</button>
+                        <button type="button" class="bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center" data-bs-dismiss="modal">Tutup</button>
+                        <button type="submit" id= "add_info" class="bg-cream-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">Unggah</button>
                     </div>
             {% else %}
                 <p>Login untuk menambahkan!</p>
-                <button type="button" class="btn btn-primary" id="login-now"><a
+                <button type="button" class="bg-merah-muda w-fit text-white p-2" id="login-now"><a
                     href="{% url 'login:login_user' %}">Login</a></button>
             {% endif %}
 
@@ -234,7 +239,7 @@ function updateTable(){
 
   <style>
     h3 {
-        margin-left:582px;
+        margin-left:575px;
         margin-top:35px;
     }
   </style>
@@ -250,8 +255,9 @@ function updateTable(){
     </div>
 
     <h3 class="mb-4 text-lg font-semibold text-gray-900">PeriksaBund</h3>
-    <p>Tambah Informasi Lokasi Posyandu & Vaksinasi!</p>
-    <button type="button" class="btn btn-primary my-2" data-bs-toggle="modal" data-bs-target="#addNotesModal">
+    <p>Halaman Administrator Fasilitas Kesehatan</p>
+    <br>
+    <button type="button" class="hover:text-lg duration-500  bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center" data-bs-toggle="modal" data-bs-target="#addNotesModal">
         Tambah Lokasi
     </button>
 
@@ -261,10 +267,12 @@ function updateTable(){
 
         <table class="table table-bordered">
             <tr>
-            <th>Lokasi</th>
-            <th>Tanggal</th>
-            <th>Waktu</th>
-            <th>Kapasitas Balita</th>
+            <th class="bg-cream-tua">Lokasi</th>
+            <th class="bg-cream-tua">Tanggal</th>
+            <th class="bg-cream-tua">Waktu</th>
+            <th class="bg-cream-tua">Kapasitas Balita</th>
+            <th class="bg-cream-tua"></th>
+            <th class="bg-cream-tua"></th>
             </tr>
             
         </table>
@@ -272,5 +280,11 @@ function updateTable(){
     </div>
 </div>
 
+<script>
+    $(document).ready(function(){
+    let myId = $('.buat-get-id').val();
+    $('#editInfo').attr('onClick', 'editInfo(myId)');
+    })
+</script>
 
 {% endblock %}

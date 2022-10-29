@@ -16,8 +16,12 @@ def show_json(request):
 def index(request):
    # create object of note
    form = NoteForm(request.POST or None, request.FILES or None)
+   user_type = ''
    
    # check if form data is valid
+
+   if request.user.is_authenticated:
+      user_type = request.user.groups.all()[0].name
 
    if form.is_valid():
       # save the form data to model
@@ -31,32 +35,24 @@ def index(request):
          
    context = {
       'form': form,
+      "user_type" : user_type,
    }
    return render(request, "notes_page.html", context)
 
 def viewInformasi(request):
    # create object of note
    form = NoteForm(request.POST or None, request.FILES or None)
+   user_type = ''
+
+   if request.user.is_authenticated:
+      user_type = request.user.groups.all()[0].name
         
    context = {
       'form': form,
+      "user_type" : user_type,
    }
    return render(request, "view_informasi.html", context)
 
-def load_notes_view(request):
-# if request.is_ajax():
-   notes = Note.objects.all()
-   data = []
-   for obj in notes:
-      item = {
-         'lokasi': obj.lokasi,
-         'tanggal': obj.tanggal,
-         'waktu': obj.waktu,
-         'kapasitas_balita': obj.kapasitas_balita,
-         'uploaded': obj.uploaded
-      }
-      data.append(item)
-   return JsonResponse({'data':data})
 
 @csrf_exempt
 def ajax_add(request):
@@ -103,3 +99,29 @@ def editInfos(request, id):
       return redirect("informasi:index")
    return redirect("informasi:index")
       
+
+
+
+
+
+
+
+
+
+
+
+
+def load_notes_view(request):
+# if request.is_ajax():
+   notes = Note.objects.all()
+   data = []
+   for obj in notes:
+      item = {
+         'lokasi': obj.lokasi,
+         'tanggal': obj.tanggal,
+         'waktu': obj.waktu,
+         'kapasitas_balita': obj.kapasitas_balita,
+         'uploaded': obj.uploaded
+      }
+      data.append(item)
+   return JsonResponse({'data':data})
