@@ -12,4 +12,5 @@ urlpatterns = [
     path('answer/<int:id>', create_answer, name='create_answer'),
     path('delete/<int:id>', delete_question, name='delete_question'),
     path('delete2/<int:id>', delete_answer, name='delete_answer'),
+    path('like/<int:id>', like_question, name='like_question'),
 ]
