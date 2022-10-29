@@ -3,6 +3,7 @@
 
 
 {% block content %}
+
 <head>
     <!-- Link for JavaScript function -->
     <script src="{% static 'js/qna_logic.js' %}"></script>
@@ -12,51 +13,107 @@
                 <div class="flex-shrink-0 mr-3">
                     <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
                 </div>
-                <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed bg-cream-tua">
                     <div class="flex justify-between">
                         <span class="text-xs text-gray-400 mt-0">${data.fields.date}</span>
-                        <ion-icon name="trash-outline" id="delete-icon" class="cursor-pointer" onclick="deleteQuestion(${data.pk})"></ion-icon>
+                        <ion-icon name="trash" id="delete-icon" class="cursor-pointer" onclick="deleteQuestion(${data.pk})"></ion-icon>
                     </div>
                     <strong>${data.fields.user}</strong>
                     <p class="text-sm">${data.fields.text}</p>
 
-                    <div class="flex justify-between items-center">
-                        <form action="" method="POST" class="w-full">
-                            {% csrf_token %}
-                            {% if user.is_authenticated %}
-                            <input type="text" name="title" id="input-answer-${data.pk}"
-                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
-                            placeholder="Jawab di sini">
-                            {% else %}
-                            <input type="text" name="title" id="input-answer-${data.pk}" aria-label="disabled input"
-                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
-                            placeholder="Login untuk menjawab" disabled>
-                            {% endif %}
-                        </form>
-                    
-                        {% if user.is_authenticated %}
-                        <button type="submit" class="ml-1 inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100" onclick="addAnswer(${data.pk})">
-                            <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
-                        </button>
-                        {% endif %}
+                    <div class="flex-grow border-t border-black mt-4"></div>
+                    <div class="flex justify-evenly items-center mt-2">
+                        <div class="flex items-center justify-center">
+                            <ion-icon name="heart" class="cursor-pointer w-4 h-4 mr-2" size="large"></ion-icon>
+                            <span>1</span>
+                        </div>
+                        <div class="flex items-center justify-center">
+                            <ion-icon name="chatbox-ellipses" class="cursor-pointer w-4 h-4 mr-2" onclick="showAnswer(${data.pk})"></ion-icon>
+                            <span id="total-answers-${data.pk}"></span>
+                        </div>
                     </div>
-                    
-                    <h4 class="my-5 uppercase tracking-wide text-gray-400 font-bold text-xs">Answers</h4>
 
-                    <h6 class="text-sm" id='no-answer-${data.pk}'>No answer yet.</h6>
-
-                    <div class="space-y-4" id='quest-answers-${data.pk}'></div>
+                    <div id="all-answers-${data.pk}" class="hidden">
+                        <div class="flex-grow border-t border-black mt-2">
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <form action="" method="POST" class="w-full">
+                                {% csrf_token %}
+                                {% if user.is_authenticated %}
+                                <input type="text" name="title" id="input-answer-${data.pk}"
+                                class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
+                                placeholder="Tulis komentar...">
+                                {% else %}
+                                <input type="text" name="title" id="input-answer-${data.pk}" aria-label="disabled input"
+                                class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
+                                placeholder="Login untuk menjawab" disabled>
+                                {% endif %}
+                            </form>
+                        
+                            {% if user.is_authenticated %}
+                            <button type="submit" class="ml-1 inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100" onclick="addAnswer(${data.pk})">
+                                <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                            </button>
+                            {% endif %}
+                        </div>
+                        
+                        <h6 class="text-sm p-1" id='no-answer-${data.pk}'>No answer yet.</h6>
+        
+                        <div class="space-y-4" id='quest-answers-${data.pk}'></div>
+                    </div>
             
                 </div>
             </div>`
-        
+        // const questionCard = (data) =>
+        //     `<div class="flex" id="quest-${data.pk}">
+        //         <div class="flex-shrink-0 mr-3">
+        //             <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
+        //         </div>
+        //         <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed bg-cream-tua">
+        //             <div class="flex justify-between">
+        //                 <span class="text-xs text-gray-400 mt-0">${data.fields.date}</span>
+        //                 <ion-icon name="trash-outline" id="delete-icon" class="cursor-pointer" onclick="deleteQuestion(${data.pk})"></ion-icon>
+        //             </div>
+        //             <strong>${data.fields.user}</strong>
+        //             <p class="text-sm">${data.fields.text}</p>
+
+        //             <div class="flex justify-between items-center">
+        //                 <form action="" method="POST" class="w-full">
+        //                     {% csrf_token %}
+        //                     {% if user.is_authenticated %}
+        //                     <input type="text" name="title" id="input-answer-${data.pk}"
+        //                     class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
+        //                     placeholder="Jawab di sini">
+        //                     {% else %}
+        //                     <input type="text" name="title" id="input-answer-${data.pk}" aria-label="disabled input"
+        //                     class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
+        //                     placeholder="Login untuk menjawab" disabled>
+        //                     {% endif %}
+        //                 </form>
+
+        //                 {% if user.is_authenticated %}
+        //                 <button type="submit" class="ml-1 inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100" onclick="addAnswer(${data.pk})">
+        //                     <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+        //                 </button>
+        //                 {% endif %}
+        //             </div>
+
+        //             <h4 class="my-5 uppercase tracking-wide text-gray-400 font-bold text-xs">Answers</h4>
+
+        //             <h6 class="text-sm" id='no-answer-${data.pk}'>No answer yet.</h6>
+
+        //             <div class="space-y-4" id='quest-answers-${data.pk}'></div>
+
+        //         </div>
+        //     </div>`
+
         const answerCard = (data) =>
             `<div class="flex" id='answer-${data.pk}'>
                 <div class="flex-shrink-0 mr-3">
                     <img class="mt-3 rounded-full w-6 h-6 sm:w-8 sm:h-8"
                         src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
                 </div>
-                <div class="flex-1 bg-gray-100 rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
+                <div class="flex-1 bg-cream-muda rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed">
                     <div class="flex justify-between">
                         <span class="text-xs text-gray-400">${data.fields.date}</span>
                         <ion-icon name="trash-outline" id="delete-icon" class="cursor-pointer" onclick="deleteAnswer(${data.pk})"></ion-icon>
@@ -66,7 +123,7 @@
                 </div>
             </div>`
     </script>
-    
+
 </head>
 
 
@@ -124,7 +181,63 @@
 <div class="antialiased mx-auto max-w-screen-sm m-2">
     <h3 class="mb-4 text-lg font-semibold text-gray-900">TanyaBund</h3>
 
-    <div class="space-y-4 mb-3" id="quest"></div>
+    <div class="space-y-4 mb-3" id="quest">
+        <!-- <div class="flex" id="quest-${data.pk}">
+            <div class="flex-shrink-0 mr-3">
+                <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
+            </div>
+            <div class="flex-1 border rounded-lg px-4 py-2 sm:px-6 sm:py-4 leading-relaxed bg-cream-tua">
+                <div class="flex justify-between">
+                    <span class="text-xs text-gray-400 mt-0">22-10-2022</span>
+                    <ion-icon name="trash" id="delete-icon" class="cursor-pointer" onclick="deleteQuestion(1)"></ion-icon>
+                </div>
+                <strong>Fadhlan Hasyim</strong>
+                <p class="text-sm">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Adipisci sapiente possimus pariatur beatae a culpa dicta vitae voluptates temporibus soluta, rerum dignissimos ratione neque sequi odio dolor ipsam, odit aliquid.</p>
+
+                <div class="flex-grow border-t border-black mt-4"></div>
+                <div class="flex justify-evenly items-center mt-2">
+                    <div class="flex items-center justify-center">
+                        <ion-icon name="heart" class="cursor-pointer w-4 h-4 mr-2" size="large"></ion-icon>
+                        <span>1</span>
+                    </div>
+                    <div class="flex items-center justify-center">
+                        <ion-icon name="chatbox-ellipses" class="cursor-pointer w-4 h-4 mr-2" size="large" onclick="showAnswer(${data.pk})"></ion-icon>
+                        <span>1</span>
+                    </div>
+                </div>
+
+                <div id="all-answer-${data.pk}">
+                    <div class="flex-grow border-t border-black mt-2">
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <form action="" method="POST" class="w-full">
+                            {% csrf_token %}
+                            {% if user.is_authenticated %}
+                            <input type="text" name="title" id="input-answer-${data.pk}"
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
+                            placeholder="Tulis komentar...">
+                            {% else %}
+                            <input type="text" name="title" id="input-answer-${data.pk}" aria-label="disabled input"
+                            class="form-control bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 my-3"
+                            placeholder="Login untuk menjawab" disabled>
+                            {% endif %}
+                        </form>
+                    
+                        {% if user.is_authenticated %}
+                        <button type="submit" class="ml-1 inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100" onclick="addAnswer(${data.pk})">
+                            <svg aria-hidden="true" class="w-6 h-6 rotate-90" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z"></path></svg>
+                        </button>
+                        {% endif %}
+                    </div>
+                    
+                    <h6 class="text-sm p-1" id='no-answer-${data.pk}'>No answer yet.</h6>
+    
+                    <div class="space-y-4" id='quest-answers-${data.pk}'></div>
+                </div>
+        
+            </div>
+        </div> -->
+    </div>
 
 </div>
 {% endblock content %}

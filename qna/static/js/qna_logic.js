@@ -30,6 +30,10 @@ function deleteQuestion(id) {
     });
 }
 
+function showAnswer(id) {
+    $(`#all-answers-${id}`).removeClass('hidden');
+}
+
 function deleteAnswer(id) {
     $.ajax({
         url: `/qna/delete2/${id}`,
