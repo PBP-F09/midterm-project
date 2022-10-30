@@ -105,7 +105,8 @@
           function (res, status) {
             console.log(res)
             if(res.status == "error") {
-              console.log("hahahahaah")
+              const toast = new bootstrap.Toast($('#liveToast'))
+              toast.show()
             } else {
             $("#row").append(`<div class="flex justify-center">
             <div class="rounded-lg pl-10 pr-6 w-full py-5 bg-cream-muda shadow-md hover:shadow-xl">
@@ -181,7 +182,7 @@
         <div class="modal-body">
           <form id="input-form">
             <div class="mb-3">
-              {{ form.error }}
+              <p>{{ form.error }}</p>
               <label for="recipient-name" class="col-form-label">Berat Badan(kg):</label>
               {{ form.weight }}
             </div>
@@ -195,6 +196,20 @@
           <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Cancel</button>
           <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" id="unggah-btn" data-bs-dismiss="modal">Unggah</button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 11">
+    <div id="liveToast" class="toast hide bg-merah-muda" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-merah-tua">
+          <svg class="flex-shrink-0 w-5 h-5 text-red-700" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <strong class="me-auto text-white ml-2">Invalid Input!</strong>
+        <small class="text-white">Just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body text-white">
+        Please enter correct input
       </div>
     </div>
   </div>
