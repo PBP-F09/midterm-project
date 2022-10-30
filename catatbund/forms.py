@@ -21,6 +21,7 @@ class TambahCatatanForm(forms.ModelForm):
                 'required': True, 
                 'label':'weight',
                 'name':"weight",
+                'min':0,
                 'id':"weight",
                 'class':"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white",
                 'placeholder':"Berat Badan(kg)"
@@ -30,6 +31,7 @@ class TambahCatatanForm(forms.ModelForm):
                 'label':'height',
                 'name':"height",
                 'id':"height",
+                'min':0,
                 'placeholder':"Tinggi Badan(m)",
                 'class':"bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white"			
             }),

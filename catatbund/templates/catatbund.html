@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block meta %}
-<title>To Do List</title>
-
+<title>CatatBund</title>
 {% endblock meta %}
 
 {% block content %}
@@ -12,53 +12,25 @@
     background-color: rgb(255, 255, 255);
   }
 
-  .card {
-    background-color: rgb(194, 21, 128);
-  }
-
 </style>
 
 <head>
+  <script src="{% static 'js/logic.js' %}"></script>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-  
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
   <script>
-    function editCard(id) {
-      console.log("================ edit function");
-        $.post(
-          `/catatbund/edit/${id}`,
-          {
-            weight: $(`#input-weight-${id}`).val(),
-            height: $(`#input-height-${id}`).val(),
-          },
-          function (data, status) {
-            console.log("edit ")
-            if (status == 'success') {
-              $(`#weight-${id}`).text(`Berat badan(kg): ${data.fields.weight}`)
-              $(`#height-${id}`).text(`Tinggi badan(m): ${data.fields.height}`)
-              $(`#bmi-${id}`).text(`BMI: ${data.fields.bmi}`)
-              $(`#bmi-${id}`).html(`<span class = "text-sm sm:text-md bg-black text-white py-2 px-3 sm: px-3 rounded-full">BMI: ${data.fields.bmi}</span>`)
-            }
-          },
-        )
-      }
-    $(document).ready(function () {
-      let context = "{{ user_type }}";
-      if (context != "bumil") {
-        $("#tambah-btn").hide();
-      } else {
-      $.get("/catatbund/json/", function (data) {
-        console.log(data)
-        for (i = 0; i < data.length; i++) {
-          $("#row").append(`<div class="flex justify-center">
+    let context = "{{ user_type }}";
+
+    const getCard = (data) =>
+      `<div class="flex justify-center">
             <div class="rounded-lg pl-10 pr-6 w-full py-5 bg-cream-muda shadow-md hover:shadow-xl">
-                <p class="text-gray-700 text-base mb-3 text-xs font-bold">${data[i].fields.date}</p>
-                <p class="text-gray-700 text-base mb-3 text-sm" id="weight-${data[i].pk}">Berat badan(kg): ${data[i].fields.weight}</p>
-                <p class="text-gray-700 text-base mb-3 text-sm" id="height-${data[i].pk}">Tinggi badan(m): ${data[i].fields.height}</p>
+                <p class="text-gray-700 text-base mb-3 text-xs font-bold">${data.fields.date}</p>
+                <p class="text-gray-700 text-base mb-3 text-sm" id="weight-${data.pk}">Berat badan(kg): ${data.fields.weight}</p>
+                <p class="text-gray-700 text-base mb-3 text-sm" id="height-${data.pk}">Tinggi badan(m): ${data.fields.height}</p>
                 <div class="flex justify-between">
-                  <p class="text-gray-700 text-base mb-3 text-sm" id="bmi-${data[i].pk}"><span class = "text-sm sm:text-md bg-black text-white py-2 px-3 sm: px-3 rounded-full">BMI: ${data[i].fields.bmi}</span></p>
-                <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${data[i].pk}" type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded">
+                  <p class="text-gray-700 text-base mb-3 text-sm" id="bmi-${data.pk}"><span class = "text-sm sm:text-md bg-black text-white py-2 px-3 sm: px-3 rounded-full">BMI: ${data.fields.bmi}</span></p>
+                <button id="edit-btn" data-bs-toggle="modal" data-bs-target="#modal-${data.pk}" type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
                         <path d="M21.731 2.269a2.625 2.625 0 00-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 000-3.712zM19.513 8.199l-3.712-3.712-12.15 12.15a5.25 5.25 0 00-1.32 2.214l-.8 2.685a.75.75 0 00.933.933l2.685-.8a5.25 5.25 0 002.214-1.32L19.513 8.2z" />
                   </svg>
@@ -67,7 +39,7 @@
                 </div>
             </div>
             
-            <div class="modal fade" id="modal-${data[i].pk}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="modal-${data.pk}" tabindex="-1" aria-labelledby="exampleModalLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -78,37 +50,27 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form id="#input-form[${data[i].pk}">
+                        <form id="#input-form[${data.pk}">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Berat badan(kg):</label>
-                                <input type="text" class="form-control" id="input-weight-${data[i].pk}" value="${data[i].fields.weight}">
+                                <input type="text" class="form-control" id="input-weight-${data.pk}" value="${data.fields.weight}">
                             </div>
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">Tinggi badan(m):</label>
-                                <input type="text" class="form-control" id="input-height-${data[i].pk}" value="${data[i].fields.height}">
+                                <input type="text" class="form-control" id="input-height-${data.pk}" value="${data.fields.height}">
                             </div>
                         </form>
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" id="save-btn-${data[i].pk}" onClick="editCard(${data[i].pk})" data-bs-dismiss="modal">Save changes</button>
+                        <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" id="save-btn-${data.pk}" onClick="editCard(${data.pk})" data-bs-dismiss="modal">Save changes</button>
                     </div>
                 </div>
             </div>
-        </div>`)
-        }
-      })};
+        </div>`
 
-      $("#unggah-btn").click(function () {
-        $.post("/catatbund/add/",
-          $('#input-form').serialize(),
-          function (res, status) {
-            console.log(res)
-            if(res.status == "error") {
-              const toast = new bootstrap.Toast($('#liveToast'))
-              toast.show()
-            } else {
-            $("#row").append(`<div class="flex justify-center">
+      const postCard = (res) =>
+      `<div class="flex justify-center">
             <div class="rounded-lg pl-10 pr-6 w-full py-5 bg-cream-muda shadow-md hover:shadow-xl">
                 <p class="text-gray-700 text-base mb-3 text-xs font-bold">${res.fields.date}</p>
                 <p class="text-gray-700 text-base mb-3 text-sm" id="weight-${res.pk}">Berat badan(kg): ${res.fields.weight}</p>
@@ -151,14 +113,8 @@
                     </div>
                 </div>
             </div>
-        </div>`)
-        $('#weight').val('')
-        $('#height').val('')
-      }
-          })
-      });
+        </div>`
 
-    });
   </script>
 </head>
 
@@ -194,13 +150,13 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Cancel</button>
-          <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" id="unggah-btn" data-bs-dismiss="modal">Unggah</button>
+          <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" id="unggah-btn" >Unggah</button>
         </div>
       </div>
     </div>
   </div>
 
-  <div class="position-fixed top-20 end-0 p-3" style="z-index: 11">
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
     <div id="liveToast" class="toast hide bg-merah-muda" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header bg-merah-tua">
           <svg class="flex-shrink-0 w-5 h-5 text-red-700" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
