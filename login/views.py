@@ -15,11 +15,13 @@ def registrasi_user(request):
         if form.is_valid():
             user = form.save()
             role_user = request.POST.get('role_user')
-            new_group, created_group = Group.objects.get_or_create(name=role_user)
-            if created_group:
-                user.groups.add(created_group)
-            else:
-                user.groups.add(new_group)
+            try:
+                group = Group.objects.get(name=role_user)
+            except:
+                # print(f'===== create {role_user} group')
+                group = Group.objects.create(name=role_user)
+            # print(f'===== {group} existed')
+            user.groups.add(group)
             # print(f'===== {user}')
             # print(f'===== {role_user}')
             # print(f'===== {user.groups.all()}')
