@@ -26,7 +26,7 @@ def show_qna(request):
     }
     return render(request, 'qna.html', context)
 
-def json_qna(request):
+def json_questions(request):
     questions = Question.objects.all()
     return HttpResponse(serializers.serialize("json", questions, use_natural_foreign_keys=True, use_natural_primary_keys=True), content_type="application/json")
 
@@ -137,7 +137,7 @@ def like_question(request, id):
     
     result = {
         'total_like':question.total_like,
-        }
+    }
         
     return JsonResponse(result)
 
