@@ -7,6 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from beranda.views import show_beranda
 
+# session and cookies
+import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 # Create your views here.
 def registrasi_user(request):
     form = UserCreationForm()
@@ -18,13 +23,8 @@ def registrasi_user(request):
             try:
                 group = Group.objects.get(name=role_user)
             except:
-                # print(f'===== create {role_user} group')
                 group = Group.objects.create(name=role_user)
-            # print(f'===== {group} existed')
             user.groups.add(group)
-            # print(f'===== {user}')
-            # print(f'===== {role_user}')
-            # print(f'===== {user.groups.all()}')
             return redirect('login:login_user')
     context = {'form': form}
     return render(request, 'registrasi.html', context)
@@ -36,13 +36,14 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # print(f'===== {user}')
-            # print(f'===== {user.groups.all()}')
-            return redirect('beranda:show_beranda')
+            response = HttpResponseRedirect(reverse('beranda:show_beranda'))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+            return response
     context = {}
     return render(request, 'login.html', context)
 
-# @login_required(login_url='')
 def logout_user(request):
     logout(request)
-    return redirect('beranda:show_beranda')
+    response = HttpResponseRedirect(reverse('login:login_user'))
+    response.delete_cookie('last_login')
+    return response

@@ -17,7 +17,8 @@ def show_artikel(request):
     context = {
         'user': request.user,
         'user_type': user_type,
-        'form': form
+        'form': form,
+        'last_login': request.COOKIES.get('last_login'),
     }
     return render(request, 'artikel.html', context)
 
@@ -28,11 +29,6 @@ def tambah_artikel(request):
         judul = request.POST.get('judul')
         isi = request.POST.get('isi')
         author = request.user
-        # print(f'====== {author.groups.all()}')
-        # print(f"====== user allowed")
-        # print(f"====== {judul}")
-        # print(f"====== {isi}")
-        # print(f"====== {author}")
         new_artikel = Artikel(judul=judul, isi=isi, author=author)
         new_artikel.save()
         return redirect('artikel_kesehatan:show_artikel')
