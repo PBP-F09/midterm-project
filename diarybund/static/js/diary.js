@@ -1,3 +1,8 @@
+function useToast() {
+  const toast = new bootstrap.Toast($('#liveToast')[0])
+  toast.show()
+}
+
 function editDiary(id) {
   $.post(`/diarybund/edit/${id}`,
     {
@@ -7,7 +12,9 @@ function editDiary(id) {
       emotion : $(`#emotion--${id}`).val()
     },
     function (data, status) {
-      if (status == 'success') {
+      if (data.hasOwnProperty('error')) {
+        useToast()
+      } else {
         for (let i = 0; i < 2; i++) {
           $(`#${id}--title${i}`).text(`${data.fields.title}`)
           $(`#${id}--abstract${i}`).text(`${data.fields.abstract}`)
@@ -40,20 +47,16 @@ function cardDiary(id) {
 
       <div class="flex justify-between">
         ${id.fields.emotion == 1 ?
-            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Senang</span>` :
-            ``
+            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Senang</span>` : ``
         }
         ${id.fields.emotion == 2 ?
-            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Biasa</span>` :
-            ``
+            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Biasa</span>` : ``
         }
         ${id.fields.emotion == 3 ?
-            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Sedih</span>` :
-            ``
+            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Sedih</span>` : ``
         }
         ${id.fields.emotion == 4 ?
-            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Marah</span>` :
-            ``
+            `<span id = "${id.pk}--emotion0" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Marah</span>` : ``
         }
         <div>
           <td><button id="baca" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-2 border border-cream-tua hover:border-cream-tua rounded" data-bs-toggle="modal" data-bs-target="#modalBaca--${id.pk}">
@@ -76,6 +79,7 @@ function cardDiary(id) {
       </div>
     </div>
     
+    <!-- Modal Baca -->
     <div class="modal fade" id="modalBaca--${id.pk}" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -84,20 +88,16 @@ function cardDiary(id) {
             <h5 id = "${id.pk}--title1" class="modal-title text-black font-bold" id="createTaskModalLabel">${id.fields.title}</h5>
             <div class="flex justify-between">
               ${id.fields.emotion == 1 ?
-                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Senang</span>` :
-                  ``
+                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Senang</span>` : ``
               }
               ${id.fields.emotion == 2 ?
-                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Biasa</span>` :
-                  ``
+                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Biasa</span>` : ``
               }
               ${id.fields.emotion == 3 ?
-                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Sedih</span>` :
-                  ``
+                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Sedih</span>` : ``
               }
               ${id.fields.emotion == 4 ?
-                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Marah</span>` :
-                  ``
+                  `<span id = "${id.pk}--emotion1" class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">Marah</span>` : ``
               }
             </div>
           </div>
@@ -117,6 +117,7 @@ function cardDiary(id) {
       </div>
     </div>
     
+    <!-- Modal Ubah -->
     <div class="modal fade" id="modalUbah--${id.pk}" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -150,57 +151,10 @@ function cardDiary(id) {
           </div>
           <div class="modal-footer">
             <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Cancel</button>
-            <button id="tambah" type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" onClick="editDiary(${id.pk})" data-bs-dismiss="modal">Simpan</button>
+            <button id="simpan" type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" onClick="editDiary(${id.pk})" data-bs-dismiss="modal">Simpan</button>
           </div>
         </div>
       </div>
     </div>`
   );
 }
-
-$(document).ready(function(){
-  let context = "{{user_type}}";
-  if (context !== "bumil") {
-    $("#tulisDiary").hide();
-    $("#untukBumil").hide();
-  } else {
-    $("#untukNonBumil").hide();
-    $("#login").hide();
-    $.get( "/diarybund/json/", function( data ) {
-      console.log(data)
-      for (let i = 0; i < data.length; i++) {
-        cardDiary(data[i])
-      }
-    });
-  
-    $("#tambah").click(function(){
-      $.post( "/diarybund/create-ajax/", 
-      {
-        title : $("#title").val(), 
-        description : $("#description").val(), 
-        abstract : $("#abstract").val(), 
-        emotion : $("#emotion").val()
-      }, 
-      function(data, status) {
-        if (status == "success") {
-          cardDiary(data)
-          $('#title').val('')
-          $('#description').val('')
-          $('#abstract').val('')
-        } else {
-          console.log(3)
-        }
-      })
-    })
-  
-    hapusTugas = (idTugas) => {
-      $.ajax({
-        url: `/diarybund/delete/${idTugas}`,
-        type: 'DELETE',
-        success: function(response){
-          $(`#${idTugas}--tugas`).remove()
-        }
-      })
-    }
-  }
-});

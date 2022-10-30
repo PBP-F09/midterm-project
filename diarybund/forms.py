@@ -1,5 +1,6 @@
 from django import forms
 from diarybund.models import DiaryBund
+from django.core.exceptions import NON_FIELD_ERRORS
 
 # creating a form
 class TambahDiaryForm(forms.ModelForm):
@@ -16,7 +17,7 @@ class TambahDiaryForm(forms.ModelForm):
             "abstract",
             "description",
             "emotion",
-        ]   
+        ]
         widgets = {
             'title': forms.TextInput(attrs={
                 'required': True,

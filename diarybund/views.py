@@ -34,7 +34,7 @@ def create_diary_ajax(request):
                 }
             }
             return JsonResponse(context)
-        return JsonResponse({'status':"error"})
+        return JsonResponse({'error': True})
 
 @login_required(login_url='/login/')
 @csrf_exempt
@@ -59,7 +59,7 @@ def edit_diary_ajax(request, id):
                 }
             } 
             return JsonResponse(context)
-        return JsonResponse({'status':"error"})
+        return JsonResponse({'error': True})
         
 @login_required(login_url='/login/')
 @csrf_exempt
