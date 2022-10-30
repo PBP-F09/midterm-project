@@ -21,8 +21,8 @@ urlpatterns = [
     # path('', include('example_app.urls')),
     path('beranda/', include('beranda.urls')),
     path('qna/', include('qna.urls')),
-    path('diarybund/', include('diarybund.urls')),
-    path('', include('login.urls')),
+    path('account/', include('login.urls')),
     path('artikel-kesehatan/', include('artikel_kesehatan.urls')),
     path('', include('beranda.urls')),
+    path('diarybund/', include('diarybund.urls')),
 ] 

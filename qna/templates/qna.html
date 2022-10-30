@@ -7,12 +7,14 @@
 <head>
     <!-- Link for JavaScript function -->
     <script src="{% static 'js/qna_logic.js' %}"></script>
+
+    <!-- Link for CSS Styling -->
     <link rel="stylesheet" href="{% static 'css/qna.css' %}">
 
     <!-- This functions use django syntax so it can't be placed externally -->
     <script>
         const questionCard = (data) =>
-            `<div class="flex" id="quest-${data.pk}">
+            `<div class="flex animate-slide-fwd-center" id="quest-${data.pk}">
                 <div class="flex-shrink-0 mr-3">
                     <img class="mt-2 rounded-full w-8 h-8 sm:w-10 sm:h-10" src="https://cdn-icons-png.flaticon.com/512/709/709722.png" alt="">
                 </div>
@@ -87,7 +89,7 @@
 
 <div class="my-10 md:ml-20 ml-2">
     <h3 class="text-xl font-semibold text-gray-900">TanyaBund</h3>
-    {% if user_type == 'bunda' %}
+    {% if user_type == 'bumil' %}
     <p class="mt-3">Sedang memikirkan apa Bunda? Yuk, beritahu yang lain~</p>
     {% endif %}
     {% if user_type == 'faskes' %}

@@ -6,6 +6,10 @@
 <script>
 	$(document).ready(function () {
 		let context = "{{user_type}}";
+		let user = "{{user}}";
+		if (user !== "AnonymousUser") {
+			$(".buat-user").text("Halo, " + user + "! selamat membaca");
+		}
 		if (context !== "admin") {
 			$(".modal-button").hide();
 		}
@@ -17,12 +21,13 @@
 </script>
 {% endblock meta %} {% block content %}
 <h3 class="absolute m-4 text-xl font-semibold text-gray-900">BacaBund</h3>
+<h4 class="buat-user absolute mx-4 my-12 text-md text-gray-900"></h4>
 
 <div class="m-4">
 	<!-- MODAL FORM -->
 	<!-- Modal toggle -->
 	<button
-		class="modal-button absolute right-3 shadow-2xl text-white bg-merah-tua hover:opacity-95 hover:scale-105 duration-150 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+		class="modal-button absolute right-3 shadow-2xl text-white bg-merah-tua hover:bg-merah-muda hover:opacity-95 hover:scale-105 duration-150 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 		type="button"
 		data-modal-toggle="authentication-modal"
 	>

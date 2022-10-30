@@ -30,7 +30,8 @@ function deleteQuestion(id) {
         url: `/qna/delete/${id}`,
         type: 'DELETE',
         success: function (result) {
-            $(`#quest-${id}`).remove()
+            $(`#quest-${id}`).addClass("animate-scale-down-center")
+            setTimeout(function () { $(`#quest-${id}`).remove(); }, 225)
         },
         error: function useToast() {
             const toast = new bootstrap.Toast($('#liveToast'))
