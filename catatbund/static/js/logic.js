@@ -5,12 +5,12 @@ $(document).ready(function () {
     } else {
       $("#authorize-non").hide();
       $("#login").hide();
-    $.get("/catatbund/json/", function (data) {
-      console.log(data)
-      for (i = 0; i < data.length; i++) {
-        $("#row").append(getCard(data[i]))
-      }
-    })};
+      $.get("/catatbund/json/", function (data) {
+        console.log(data)
+        for (i = 0; i < data.length; i++) {
+          $("#row").append(getCard(data[i]))
+        }
+      })};
 
     $("#unggah-btn").click(function () {
       $.post("/catatbund/add/",

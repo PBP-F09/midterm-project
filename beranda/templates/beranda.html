@@ -67,13 +67,8 @@
                 <div class="p-4">
                     <h2 class="font-bold mb-3">CatatBund</h2>
                     <p class="mb-3 text-sm">Platform untuk mengamati perkembangan dan pertumbuhan anak yang dinilai dari keseimbangan Body Mass Index (BMI)</p>
-<<<<<<< HEAD
-                    <a href="{% url 'catatbund:show_catatbund' %}">
-                        <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
-                            Catat Sekarang
-=======
                     {% if user_type == 'bumil' %}
-                    <a href="">
+                    <a href="{% url 'catatbund:show_catatbund' %}">
                     {% else %}
                     <p class="text-xs mb-1">*Fitur ini khusus user Bunda.</p>
                     <a href="{% url 'login:login_user' %}">
@@ -84,7 +79,6 @@
                             {% else %}
                             Login as Bunda
                             {% endif %}
->>>>>>> 41632cea308848483843f50b07a54d1504b87cdb
                             <i class="fa fa-arrow-circle-right ml-2" style="font-size:20px;color:white"></i>
                         </button>
                     </a>
