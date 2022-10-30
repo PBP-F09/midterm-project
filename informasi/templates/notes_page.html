@@ -1,39 +1,5 @@
 {% extends 'base.html' %} {% load static %}
 
-{% block meta %}
-
-<script>
-function editInfo(id) {
-    $.post(
-        `/periksa/edit/${id}`,
-        {
-        lokasi: $(`#id_lokasi`).val(),
-        tanggal: $(`#id_tanggal`).val(),
-        waktu: $(`#id_waktu`).val(),
-        kapasitas_balita: $(`#id_kapasitas_balita`).val(),
-        },
-        function (data, status) {
-        console.log("edit ")
-        if (status == 'success') {
-            $(`#lokasi-${id}`).val(`${data.fields.lokasi}`)
-            $(`#tanggal-${id}`).val(`${data.fields.tanggal}`)
-            $(`#waktu-${id}`).val(`${data.fields.waktu}`)
-            $(`#kapasitas_balita-${id}`).val(`${data.fields.kapasitas_balita}`)
-        }
-        },
-    )
-    }
-</script>
-
-<script>
-    $(document).ready(function(){
-    let myId = $('.buat-get-id').val();
-    $('#editInfo').attr('onClick', 'editInfo(myId)');
-    })
-</script>
-
-{% endblock meta %}
-
 {% block content %}
 
 <!-- CSS Stylesheet -->
@@ -120,7 +86,7 @@ function editInfo(id) {
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">Edit Info</h5>
         </div>
-        <form id="note-form" class="text-center">
+        <form method='POST' id="note-form-edit" class="text-center">
             <div class="modal-body">
 
                     {% csrf_token %}
@@ -135,7 +101,7 @@ function editInfo(id) {
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="submit" class="btn btn-primary" id="editInfo" >Simpan Perubahan</button>
+                        <button type="submit" class="btn btn-primary" id="editInfo">Simpan Perubahan</button>
                     </div>
                 </div>
             </form>
@@ -154,7 +120,7 @@ function editInfo(id) {
     
     </div>
 
-    <h3 class="mb-4 text-lg font-semibold text-gray-900">PeriksaBund</h3>
+    <h3 class="text-xl font-semibold text-gray-900">PeriksaBund</h3>
     <p>Halaman Administrator Fasilitas Kesehatan</p>
     <br>
     <button type="button" class="hover:text-lg duration-500  bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center" data-bs-toggle="modal" data-bs-target="#addNotesModal">

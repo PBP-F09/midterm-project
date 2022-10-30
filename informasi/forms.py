@@ -11,3 +11,4 @@ class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
         fields = ('lokasi', 'tanggal', 'waktu', 'kapasitas_balita')
+        

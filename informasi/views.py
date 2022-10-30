@@ -6,7 +6,7 @@ from .forms import NoteForm
 from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404  
 
 def show_json(request):
     data = Note.objects.all()
@@ -15,23 +15,24 @@ def show_json(request):
 @allowed_users(allowed_roles=['faskes'], path='/periksa/main')
 def index(request):
    # create object of note
-   form = NoteForm(request.POST or None, request.FILES or None)
    user_type = ''
-   
-   # check if form data is valid
-
    if request.user.is_authenticated:
-      user_type = request.user.groups.all()[0].name
+         user_type = request.user.groups.all()[0].name
+   form = NoteForm()
+   if request.method == "PUT" :
+      form = NoteForm(request.POST or None, request.FILES or None)
+      
+      # check if form data is valid
 
-   if form.is_valid():
-      # save the form data to model
-      instance = form.save()
-      return JsonResponse({
-         'lokasi': instance.lokasi,
-         'tanggal': instance.tanggal,
-         'waktu': instance.waktu,
-         'kapasitas_balita': instance.kapasitas_balita
-      })
+      if form.is_valid():
+         # save the form data to model
+         instance = form.save()
+         return JsonResponse({
+            'lokasi': instance.lokasi,
+            'tanggal': instance.tanggal,
+            'waktu': instance.waktu,
+            'kapasitas_balita': instance.kapasitas_balita
+         })
          
    context = {
       'form': form,
@@ -53,7 +54,6 @@ def viewInformasi(request):
    }
    return render(request, "view_informasi.html", context)
 
-
 @csrf_exempt
 def ajax_add(request):
     if request.method == "POST":
@@ -74,19 +74,18 @@ def delete_ajax(request, id):
 
 @csrf_exempt
 def editInfos(request, id):
+   if(request.method == 'POST') :
+      form = NoteForm(request.POST or None, request.FILES or None)
+      # instance = form.save()
+      infos = Note.objects.get(pk = id)
+      # print(request.POST["tanggal"])
 
-   print("EDITINFOSSSS1")
-   form = NoteForm(request.POST)
-   
-   if form.is_valid():
-      print("EDITINFOSSSS3")
-      infos = get_object_or_404(Note, id=id)
-
-      infos.lokasi = form.cleaned_data['lokasi']
-      infos.tanggal = form.cleaned_data['tanggal']
-      infos.waktu = form.cleaned_data['waktu']
-      infos.kapasitas_balita = form.cleaned_data['kapasitas_balita']
+      infos.lokasi = request.POST.get('lokasi')
+      infos.tanggal = request.POST.get('tanggal')
+      infos.waktu = request.POST.get("waktu")
+      infos.kapasitas_balita = request.POST.get('kapasitas_balita')
       infos.save()
+
       result = {
             'fields':{
                'lokasi':infos.lokasi,
@@ -96,9 +95,7 @@ def editInfos(request, id):
             },
             'pk':infos.pk
       }
-      return redirect("informasi:index")
-   return redirect("informasi:index")
-      
+   return HttpResponse(200)  
 
 
 
@@ -109,19 +106,3 @@ def editInfos(request, id):
 
 
 
-
-
-def load_notes_view(request):
-# if request.is_ajax():
-   notes = Note.objects.all()
-   data = []
-   for obj in notes:
-      item = {
-         'lokasi': obj.lokasi,
-         'tanggal': obj.tanggal,
-         'waktu': obj.waktu,
-         'kapasitas_balita': obj.kapasitas_balita,
-         'uploaded': obj.uploaded
-      }
-      data.append(item)
-   return JsonResponse({'data':data})

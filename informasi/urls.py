@@ -8,7 +8,6 @@ urlpatterns = [
     
     path('main', viewInformasi, name='viewInformasi'),
 
-    path('data/', load_notes_view, name='notes-data'),
 
     path('json/', show_json, name='show_json'),
     path('delete/<int:id>', delete_ajax, name='delete_ajax'),

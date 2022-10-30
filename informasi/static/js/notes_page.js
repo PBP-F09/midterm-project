@@ -41,11 +41,6 @@ function updateTable(){
         
         var cellDelete = document.createElement("td");
         var cellEdit = document.createElement("td");
-        
-        // var hiddenInput = document.createElement("input");
-        // hiddenInput.setAttribute("type", "hidden");
-        // hiddenInput.setAttribute("class", `buat-get-${id}`);
-        // hiddenInput.setAttribute("value", data[i].pk);
 
         var buttonDelete = document.createElement("button");
         var linkDelete = document.createElement('a');
@@ -56,11 +51,18 @@ function updateTable(){
 
         var buttonEdit = document.createElement("button");
         var linkEdit = document.createElement('a');
+        linkEdit.setAttribute("data-id", `${data[i].pk}`)
+        linkEdit.setAttribute("class", `open-AddBookDialog bg-cream-tua w-fit text-white p-1 font-bold rounded-lg flex items-center justify-center`)
+
+        // -> id data setiap row data.i.pk
 
         linkEdit.append(buttonEdit);
         // linkEdit.setAttribute("href", `/periksa/edit/${data[i].pk}`)
         buttonEdit.setAttribute(`data-bs-toggle`, "modal")
         buttonEdit.setAttribute(`data-bs-target`, "#editModal")
+
+        // buttonEdit.setAttribute("class", `open-AddBookDialog`)
+
         buttonEdit.innerText = "Edit";
 
         // append data ke cell
@@ -71,6 +73,16 @@ function updateTable(){
         cellDelete.append(linkDelete);
         cellEdit.append(linkEdit);
         
+        cellLokasi.setAttribute("id", `lokasi-${data[i].pk}` )
+        cellTanggal.setAttribute("id", `tanggal-${data[i].pk}` )
+        cellWaktu.setAttribute("id", `waktu-${data[i].pk}` )
+        cellKapasitasBalita.setAttribute("id", `kapasitasBalita-${data[i].pk}` )
+
+        cellLokasi.setAttribute("value", data[i].fields.lokasi )
+        cellTanggal.setAttribute("value", data[i].fields.tanggal.split("T")[0] )
+        cellWaktu.setAttribute("value", data[i].fields.waktu )
+        cellKapasitasBalita.setAttribute("value", data[i].fields.kapasitas_balita )
+
         // append cell ke row
         tr.append(cellLokasi);
         tr.append(cellTanggal);
@@ -78,10 +90,30 @@ function updateTable(){
         tr.append(cellKapasitasBalita);
         tr.append(cellDelete);
         tr.append(cellEdit);  
-        // tr.append(hiddenInput);
         
         // add ke tabel
         $(".table").append(tr);
         }
     });
 }
+
+async function editInfo(id){
+    
+    await fetch(`/periksa/edit/${id}`, {
+        method: "POST",
+        body: new FormData(document.querySelector("#note-form-edit"))
+    })
+    return false
+}
+    
+$(document).on("click", ".open-AddBookDialog", function () {
+    var IdDataPerRow = $(this).data('id'); // dptin id yg data i pk td misalnya
+
+    $('#editInfo').on('click', function() { editInfo(IdDataPerRow) });
+
+});
+
+
+
+
+
