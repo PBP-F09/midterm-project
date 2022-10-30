@@ -38,7 +38,15 @@ def login_user(request):
             login(request, user)
             response = HttpResponseRedirect(reverse('beranda:show_beranda'))
             response.set_cookie('last_login', str(datetime.datetime.now()))
+
+            try:
+                user_type = request.user.groups.all()[0].name
+            except:
+                user_type = 'non_logged_in'
+            request.session['user_type'] = user_type
+
             return response
+            
     context = {}
     return render(request, 'login.html', context)
 

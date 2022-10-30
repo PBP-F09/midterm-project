@@ -6,6 +6,7 @@ $(document).ready(function () {
             '/qna/add/',
             {
                 text: $('#text').val(),
+                role_user: $('#role_user').val(),
             },
             function (data, status) {
                 if (status == 'success') {
@@ -63,11 +64,12 @@ function deleteAnswer(id) {
     });
 }
 
-function addAnswer(id) {
+function addAnswer(id, role_user) {
     $.post(
         `/qna/answer/${id}`,
         {
             text: $(`#input-answer-${id}`).val(),
+            role_user: $('#role_user2').text(),
         },
         function (data, status) {
             if (status == 'success') {
