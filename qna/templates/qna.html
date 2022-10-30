@@ -23,7 +23,7 @@
                         <span class="text-xs text-gray-400 mt-0">${data.fields.date}</span>
                         <ion-icon name="trash" id="delete-icon" class="cursor-pointer" onclick="deleteQuestion(${data.pk})"></ion-icon>
                     </div>
-                    <strong>${data.fields.user}</strong>
+                    <span class="font-bold">${data.fields.user} <span class="text-sm font-normal">({{ user_type }})</span></span>
                     <p class="text-sm">${data.fields.text}</p>
 
                     <div class="flex-grow border-t border-black mt-4"></div>
@@ -80,7 +80,7 @@
                         <span class="text-xs text-gray-400">${data.fields.date}</span>
                         <ion-icon name="trash-outline" id="delete-icon" class="cursor-pointer" onclick="deleteAnswer(${data.pk})"></ion-icon>
                     </div>
-                    <strong>${data.fields.user}</strong> 
+                    <span class="font-bold">${data.fields.user} <span class="text-sm font-normal">({{ user_type }})</span></span> 
                     <p class="text-xs sm:text-sm">${data.fields.text}</p>
                 </div>
             </div>`
