@@ -15,6 +15,7 @@ def show_artikel(request):
         user_type = 'non_logged_in'
     form = TambahArtikelForm()
     context = {
+        'user': request.user,
         'user_type': user_type,
         'form': form
     }
