@@ -22,6 +22,7 @@ def show_qna(request):
         "question_form":question_form,
         "answer_form":answer_form,
         "user_type":user_type,
+        "username":request.user,
     }
     return render(request, 'qna.html', context)
 
@@ -44,7 +45,10 @@ def create_question(request):
 
             user = get_object_or_404(User, id = request.user.id)
 
-            new_question = Question.objects.create(text=text, is_answered=False, user=user, date=datetime.date.today())
+            if 'user_type' in request.session:
+                role_user = request.session['user_type']
+
+            new_question = Question.objects.create(text=text, is_answered=False, user=user, date=datetime.date.today(), role_user=role_user)
             new_question.save()
 
             result = {
@@ -55,6 +59,7 @@ def create_question(request):
                     'user':new_question.user.username,
                     'total_like':new_question.total_like,
                     'total_answer':new_question.total_answer,
+                    'role_user':new_question.role_user,
                 },
                 'pk':new_question.pk
             }
@@ -64,7 +69,7 @@ def create_question(request):
 @csrf_exempt
 def create_answer(request, id):
     answer = AnswerForm()
-
+    
     if request.method == "POST":
         answer = AnswerForm(request.POST)
         if answer.is_valid():
@@ -77,7 +82,10 @@ def create_answer(request, id):
 
             user = get_object_or_404(User, id = request.user.id)
 
-            new_answer = Answer.objects.create(text=text, question=question, user=user, date=datetime.date.today())
+            if 'user_type' in request.session:
+                role_user = request.session['user_type']
+
+            new_answer = Answer.objects.create(text=text, question=question, user=user, date=datetime.date.today(), role_user=role_user)
             new_answer.save()
 
             result = {
@@ -87,6 +95,7 @@ def create_answer(request, id):
                     'date':new_answer.date,
                     'user':new_answer.user.username,
                     'total_answer':question.total_answer,
+                    'role_user':new_answer.role_user,
                 },
                 'pk':new_answer.pk
             }

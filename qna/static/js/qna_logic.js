@@ -6,6 +6,7 @@ $(document).ready(function () {
             '/qna/add/',
             {
                 text: $('#text').val(),
+                role_user: $('#role_user').val(),
             },
             function (data, status) {
                 if (status == 'success') {
@@ -30,7 +31,8 @@ function deleteQuestion(id) {
         url: `/qna/delete/${id}`,
         type: 'DELETE',
         success: function (result) {
-            $(`#quest-${id}`).remove()
+            $(`#quest-${id}`).addClass("animate-scale-down-center")
+            setTimeout(function () { $(`#quest-${id}`).remove(); }, 225)
         },
         error: function useToast() {
             const toast = new bootstrap.Toast($('#liveToast'))
@@ -62,11 +64,12 @@ function deleteAnswer(id) {
     });
 }
 
-function addAnswer(id) {
+function addAnswer(id, role_user) {
     $.post(
         `/qna/answer/${id}`,
         {
             text: $(`#input-answer-${id}`).val(),
+            role_user: $('#role_user2').text(),
         },
         function (data, status) {
             if (status == 'success') {

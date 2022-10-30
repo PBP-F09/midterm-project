@@ -20,17 +20,17 @@
 					<td>Username</td>
 					<td><input class="w-56 h-10 p-3 rounded-lg" type="text" name="username" placeholder="Username" class="form-control" /></td>
 				</tr>
-				<tr class="flex flex-col justify-center">
+				<tr class="flex flex-col justify-center mt-2">
 					<td>Password</td>
 					<td><input class="w-56 h-10 p-3 rounded-lg" type="password" name="password" placeholder="Password" class="form-control" /></td>
 				</tr>
-				<tr class="mt-2 flex flex-col justify-center items-center">
+				<tr class="mt-4 flex flex-col justify-center items-center">
 					<td></td>
 					<td><input class="btn rounded-lg hover:cursor-pointer h-10 w-28 bg-merah-muda hover:bg-merah-tua text-white login_btn" type="submit" value="Login" /></td>
 				</tr>
 			</table>
 		</form>
-		<p>Belum mempunyai akun? <a class="text-blue-700 underline hover:text-blue-800" href="{% url 'login:registrasi_user' %}">Buat Akun</a></p>
+		<p>Belum mempunyai akun? <a class="underline font-bold" href="{% url 'login:registrasi_user' %}">Buat Akun</a></p>
 	</div>
 </div>
 
