@@ -1,17 +1,32 @@
 from django.shortcuts import get_object_or_404, render
+from login.decorators import allowed_users
 from qna.models import Answer, Question
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from qna.forms import *
 from django.contrib.auth.models import User
 import datetime
 
 # Create your views here.
+# @login_required(login_url='/account/login')
+# @allowed_users(allowed_roles=['admin', 'bumil', 'faskes'])
 def show_qna(request):
-    return render(request, 'qna.html')
+    question_form = QuestionForm()
+    answer_form = AnswerForm()
+    user_type = 'non_login'
+    if request.user.is_authenticated:
+        user_type = request.user.groups.all()[0].name
+    context = {
+        "question_form":question_form,
+        "answer_form":answer_form,
+        "user_type":user_type,
+        "username":request.user,
+    }
+    return render(request, 'qna.html', context)
 
-def json_qna(request):
+def json_questions(request):
     questions = Question.objects.all()
     return HttpResponse(serializers.serialize("json", questions, use_natural_foreign_keys=True, use_natural_primary_keys=True), content_type="application/json")
 
@@ -30,7 +45,10 @@ def create_question(request):
 
             user = get_object_or_404(User, id = request.user.id)
 
-            new_question = Question.objects.create(text=text, is_answered=False, user=user, date=datetime.date.today())
+            if 'user_type' in request.session:
+                role_user = request.session['user_type']
+
+            new_question = Question.objects.create(text=text, is_answered=False, user=user, date=datetime.date.today(), role_user=role_user)
             new_question.save()
 
             result = {
@@ -39,6 +57,9 @@ def create_question(request):
                     'is_answered':new_question.is_answered,
                     'date':new_question.date,
                     'user':new_question.user.username,
+                    'total_like':new_question.total_like,
+                    'total_answer':new_question.total_answer,
+                    'role_user':new_question.role_user,
                 },
                 'pk':new_question.pk
             }
@@ -48,7 +69,7 @@ def create_question(request):
 @csrf_exempt
 def create_answer(request, id):
     answer = AnswerForm()
-
+    
     if request.method == "POST":
         answer = AnswerForm(request.POST)
         if answer.is_valid():
@@ -56,11 +77,15 @@ def create_answer(request, id):
 
             question = get_object_or_404(Question, id = id)
             question.is_answered = True
+            question.total_answer += 1
             question.save()
 
             user = get_object_or_404(User, id = request.user.id)
 
-            new_answer = Answer.objects.create(text=text, question=question, user=user, date=datetime.date.today())
+            if 'user_type' in request.session:
+                role_user = request.session['user_type']
+
+            new_answer = Answer.objects.create(text=text, question=question, user=user, date=datetime.date.today(), role_user=role_user)
             new_answer.save()
 
             result = {
@@ -69,6 +94,8 @@ def create_answer(request, id):
                     'question_id':id,
                     'date':new_answer.date,
                     'user':new_answer.user.username,
+                    'total_answer':question.total_answer,
+                    'role_user':new_answer.role_user,
                 },
                 'pk':new_answer.pk
             }
@@ -90,6 +117,27 @@ def delete_answer(request, id):
     if request.method == "DELETE":
         answer = get_object_or_404(Answer, id = id)
         if request.user == answer.user:
+            question = get_object_or_404(Question, id = answer.question.pk)
+            question.total_answer -= 1
+            question.save()
             answer.delete()
-            return HttpResponse(status=202, content=answer.question.pk)
+            result = {
+                'id':question.pk,
+                'total_answer':question.total_answer,
+            }
+            return JsonResponse(status=202, data=result)
     return HttpResponse(status=400)
+
+@csrf_exempt
+def like_question(request, id):
+    if request.method == "PATCH":
+        question = get_object_or_404(Question, id = id)
+        question.total_like += 1
+        question.save()
+    
+    result = {
+        'total_like':question.total_like,
+    }
+        
+    return JsonResponse(result)
+

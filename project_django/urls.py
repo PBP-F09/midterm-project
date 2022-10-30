@@ -18,10 +18,13 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', include('example_app.urls')),
-    path('beranda/', include('beranda.urls')),
     path('qna/', include('qna.urls')),
+<<<<<<< HEAD
     path('catatbund/', include('catatbund.urls')),
     path('', include('beranda.urls')),
+=======
+>>>>>>> 41632cea308848483843f50b07a54d1504b87cdb
     path('account/', include('login.urls')),
+    path('artikel-kesehatan/', include('artikel_kesehatan.urls')),
+    path('', include('beranda.urls')),
 ]

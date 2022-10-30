@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.contrib import messages
 
-def allowed_users(allowed_roles=[], path='', message=''):
+def allowed_users(allowed_roles=[], path='/beranda', message=''):
     def decorator(view_function):
         def wrapper_function(request, *args, **kwargs):
             group = None
