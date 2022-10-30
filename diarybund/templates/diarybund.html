@@ -10,15 +10,17 @@
 <head>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="{% static 'js/diary.js' %}"></script>
-  <script>  
+  <script>
     $(document).ready(function(){
       let context = "{{user_type}}";
       if (context !== "bumil") {
         $("#tulisDiary").hide();
         $("#untukBumil").hide();
+        console.log("{{ user_type }}")
       } else {
         $("#untukNonBumil").hide();
         $("#login").hide();
+        console.log("{{ user_type }}")
         $.get( "/diarybund/json/", function( data ) {
           console.log(data)
           for (let i = 0; i < data.length; i++) {
@@ -45,19 +47,17 @@
             }
           })
         })
-      
-        hapusTugas = (idTugas) => {
-          $.ajax({
-            url: `/diarybund/delete/${idTugas}`,
-            type: 'DELETE',
-            success: function(response){
-              $(`#${idTugas}--tugas`).remove()
-            }
-          })
-        }
       }
     });
   </script>
+
+  <style>
+    .modalCenter{
+      top:40% !important;
+      transform: translateY(-40%) !important;
+    }
+  </style>
+
 </head>
 <body class = "text-black">
   <div class = "px-4 sm:px-8 md:px-20">
@@ -71,7 +71,7 @@
 
   <!-- Modal Tambah -->
   <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modalCenter">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title text-black font-bold" id="createTaskModalLabel">Tambah Diary</h5>
@@ -105,8 +105,8 @@
   </div>
 
   <!-- Toast Alert -->
-  <div class="position-fixed top-20 end-0 p-3" style="z-index: 11">
-    <div id="liveToast" class="toast hide bg-merah-muda" role="alert" aria-live="assertive" aria-atomic="true">
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
+    <div id="toastAlert" class="toast hide bg-merah-muda" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header bg-merah-tua">
           <svg class="flex-shrink-0 w-5 h-5 text-red-700" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
         <strong class="me-auto text-white ml-2">Alert!</strong>
@@ -114,7 +114,22 @@
         <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
       </div>
       <div class="toast-body text-white">
-        Mohon isi informasi diary dengan lengkap.
+        Mohon isi informasi diary dengan lengkap!
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Alert -->
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
+    <div id="toastSuccess" class="toast hide bg-cream-muda" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-cream-tua">
+          <svg class="flex-shrink-0 w-5 h-5 text-black" fill="black" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <strong class="me-auto text-black ml-2">Success!</strong>
+        <small class="text-black">Just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body text-black">
+        Perubahan berhasil disimpan!
       </div>
     </div>
   </div>

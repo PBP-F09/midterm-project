@@ -21,7 +21,6 @@ class TambahDiaryForm(forms.ModelForm):
         widgets = {
             'title': forms.TextInput(attrs={
                 'required': True,
-                'type':"text",
                 'label_tag':"Judul",
                 'name':"Judul",
                 'id':"title",
@@ -38,7 +37,6 @@ class TambahDiaryForm(forms.ModelForm):
             }),
             'description': forms.Textarea(attrs={
                 'required': True,
-                'type':"text",
                 'label_tag':"Judul",
                 'name':"description",
                 'id':"description",
