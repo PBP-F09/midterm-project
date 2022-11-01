@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    console.log("shafa")
+    
     loadData();
 
     $('#add-questions').click(function () {
