@@ -24,4 +24,5 @@ urlpatterns = [
     path('account/', include('login.urls')),
     path('artikel-kesehatan/', include('artikel_kesehatan.urls')),
     path('', include('beranda.urls')),
-]
+    path('diarybund/', include('diarybund.urls')),
+] 

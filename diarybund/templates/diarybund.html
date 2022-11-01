@@ -1,0 +1,138 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block meta %}
+<title>DiaryBund</title>
+{% endblock meta %}
+
+{% block content %}
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="{% static 'js/diary.js' %}"></script>
+  <script>
+    $(document).ready(function(){
+      let context = "{{user_type}}";
+      if (context !== "bumil") {
+        $("#tulisDiary").hide();
+        $("#untukBumil").hide();
+        console.log("{{ user_type }}")
+      } else {
+        $("#untukNonBumil").hide();
+        $("#login").hide();
+        console.log("{{ user_type }}")
+        $.get( "/diarybund/json/", function( data ) {
+          console.log(data)
+          for (let i = 0; i < data.length; i++) {
+            cardDiary(data[i])
+          }
+        });
+      
+        $("#tambah").click(function(){
+          $.post( "/diarybund/create-ajax/", 
+          {
+            title : $("#title").val(), 
+            description : $("#description").val(), 
+            abstract : $("#abstract").val(), 
+            emotion : $("#emotion").val()
+          }, 
+          function(data, status) {
+            if (data.hasOwnProperty('error')) {
+              useToast()
+            } else {
+              cardDiary(data)
+              $('#title').val('')
+              $('#description').val('')
+              $('#abstract').val('')
+            }
+          })
+        })
+      }
+    });
+  </script>
+
+  <style>
+    .modalCenter{
+      top:40% !important;
+      transform: translateY(-40%) !important;
+    }
+  </style>
+
+</head>
+<body class = "text-black">
+  <div class = "px-4 sm:px-8 md:px-20">
+    <h5 class = "text-3xl font-bold text-black py-4">Halow, {{user.get_username}}!</h5>
+    <p id="untukBumil" class = "text-lg text-black py-4">Bagaimana rutinitas Bunda dan Si Kecil hari ini? Yuk, ceritakan sekarang juga~</p>
+    <p id="untukNonBumil" class = "text-lg text-black py-4">Maaf, fitur DiaryBund hanya dapat diakses oleh Bunda!</p>
+    <button id="login" class="btn bg-merah-tua text-white"><a href="/account/login">Log In sebagai Bunda</a></button>
+    <button id="tulisDiary" class="btn bg-merah-tua text-white" data-bs-toggle="modal" data-bs-target="#modalTambah">Tulis Diary</button>
+    <div class = "grid md:grid-cols-2 lg:grid-cols-3 w-full gap-5 mt-8 sm:mt-5" id = "diarybund"></div>
+  </div>
+
+  <!-- Modal Tambah -->
+  <div class="modal fade" id="modalTambah" tabindex="-1" role="dialog" aria-labelledby="createTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modalCenter">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-black font-bold" id="createTaskModalLabel">Tambah Diary</h5>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="#">
+            <div class="fieldWrapper mb-3">
+              <label for="title" class="col-form-label">Judul:</label>
+              {{ form.title }}
+            </div>
+            <div class="fieldWrapper mb-3">
+              <label for="abstract" class="col-form-label">Deskripsi Singkat:</label>
+              {{ form.abstract }}
+            </div>
+            <div class="fieldWrapper mb-3">
+              <label for="description" class="col-form-label">Deskripsi Lengkap:</label>
+              {{ form.description }}
+            </div>
+            <div class="fieldWrapper mb-3">
+              <label for="emotion">Emosi Si Kecil:</label>
+              {{ form.emotion }}
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" id="tambah" type="button" class="text-sm sm:text-md bg-transparent hover:bg-light_blue text-blue font-semibold hover:text-blue py-2 px-3 border border-blue hover:border-blue rounded" data-bs-dismiss="modal">Tambah</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Alert -->
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
+    <div id="toastAlert" class="toast hide bg-merah-muda" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-merah-tua">
+          <svg class="flex-shrink-0 w-5 h-5 text-red-700" fill="white" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <strong class="me-auto text-white ml-2">Alert!</strong>
+        <small class="text-white">Just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body text-white">
+        Mohon isi informasi diary dengan lengkap!
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Success -->
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
+    <div id="toastSuccess" class="toast hide bg-cream-muda" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-cream-tua">
+          <svg class="flex-shrink-0 w-5 h-5 text-black" fill="black" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <strong class="me-auto text-black ml-2">Success!</strong>
+        <small class="text-black">Just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body text-black">
+        Perubahan berhasil disimpan!
+      </div>
+    </div>
+  </div>
+</body>
+<br>
+{% endblock content %}
