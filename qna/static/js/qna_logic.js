@@ -10,7 +10,7 @@ $(document).ready(function () {
             },
             function (data, status) {
                 if (status == 'success') {
-                    $(`#quest`).append(questionCard(data))
+                    $(`#quest`).prepend(questionCard(data))
                     $('#text').val('')
                     const toast = new bootstrap.Toast($('#liveToast2'))
                     toast.show()
