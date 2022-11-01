@@ -1,5 +1,7 @@
 # *HalowBund*
 
+[![Deploy](https://github.com/PBP-F09/midterm-project/actions/workflows/dpl.yml/badge.svg?branch=main)](https://github.com/PBP-F09/midterm-project/actions/workflows/dpl.yml)
+
 ## Link to Heroku App
 [HalowBund](https://halowbund.herokuapp.com/)
 
