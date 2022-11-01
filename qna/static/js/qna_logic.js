@@ -1,4 +1,6 @@
 $(document).ready(function () {
+    console.log("shafa")
+    
     loadData();
 
     $('#add-questions').click(function () {
@@ -6,10 +8,11 @@ $(document).ready(function () {
             '/qna/add/',
             {
                 text: $('#text').val(),
+                role_user: $('#role_user').val(),
             },
             function (data, status) {
                 if (status == 'success') {
-                    $(`#quest`).append(questionCard(data))
+                    $(`#quest`).prepend(questionCard(data))
                     $('#text').val('')
                     const toast = new bootstrap.Toast($('#liveToast2'))
                     toast.show()
@@ -63,11 +66,12 @@ function deleteAnswer(id) {
     });
 }
 
-function addAnswer(id) {
+function addAnswer(id, role_user) {
     $.post(
         `/qna/answer/${id}`,
         {
             text: $(`#input-answer-${id}`).val(),
+            role_user: $('#role_user2').text(),
         },
         function (data, status) {
             if (status == 'success') {
@@ -80,8 +84,8 @@ function addAnswer(id) {
     )
 }
 
-function loadData() {
-    $.get(`/qna/json`, function (data) {
+async function loadData() {
+    await $.get(`/qna/json`, function (data) {
         for (var i = 0; i < data.length; i++) {
             $(`#quest`).append(questionCard(data[i]));
         }

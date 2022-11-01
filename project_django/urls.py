@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import informasi.urls as informasi
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', include('example_app.urls')),
-    path('beranda/', include('beranda.urls')),
     path('qna/', include('qna.urls')),
+    path('periksa/', include(informasi)),
     path('account/', include('login.urls')),
     path('artikel-kesehatan/', include('artikel_kesehatan.urls')),
     path('', include('beranda.urls')),

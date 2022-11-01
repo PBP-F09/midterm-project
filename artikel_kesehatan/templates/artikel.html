@@ -20,14 +20,14 @@
 	});
 </script>
 {% endblock meta %} {% block content %}
-<h3 class="absolute m-4 text-xl font-semibold text-gray-900">BacaBund</h3>
-<h4 class="buat-user absolute mx-4 my-12 text-md text-gray-900"></h4>
+<h3 class="absolute m-4 text-md lg:text-xl font-semibold text-gray-900">BacaBund</h3>
+<h4 class="buat-user absolute mx-4 my-12 text-sm lg:text-md text-gray-900"></h4>
 
 <div class="m-4">
 	<!-- MODAL FORM -->
 	<!-- Modal toggle -->
 	<button
-		class="modal-button absolute right-3 shadow-2xl text-white bg-merah-tua hover:bg-merah-muda hover:opacity-95 hover:scale-105 duration-150 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+		class="modal-button mt-14 sm:m-0 absolute right-3 shadow-2xl text-white bg-merah-tua hover:bg-merah-muda hover:opacity-95 hover:scale-105 duration-150 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
 		type="button"
 		data-modal-toggle="authentication-modal"
 	>
@@ -35,10 +35,15 @@
 	</button>
 
 	<!-- ARTIKEL -->
-	<main class="content flex flex-col justify-center items-center"></main>
+	<main class="content scale-75 lg:scale-100 m-0 lg:m-10 flex flex-col justify-center items-center"></main>
 
 	<!-- Main modal -->
-	<div id="authentication-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center">
+	<div
+		id="authentication-modal"
+		tabindex="-1"
+		aria-hidden="true"
+		class="hidden scale-75 lg:scale-100 overflow-y-auto overflow-x-hidden fixed top-5 lg:top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
+	>
 		<div class="relative p-4 w-full max-w-md h-full md:h-auto">
 			<!-- Modal content -->
 			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
