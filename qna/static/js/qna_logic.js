@@ -83,12 +83,12 @@ function addAnswer(id, role_user) {
 }
 
 async function loadData() {
-    $.get(`/qna/json`, function (data) {
+    await $.get(`/qna/json`, function (data) {
         for (var i = 0; i < data.length; i++) {
             $(`#quest`).append(questionCard(data[i]));
         }
     });
-    await $.get(`/qna/json2`, function (data) {
+    $.get(`/qna/json2`, function (data) {
         for (var i = 0; i < data.length; i++) {
             $(`#no-answer-${data[i].fields.question}`).text('')
             $(`#quest-answers-${data[i].fields.question}`).append(answerCard(data[i]));
