@@ -15,13 +15,25 @@ $(document).ready(function () {
             waktu,
             kapasitas_balita,
         },
+        
         function(data, status){
-            alert('Sukses menambahkan informasi!');
-            updateTable();
-            $("#id_lokasi").val("");
-            $("#id_tanggal").val("");
-            $("#id_waktu").val("");
-            $("#id_kapasitas_balita").val("");
+            if (data["status"] == "error") {
+                var msg = "";
+                for(const k in data["msg"]){
+                    msg += "<li>"+data["msg"][k][0]+"</li>";
+                }
+                $("#alert_msg").html(msg);
+                $("#warning_alert").show();
+                window.scrollTo(0,0);
+            }
+            else {
+                alert('Sukses menambahkan informasi!');
+                updateTable();
+                $("#id_lokasi").val("");
+                $("#id_tanggal").val("");
+                $("#id_waktu").val("");
+                $("#id_kapasitas_balita").val("");
+            }
         });
     })
 })
