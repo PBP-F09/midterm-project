@@ -107,7 +107,9 @@ def create_answer(request, id):
 def delete_question(request, id):
     if request.method == "DELETE":
         question = get_object_or_404(Question, id = id)
-        if request.user == question.user:
+        if 'user_type' in request.session:
+                role_user = request.session['user_type']
+        if request.user == question.user or role_user == 'admin':
             question.delete()
             return HttpResponse(status=202)
     return HttpResponse(status=400)
@@ -116,7 +118,9 @@ def delete_question(request, id):
 def delete_answer(request, id):
     if request.method == "DELETE":
         answer = get_object_or_404(Answer, id = id)
-        if request.user == answer.user:
+        if 'user_type' in request.session:
+                role_user = request.session['user_type']
+        if request.user == answer.user or role_user == 'admin':
             question = get_object_or_404(Question, id = answer.question.pk)
             question.total_answer -= 1
             question.save()
