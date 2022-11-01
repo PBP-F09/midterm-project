@@ -87,9 +87,9 @@
     </script>
 </head>
 
-<div class="my-10 md:ml-20 ml-2">
+<div class="md:my-10 my-5 md:ml-20 ml-3">
     {% if user.is_authenticated %}
-    <h3 class="text-xl font-semibold text-gray-900">Halo, {{ username }}</h3>
+    <h3 class="text-xl font-semibold text-gray-900">Halow, {{ username }}</h3>
     {% else %}
     <h3 class="text-xl font-semibold text-gray-900">TanyaBund</h3>
     {% endif %}
@@ -107,7 +107,7 @@
 
 <div class="antialiased mx-auto my-2 max-w-screen-md">
     {% if not user_type == 'non_login' %}
-    <div>
+    <div class="mx-3 md:mx-0">
         <div class="mt-2">
             <form action="" method="POST" class="">
                 {% csrf_token %}
@@ -121,7 +121,7 @@
         </div>
     </div>
     {% endif %}
-    <div class="space-y-4 mb-3" id="quest"></div>
+    <div class="space-y-4 md:mb-3 m-3 md:m-0" id="quest"></div>
 </div>
 
 <div class="position-fixed top-20 end-0 p-3" style="z-index: 11">
