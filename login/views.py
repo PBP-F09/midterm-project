@@ -7,6 +7,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from beranda.views import show_beranda
 
+# session and cookies
+import datetime
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 # Create your views here.
 def registrasi_user(request):
     form = UserCreationForm()
@@ -15,14 +20,11 @@ def registrasi_user(request):
         if form.is_valid():
             user = form.save()
             role_user = request.POST.get('role_user')
-            new_group, created_group = Group.objects.get_or_create(name=role_user)
-            if created_group:
-                user.groups.add(created_group)
-            else:
-                user.groups.add(new_group)
-            # print(f'===== {user}')
-            # print(f'===== {role_user}')
-            # print(f'===== {user.groups.all()}')
+            try:
+                group = Group.objects.get(name=role_user)
+            except:
+                group = Group.objects.create(name=role_user)
+            user.groups.add(group)
             return redirect('login:login_user')
     context = {'form': form}
     return render(request, 'registrasi.html', context)
@@ -34,13 +36,22 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # print(f'===== {user}')
-            # print(f'===== {user.groups.all()}')
-            return redirect('beranda:show_beranda')
+            response = HttpResponseRedirect(reverse('beranda:show_beranda'))
+            response.set_cookie('last_login', str(datetime.datetime.now()))
+
+            try:
+                user_type = request.user.groups.all()[0].name
+            except:
+                user_type = 'non_logged_in'
+            request.session['user_type'] = user_type
+
+            return response
+            
     context = {}
     return render(request, 'login.html', context)
 
-# @login_required(login_url='')
 def logout_user(request):
     logout(request)
-    return redirect('beranda:show_beranda')
+    response = HttpResponseRedirect(reverse('beranda:show_beranda'))
+    response.delete_cookie('last_login')
+    return response

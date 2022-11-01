@@ -1,0 +1,103 @@
+{% extends 'base.html' %} {% load static %} {% block meta %}
+<title>Artikel Kesehatan</title>
+<link rel="stylesheet" href="https://unpkg.com/flowbite@1.5.3/dist/flowbite.min.css" />
+
+<!-- GET DATA ARTIKEL FROM JSON -->
+<script>
+	$(document).ready(function () {
+		let context = "{{user_type}}";
+		let user = "{{user}}";
+		if (user !== "AnonymousUser") {
+			$(".buat-user").text("Halo, " + user + "! selamat membaca");
+		}
+		if (context !== "admin") {
+			$(".modal-button").hide();
+		}
+		$.get("/artikel-kesehatan/json/", function (data, status) {
+			let content = getData(data);
+			$(".content").html(content);
+		});
+	});
+</script>
+{% endblock meta %} {% block content %}
+<h3 class="absolute m-4 text-md lg:text-xl font-semibold text-gray-900">BacaBund</h3>
+<h4 class="buat-user absolute mx-4 my-12 text-sm lg:text-md text-gray-900"></h4>
+
+<div class="m-4">
+	<!-- MODAL FORM -->
+	<!-- Modal toggle -->
+	<button
+		class="modal-button mt-14 sm:m-0 absolute right-3 shadow-2xl text-white bg-merah-tua hover:bg-merah-muda hover:opacity-95 hover:scale-105 duration-150 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+		type="button"
+		data-modal-toggle="authentication-modal"
+	>
+		Tambah Artikel
+	</button>
+
+	<!-- ARTIKEL -->
+	<main class="content scale-75 lg:scale-100 m-0 lg:m-10 flex flex-col justify-center items-center"></main>
+
+	<!-- Main modal -->
+	<div
+		id="authentication-modal"
+		tabindex="-1"
+		aria-hidden="true"
+		class="hidden scale-75 lg:scale-100 overflow-y-auto overflow-x-hidden fixed top-5 lg:top-0 right-0 left-0 z-50 w-full md:inset-0 h-modal md:h-full justify-center items-center"
+	>
+		<div class="relative p-4 w-full max-w-md h-full md:h-auto">
+			<!-- Modal content -->
+			<div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+				<button
+					type="button"
+					class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white"
+					data-modal-toggle="authentication-modal"
+				>
+					<svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+						<path
+							fill-rule="evenodd"
+							d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+							clip-rule="evenodd"
+						></path>
+					</svg>
+					<span class="sr-only">Close modal</span>
+				</button>
+				<div class="py-6 px-6 lg:px-8">
+					<h3 class="mb-4 text-xl font-extrabold text-center text-gray-900 dark:text-white">Tulis Artikel Baru</h3>
+					<form class="add-artikel space-y-6" action="#" method="POST">
+						{% csrf_token %}
+						<div>
+							<label for="judul" class="block mb-2 text-sm font-bold text-gray-900 dark:text-gray-300">Judul</label>
+							{{ form.judul }}
+						</div>
+						<div>
+							<label for="isi" class="block mb-2 text-sm font-bold text-gray-900 dark:text-gray-300">Isi</label>
+							{{ form.isi }}
+						</div>
+						<button
+							type="submit"
+							class="add-artikel-button w-full text-white bg-merah-tua hover:opacity-90 duration-150 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+						>
+							Tambah Artikel
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- POST DATA ARTIKEL -->
+<script>
+	$(document).ready(function () {
+		$(".add-artikel-button").click(function () {
+			let judul = $("#judul").val();
+			let isi = $("#isi").val();
+			if (judul && isi) {
+				postData(judul, isi);
+			}
+		});
+	});
+</script>
+<script src="{% static 'js/index.js' %}"></script>
+<script src="https://unpkg.com/flowbite@1.5.3/dist/flowbite.js"></script>
+{% endblock content %}

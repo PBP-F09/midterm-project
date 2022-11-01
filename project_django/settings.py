@@ -39,13 +39,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'example_app',
     'beranda',
     'qna',
     'informasi',
     'login',
-   
-    
+    'artikel_kesehatan',
 ]
 
 MIDDLEWARE = [
