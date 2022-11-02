@@ -20,10 +20,12 @@ $(document).ready(function () {
           if(res.status == "error") {
             const toast = new bootstrap.Toast($('#liveToast'))
             toast.show()
+            $('#weight').val('')
+            $('#height').val('')
           } else {
           $("#row").prepend(postCard(res))
-      $('#weight').val('')
-      $('#height').val('')
+          $('#weight').val('')
+          $('#height').val('')
     }
         })
     });

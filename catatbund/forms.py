@@ -2,11 +2,6 @@ from django import forms
 from catatbund.models import CatatbundModel
 from django.utils.translation import gettext_lazy as _
 
-# class TambahCatatanForm(forms.Form):
-#     weight  = forms.FloatField(required=True)
-#     height  = forms.FloatField(required=True)
-
-# creating a form
 class TambahCatatanForm(forms.ModelForm):
     class Meta:
         model = CatatbundModel

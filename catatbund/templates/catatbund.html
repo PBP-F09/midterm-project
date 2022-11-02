@@ -40,12 +40,12 @@
                 </div>
             </div>
             
-            <div class="modal fade" id="modal-${data.pk}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="modal-${data.pk}" tabindex="-1" aria-labelledby="modalsLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit Barang</h5>
+                        <h5 class="modal-title" id="modalsLabel">Edit Barang</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -94,12 +94,12 @@
                 </div>
             </div>
             
-            <div class="modal fade" id="modal-${res.pk}" tabindex="-1" aria-labelledby="exampleModalLabel"
+            <div class="modal fade" id="modal-${res.pk}" tabindex="-1" aria-labelledby="modalsLabel"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Edit</h5>
+                        <h5 class="modal-title" id="modalsLabel">Edit</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -133,18 +133,18 @@
     <p id="bumil" class = "text-lg text-black py-4">Bagaimana perkembangan Si Kecil hari ini? Yuk, dicatat sekarang juga~</p>
     <p id="authorize-non" class = "text-lg text-black py-4">Maaf, fitur CatatBund hanya dapat diakses oleh Bunda!</p>
     <button id="login" class="btn bg-merah-tua text-white"><a href="/login">Log In sebagai Bunda</a></button>
-    <button type="button" class="btn bg-merah-tua text-white" data-bs-toggle="modal" data-bs-target="#exampleModal" id="tambah-btn">
+    <button type="button" class="btn bg-merah-tua text-white" data-bs-toggle="modal" data-bs-target="#modals" id="tambah-btn">
       Tambah Catatan
     </button>
     <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5 mt-8 sm:mt-5 mb-10 sm:mb-20" id="row">
     </div>
 </div>
   
-  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade" id="modals" tabindex="-1" aria-labelledby="modalsLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Catatan</h1>
+          <h1 class="modal-title fs-5" id="modalsLabel">Tambah Catatan</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
