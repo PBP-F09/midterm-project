@@ -40,12 +40,11 @@
                 </div>
             </div>
             
-            <div class="modal fade" id="modal-${data.pk}" tabindex="-1" aria-labelledby="modalsLabel"
-            aria-hidden="true">
+            <div class="modal fade" id="modal-${data.pk}" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalsLabel">Edit Barang</h5>
+                        <h5 class="modal-title">Edit Catatan</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -53,11 +52,11 @@
                     <div class="modal-body">
                         <form id="#input-form[${data.pk}">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Berat badan(kg):</label>
+                                <label for="beratBadan">Berat badan(kg):</label>
                                 <input type="text" class="form-control" id="input-weight-${data.pk}" value="${data.fields.weight}">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Tinggi badan(m):</label>
+                                <label for="tinggiBadan">Tinggi badan(m):</label>
                                 <input type="text" class="form-control" id="input-height-${data.pk}" value="${data.fields.height}">
                             </div>
                         </form>
@@ -94,12 +93,12 @@
                 </div>
             </div>
             
-            <div class="modal fade" id="modal-${res.pk}" tabindex="-1" aria-labelledby="modalsLabel"
+            <div class="modal fade" id="modal-${res.pk}"
             aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="modalsLabel">Edit</h5>
+                        <h5 class="modal-title">Edit Catatan</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -107,11 +106,11 @@
                     <div class="modal-body">
                         <form id="#input-form[${res.pk}">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Berat badan(kg):</label>
+                                <label for="beratBadan">Berat badan(kg):</label>
                                 <input type="text" id="input-weight-${res.pk}" class="form-control" value="${res.fields.weight}">
                             </div>
                             <div class="form-group">
-                                <label for="exampleFormControlTextarea1">Tinggi badan(m):</label>
+                                <label for="tinggiBadan">Tinggi badan(m):</label>
                                 <input type="text" id="input-height-${res.pk}" class="form-control" value="${res.fields.height}">
                             </div>
                         </form>
@@ -140,21 +139,21 @@
     </div>
 </div>
   
-  <div class="modal fade" id="modals" tabindex="-1" aria-labelledby="modalsLabel" aria-hidden="true">
+  <div class="modal fade" id="modals" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="modalsLabel">Tambah Catatan</h1>
+          <h1 class="modal-title text-black font-bold">Tambah Catatan</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form id="input-form">
             <div class="mb-3">
-              <label for="recipient-name" class="col-form-label">Berat Badan(kg):</label>
+              <label for="beratbadankg" class="col-form-label">Berat Badan(kg):</label>
               {{ form.weight }}
             </div>
             <div class="mb-3">
-              <label for="message-text" class="col-form-label">Tinggi Badan(m):</label>
+              <label for="tinggibadanm" class="col-form-label">Tinggi Badan(m):</label>
               {{ form.height }}
             </div>
           </form>
