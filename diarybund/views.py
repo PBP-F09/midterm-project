@@ -11,7 +11,7 @@ from login.decorators import allowed_users
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
-@login_required(login_url='/login/')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 def create_diary_ajax(request):
     if request.method == 'POST':
@@ -36,7 +36,7 @@ def create_diary_ajax(request):
             return JsonResponse(context)
         return JsonResponse({'error': True})
 
-@login_required(login_url='/login/')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 def edit_diary_ajax(request, id):
     if request.method == 'POST':
@@ -61,19 +61,19 @@ def edit_diary_ajax(request, id):
             return JsonResponse(context)
         return JsonResponse({'error': True})
         
-@login_required(login_url='/login/')
+@login_required(login_url='/account/login/')
 @csrf_exempt
 def delete_ajax(request, id):
     if (request.method == 'DELETE'):
         DiaryBund.objects.filter(id=id).delete()
         return HttpResponse(status=202)
 
-@login_required(login_url='/login/') 
+@login_required(login_url='/account/login/') 
 def show_json(request):
     data_diary = DiaryBund.objects.filter(user = request.user)
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
 
-@login_required(login_url='/login/')
+@login_required(login_url='/account/login/')
 def show_diarybund(request):
     modelDiary = DiaryBund.objects.filter(user = request.user)
     user_type = request.user.groups.all()[0].name
