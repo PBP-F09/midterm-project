@@ -8,6 +8,16 @@ function useSuccess() {
   toast.show()
 }
 
+function useTambah() {
+  const toast = new bootstrap.Toast($('#toastTambah')[0])
+  toast.show()
+}
+
+function useHapus() {
+  const toast = new bootstrap.Toast($('#toastHapus')[0])
+  toast.show()
+}
+
 function editDiary(id) {
   $.post(`/diarybund/edit/${id}`,
     {
@@ -46,6 +56,7 @@ hapusTugas = (idTugas) => {
     url: `/diarybund/delete/${idTugas}`,
     type: 'DELETE',
     success: function(response){
+      useHapus()
       $(`#${idTugas}--tugas`).remove()
     }
   })
