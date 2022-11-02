@@ -52,4 +52,4 @@ def show_artikel_json(request):
 def hapus_artikel(request, id):
     artikel = Artikel.objects.get(pk=id)
     artikel.delete()
-    return redirect('artikel_kesehatan:show_artikel')
+    return HttpResponse(status=202)
