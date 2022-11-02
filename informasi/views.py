@@ -16,7 +16,7 @@ def show_json(request):
 @allowed_users(allowed_roles=['faskes'], path='/periksa/main')
 def index(request):
    # create object of note
-   user_type = ''
+   user_type = 'non_login'
 
    if request.user.is_authenticated:
       user_type = request.user.groups.all()[0].name
@@ -48,7 +48,9 @@ def index(request):
 def viewInformasi(request):
    # create object of note
    form = NoteForm(request.POST or None, request.FILES or None)
-   user_type = ''
+   user_type = 'non_login'
+   if request.user.is_authenticated:
+        user_type = request.user.groups.all()[0].name
    user = request.user
    
         

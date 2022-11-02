@@ -9,10 +9,7 @@ class TestViews(TestCase):
         self.informasi_html_url = reverse('informasi:viewInformasi')
         self.informasi_htmlFaskes_url = reverse('informasi:index')
         self.informasi_json_url = reverse('informasi:show_json')
-
         self.informasi_edit_url = reverse('informasi:editInfos', args=[1])
-
- 
 
     def test_view_informasi_html_resolves(self):
         response = self.client.get(self.informasi_html_url)
