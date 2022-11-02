@@ -24,9 +24,8 @@ class TestViews(TestCase):
 
     def test_show_diarybund_html_resolves(self):
         response = self.client.get(self.diarybund_html)
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'diarybund.html')
+        self.assertEqual(response.status_code, 302)
 
     def test_show_diarybund_json_resolves(self):
         response = self.client.get(self.diarybund_json)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
