@@ -1,6 +1,5 @@
 from django import forms
 from diarybund.models import DiaryBund
-from django.core.exceptions import NON_FIELD_ERRORS
 
 # creating a form
 class TambahDiaryForm(forms.ModelForm):
@@ -29,7 +28,7 @@ class TambahDiaryForm(forms.ModelForm):
             }),
             'abstract': forms.TextInput(attrs={
                 'required': True,
-                'label_tag':"Judul",
+                'label_tag':"Deskripsi Singkat",
                 'name':"abstract",
                 'id':"abstract",
                 'placeholder':"Deskripsi Singkat",
@@ -37,7 +36,7 @@ class TambahDiaryForm(forms.ModelForm):
             }),
             'description': forms.Textarea(attrs={
                 'required': True,
-                'label_tag':"Judul",
+                'label_tag':"Deskripsi Lengkap",
                 'name':"description",
                 'id':"description",
                 'class':"form-control",
@@ -45,7 +44,7 @@ class TambahDiaryForm(forms.ModelForm):
             }),
             'emotion': forms.Select(attrs={
                 'required': True,
-                'label_tag':"Judul",
+                'label_tag':"Emosi Si Kecil",
                 'name':"emotion",
                 'id':"emotion",
                 'placeholder':"Deskripsi Singkat",
