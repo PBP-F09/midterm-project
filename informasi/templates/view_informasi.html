@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- CSS Stylesheet -->
+<link 
+    rel="stylesheet" 
+    href="{% static '/css/style.css' %}" />
+</link>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+<!-- jQuery -->
+<script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"
+></script>
+
+<!-- Custom JS -->
+<script 
+    src="{% static '/js/function.js' %}" 
+    defer
+></script>
+
+<script 
+    src="{% static 'js/notes_page_nonfaskes.js' %}"
+></script>
+
+<script 
+    type="text/javascript"
+    src="{% static '/js/csrf.js' %}" 
+    defer
+></script>
+
+<style>
+    p {
+        margin-left: 470px;  
+      }
+    
+    p3 {
+        margin: 35px;
+        margin-left: 595px;
+      }
+    
+    h3 {
+        margin-left:575px;
+        margin-top:35px;
+    }
+</style>
+
+<h3 class="text-xl font-semibold text-gray-900">PeriksaBund</h3>
+{% if user.is_authenticated %}
+<div class="container row">
+
+    <table class="table table-bordered">
+        <tr>
+        <th class="bg-cream-tua">Lokasi</th>
+        <th class="bg-cream-tua">Tanggal</th>
+        <th class="bg-cream-tua">Waktu</th>
+        <th class="bg-cream-tua">Kapasitas Balita</th>
+        </tr>
+        
+    </table>
+
+</div>
+{% else %}
+
+<p class="mb-3 text-sm">Login untuk melihat informasi posyandu & vaksin!</p>
+
+<p3 button type="button" class="bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center" id="login-now"><a
+    href="{% url 'login:login_user' %}">Login</a></button></p3>
+
+{% endif %}
+
+
+
+{% endblock %}
