@@ -45,7 +45,6 @@ def show_json(request):
 def add_catatan(request):
     if request.method == 'POST':
         form = TambahCatatanForm(request.POST)
-        print(form)
         if form.is_valid() & (form.cleaned_data.get('weight') != 0) & (form.cleaned_data.get('height') != 0):
             weight = form.cleaned_data.get('weight')
             height = form.cleaned_data.get('height')
@@ -64,19 +63,15 @@ def add_catatan(request):
                 },
                 'pk':catat.pk
             }
-            print("masuk sini ges")
             return JsonResponse(result)
         return JsonResponse({'status':"error"})
 
 @login_required(login_url='/login/')
 @csrf_exempt
 def edit_catatan(request, id):
-    print(request.method)
     if request.method == 'POST':
-        print("haloo")
         form = TambahCatatanForm(request.POST)
         if form.is_valid():
-            print("haloo 222")
             weight = form.cleaned_data['weight']
             height = form.cleaned_data['height']
             catat = get_object_or_404(CatatbundModel, id = id)
