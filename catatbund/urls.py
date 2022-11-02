@@ -1,5 +1,5 @@
 from django.urls import path
-from catatbund.views import show_catatbund, show_json, add_catatan, edit_catatan, delete_catatans
+from catatbund.views import *
 
 app_name = 'catatbund'
 
