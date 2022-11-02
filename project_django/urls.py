@@ -1,5 +1,4 @@
 """project_django URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
 Examples:
@@ -24,4 +23,6 @@ urlpatterns = [
     path('account/', include('login.urls')),
     path('artikel-kesehatan/', include('artikel_kesehatan.urls')),
     path('', include('beranda.urls')),
-]
+    path('catatbund/', include('catatbund.urls')),
+    path('diarybund/', include('diarybund.urls')),
+] 

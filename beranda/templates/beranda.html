@@ -2,15 +2,20 @@
 {% load static %}
 {% block content %}
 <div>
-    <div class="md:m-20 m-10 flex items-stretch justify-between">
+    <div class="md:m-20 m-10 md:flex items-stretch justify-between">
         <div class="md:w-3/6 w-full">
             <h2 class="font-extrabold text-2xl md:text-3xl mb-3">Teman Bunda Dalam Menemani Si Kecil!</h2>
+            <div class="flex justify-center items-center w-full mb-1">             
+                <div class="w-1/2 h-1/2">
+                    <img class="md:hidden" src="{% static 'images/snap_moment.png' %}" />
+                </div>
+            </div>
             <p class="text-base">HaloBund merupakan sebuah website yang membantu ribuan Ibu di seluruh Indonesia
             mengenai pengetahuan <span class="font-bold">motherhood</span> dan juga <span class="font-bold">mengedukasi kesehatan Ibu & Anak</span> di Indonesia 
             yang menyediakan <span class="font-bold">artikel-artikel</span> mengenai pengetahuan keibuan dan <span class="font-bold">forum pertanyaan & informasi</span> 
             terkait kehamilan dan tumbuh-kembang anak dengan dokter spesialis, perawat, atau Ibu lainnya
             </p>
-            <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg mt-10"  onClick="document.getElementById('more').scrollIntoView();">
+            <button type="button" class="bg-merah-tua hover:bg-merah-muda w-fit text-white p-2 font-bold rounded-lg mt-10"  onClick="document.getElementById('more').scrollIntoView();">
                 Lihat Selengkapnya
                 <svg xmlns="http://www.w3.org/2000/svg" class="ionicon w-5 h-5 font-bold justify-center inline" viewBox="0 0 512 512"><title>Arrow Down Circle</title><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="64" d="M176 262.62L256 342l80-79.38M256 330.97V170"/><path d="M256 64C150 64 64 150 64 256s86 192 192 192 192-86 192-192S362 64 256 64z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="64"/></svg>
             </button>
@@ -24,15 +29,15 @@
         </div>
     </div>
     <div class="md:m-20 m-10">
-        <h2 class="font-bold text-xl mt-10 mb-20 flex items-center justify-center" id="more">Apa saja sih yang bisa dilakukan di HalowBund?</h2>
+        <h2 class="font-bold text-xl mt-10 mb-10 flex items-center justify-center" id="more">Apa saja sih yang bisa dilakukan di HalowBund?</h2>
         <div class="md:grid md:grid-cols-2">
             <div class="bg-cream-muda p-2 rounded-lg md:mx-5 my-5 mx-1 flex items-center justify-start">
                 <img src="{% static 'images/reading_glasses.png' %}" class="w-25 mr-3">
                 <div class="items-center justify-strecth">
                     <h2 class="font-bold mb-3">BacaBund</h2>
                     <p class="mb-3">Artikel kesehatan informatif yang dapat dibaca oleh Bunda kapanpun dan dimanapun!</p>
-                    <a href="">
-                        <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
+                    <a href="{% url 'artikel_kesehatan:show_artikel' %}">
+                        <button type="button" class="bg-merah-tua hover:bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
                             Baca Artikel
                             <i class="fa fa-arrow-circle-right ml-2" style="font-size:20px;color:white"></i>
                         </button>
@@ -45,7 +50,7 @@
                     <h2 class="font-bold mb-3">PeriksaBund</h2>
                     <p class="mb-3 text-sm">Portal informasi vaksinasi dan imunisasi untuk Si Kecil</p>
                     <a href="{% url 'informasi:index' %}">
-                        <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
+                        <button type="button" class="bg-merah-tua hover:bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
                             Cek Info Vaksin
                             <i class="fa fa-arrow-circle-right ml-2" style="font-size:20px;color:white"></i>
                         </button>
@@ -57,7 +62,7 @@
                     <h2 class="font-bold mb-3">TanyaBund</h2>
                     <p class="mb-3 text-sm">Forum tanya-jawab yang dapat digunakan oleh Bunda untuk menanyakan segala pertanyaan mengenai Si Kecil kepada Tenaga Kesehatan (Dokter Anak) & bunda-bunda lainnya!</p>
                     <a href="{% url 'qna:show_qna' %}">
-                        <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
+                        <button type="button" class="bg-merah-tua hover:bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
                             Tanya Dokter
                             <i class="fa fa-arrow-circle-right ml-2" style="font-size:20px;color:white"></i>
                         </button>
@@ -70,12 +75,12 @@
                     <h2 class="font-bold mb-3">CatatBund</h2>
                     <p class="mb-3 text-sm">Platform untuk mengamati perkembangan dan pertumbuhan anak yang dinilai dari keseimbangan Body Mass Index (BMI)</p>
                     {% if user_type == 'bumil' %}
-                    <a href="">
+                    <a href="{% url 'catatbund:show_catatbund' %}">
                     {% else %}
                     <p class="text-xs mb-1">*Fitur ini khusus user Bunda.</p>
                     <a href="{% url 'login:login_user' %}">
                     {% endif %}
-                        <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
+                        <button type="button" class="bg-merah-tua hover:bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
                             {% if user_type == 'bumil' %}
                             Catat Sekarang
                             {% else %}
@@ -95,12 +100,12 @@
                         <h2 class="font-bold mb-3">DiaryBund</h2>
                         <p class="mb-3 text-sm">Wadah bagi Bunda untuk menceritakan keseharian Si Kecil atau men-curhat-kan segala isi hati dan pikirannya sebagai Ibu Paling Hebat!</p>
                         {% if user_type == 'bumil' %}
-                        <a href="">
+                        <a href="{% url 'diarybund:show_diarybund' %}">
                         {% else %}
                         <p class="text-xs mb-1">*Fitur ini khusus user Bunda.</p>
                         <a href="{% url 'login:login_user' %}">
                         {% endif %}
-                            <button type="button" class="bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
+                            <button type="button" class="bg-merah-tua hover:bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center">
                                 {% if user_type == 'bumil' %}
                                 Curhat Yuk!
                                 {% else %}
