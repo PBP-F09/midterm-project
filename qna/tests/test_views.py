@@ -22,3 +22,4 @@ class TestViews(TestCase):
     def test_show_qna_json_answers_resolves(self):
         response = self.client.get(self.qna_json_answers_url)
         self.assertEqual(response.status_code, 200)
+        
