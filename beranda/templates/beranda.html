@@ -75,7 +75,7 @@
                     <h2 class="font-bold mb-3">CatatBund</h2>
                     <p class="mb-3 text-sm">Platform untuk mengamati perkembangan dan pertumbuhan anak yang dinilai dari keseimbangan Body Mass Index (BMI)</p>
                     {% if user_type == 'bumil' %}
-                    <a href="">
+                    <a href="{% url 'catatbund:show_catatbund' %}">
                     {% else %}
                     <p class="text-xs mb-1">*Fitur ini khusus user Bunda.</p>
                     <a href="{% url 'login:login_user' %}">

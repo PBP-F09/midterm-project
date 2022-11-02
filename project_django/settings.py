@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'beranda',
     'qna',
+    'catatbund',
     'diarybund',
     'informasi',
     'login',
