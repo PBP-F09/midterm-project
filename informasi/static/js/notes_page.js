@@ -1,5 +1,4 @@
 $(document).ready(function () {
-    console.log("shafa")
 
     updateTable();
     
@@ -43,7 +42,7 @@ $(document).ready(function () {
 
 function updateTable(){
     // fill table
-    $.get('/periksa/json/', function(data) {
+    $.get('/periksa/json', function(data) {
         for(var i = 0; i < data.length; i++){
         // buat row
         var tr = document.createElement("tr");

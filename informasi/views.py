@@ -51,8 +51,6 @@ def viewInformasi(request):
    user_type = ''
    user = request.user
    
-   if request.user.is_authenticated:
-      user_type = request.user.groups.all()[0].name
         
    context = {
       'form': form,
