@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
     updateTable();
     
     $('#add_info').click(function(){
