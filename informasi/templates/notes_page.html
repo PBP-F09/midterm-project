@@ -37,9 +37,19 @@
 
 <style>
     h3 {
-        margin-left:575px;
-        margin-top:35px;
+        text-align:center;
     }
+
+    table, th, td {    
+        border-collapse: collapse;    
+        text-align: center;  
+
+
+    }    
+    p {
+        text-align: center;
+    }
+    
 </style>
 
 <!-- Warning Alert -->
@@ -134,30 +144,38 @@
     
     </div>
 
-    <h3 class="text-xl font-semibold text-gray-900">PeriksaBund</h3>
-    <p>Halaman Administrator Fasilitas Kesehatan</p>
-    <br>
-    <button type="button" class="hover:text-lg duration-500  bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center" data-bs-toggle="modal" data-bs-target="#addNotesModal">
-        Tambah Lokasi
-    </button>
 
-    <br>
 
-    <div class="container row">
+    <div class="flex animate-slide-fwd-center">
+        <div class="container row">
 
-        <table class="table table-bordered">
-            <tr>
-            <th class="bg-cream-tua">Lokasi</th>
-            <th class="bg-cream-tua">Tanggal</th>
-            <th class="bg-cream-tua">Waktu</th>
-            <th class="bg-cream-tua">Kapasitas Balita</th>
-            <th class="bg-cream-tua"></th>
-            <th class="bg-cream-tua"></th>
-            </tr>
+            <h3 class="text-xl font-semibold text-gray-900">PeriksaBund</h3>
+            <p>Halaman Administrator Fasilitas Kesehatan {{username}}!</p>
+            <br>
+            <button type="button" class="hover:text-lg duration-500 bg-merah-tua w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center mb-3 mt-3" data-bs-toggle="modal" data-bs-target="#addNotesModal">
+                Tambah Lokasi
+            </button>
+        
+            <br>
+
+            <div class="table-responsive">
             
-        </table>
+                <table class="table table-bordered">
+                    <tr>
+                    <th class="bg-cream-tua">Lokasi</th>
+                    <th class="bg-cream-tua">Tanggal</th>
+                    <th class="bg-cream-tua">Waktu</th>
+                    <th class="bg-cream-tua">Kapasitas Balita</th>
+                    <th class="bg-cream-tua"></th>
+                    <th class="bg-cream-tua"></th>
+                    </tr>
+                    
+                </table>
 
+            </div>
+
+        </div>
     </div>
 </div>
 
-{% endblock %}
+{% endblock content %}
