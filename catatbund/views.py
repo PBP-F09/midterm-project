@@ -93,7 +93,6 @@ def edit_catatan(request, id):
             return JsonResponse(result)
         return JsonResponse({'status':"error"})
 
-# INIIIIIIII
 @login_required(login_url='/login/')
 @csrf_exempt
 def delete_catatans(request, id):
