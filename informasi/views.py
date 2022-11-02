@@ -7,6 +7,7 @@ from django.core import serializers
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import get_object_or_404  
+from django.contrib import messages
 
 def show_json(request):
     data = Note.objects.all()
@@ -68,7 +69,7 @@ def ajax_add(request):
         waktu = request.POST.get("waktu")
         kapasitas_balita = request.POST.get("kapasitas_balita")
         user = request.user
-        
+
         Note.objects.create(lokasi=lokasi, tanggal=tanggal, user=user, waktu=waktu, kapasitas_balita=kapasitas_balita)
         return HttpResponse()
     else:
@@ -83,8 +84,6 @@ def delete_ajax(request, id):
 @csrf_exempt
 def editInfos(request, id):
    if(request.method == 'POST') :
-      # form = NoteForm(request.POST or None, request.FILES or None)
-    
       infos = Note.objects.get(pk = id) 
 
       infos.lokasi = request.POST.get('lokasi')

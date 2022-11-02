@@ -17,6 +17,7 @@ $(document).ready(function () {
         },
         
         function(data, status){
+            console.log(data['status'])
             if (data["status"] == "error") {
                 var msg = "";
                 for(const k in data["msg"]){
@@ -37,6 +38,8 @@ $(document).ready(function () {
         });
     })
 })
+
+
 
 function updateTable(){
     // fill table
