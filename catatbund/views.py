@@ -46,7 +46,7 @@ def add_catatan(request):
     if request.method == 'POST':
         form = TambahCatatanForm(request.POST)
         print(form)
-        if form.is_valid():
+        if form.is_valid() & (form.cleaned_data.get('weight') != 0) & (form.cleaned_data.get('height') != 0):
             weight = form.cleaned_data.get('weight')
             height = form.cleaned_data.get('height')
             catat = CatatbundModel.objects.create(weight = weight, height = height, date = datetime.date.today(), user = request.user)
@@ -64,6 +64,7 @@ def add_catatan(request):
                 },
                 'pk':catat.pk
             }
+            print("masuk sini ges")
             return JsonResponse(result)
         return JsonResponse({'status':"error"})
 
@@ -97,47 +98,10 @@ def edit_catatan(request, id):
             return JsonResponse(result)
         return JsonResponse({'status':"error"})
 
-# # wesdrfgthjkl
-# def register(request):
-#     form = UserCreationForm()
-
-#     if request.method == "POST":
-#         form = UserCreationForm(request.POST)
-#         if form.is_valid():
-#             form.save()
-#             messages.success(request, 'Akun telah berhasil dibuat!')
-#             return redirect('catatbund:login')
-    
-#     context = {'form':form}
-#     return render(request, 'register.html', context)
-
-# def login_user(request):
-#     if request.method == 'POST':
-#         username = request.POST.get('username')
-#         password = request.POST.get('password')
-#         user = authenticate(request, username=username, password=password)
-#         if user is not None:
-#             login(request, user) # melakukan login terlebih dahulu
-#             response = HttpResponseRedirect(reverse("catatbund:show_catatbund")) # membuat response
-#             response.set_cookie('last_login', str(datetime.datetime.now())) # membuat cookie last_login dan menambahkannya ke dalam response
-#             return response
-#         else:
-#             messages.info(request, 'Username atau Password salah!')
-#     context = {}
-#     return render(request, 'login.html', context)
-
-# def logout_user(request):
-#     logout(request)
-#     response = HttpResponseRedirect(reverse('catatbund:login'))
-#     response.delete_cookie('last_login')
-#     return response
-
-# def edit(request):
-#     pk = request.GET.get('pk')
-#     object = get_object_or_404(CatatbundModel, pk = pk)
-#     form = TambahCatatanForm(instance=object)
-#     return render(request, 'edit.html', {
-#         'object': object,
-#         'pk': pk,
-#         'form': form,
-#         })
+# INIIIIIIII
+@login_required(login_url='/login/')
+@csrf_exempt
+def delete_catatans(request, id):
+    if (request.method == 'DELETE'):
+        CatatbundModel.objects.filter(id=id).delete()
+        return HttpResponse(status=202)

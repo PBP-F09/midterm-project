@@ -8,7 +8,7 @@ $(document).ready(function () {
       $.get("/catatbund/json/", function (data) {
         console.log(data)
         for (i = 0; i < data.length; i++) {
-          $("#row").append(getCard(data[i]))
+          $("#row").prepend(getCard(data[i]))
         }
       })};
 
@@ -21,8 +21,7 @@ $(document).ready(function () {
             const toast = new bootstrap.Toast($('#liveToast'))
             toast.show()
           } else {
-          $("#row").append(postCard(res))
-          $(`.modal--${res.pk}`).modal("hide")
+          $("#row").prepend(postCard(res))
       $('#weight').val('')
       $('#height').val('')
     }
@@ -40,13 +39,25 @@ console.log("================ edit function");
         height: $(`#input-height-${id}`).val(),
     },
     function (data, status) {
-        console.log("edit ")
-        if (status == 'success') {
-        $(`#weight-${id}`).text(`Berat badan(kg): ${data.fields.weight}`)
-        $(`#height-${id}`).text(`Tinggi badan(m): ${data.fields.height}`)
-        $(`#bmi-${id}`).text(`BMI: ${data.fields.bmi}`)
-        $(`#bmi-${id}`).html(`<span class = "text-sm sm:text-md bg-black text-white py-2 px-3 sm: px-3 rounded-full">BMI: ${data.fields.bmi}</span>`)
+        if (data.status == "error") {
+          const toast = new bootstrap.Toast($('#liveToast'))
+          toast.show()
+        } else {
+          $(`#weight-${id}`).text(`Berat badan(kg): ${data.fields.weight}`)
+          $(`#height-${id}`).text(`Tinggi badan(m): ${data.fields.height}`)
+          $(`#bmi-${id}`).text(`BMI: ${data.fields.bmi}`)
+          $(`#bmi-${id}`).html(`<span class = "text-sm sm:text-md bg-cream-tua font-semibold text-merah-tua py-2 px-3 sm: px-3 rounded-full">BMI: ${data.fields.bmi}</span>`)
         }
     },
     )
+}
+
+hapusCatat = (catatpk) => {
+  $.ajax({
+    url: `/catatbund/delete/${catatpk}`,
+    type: 'DELETE',
+    success: function(response){
+      $(`#${catatpk}--catat`).remove()
+    }
+  })
 }
