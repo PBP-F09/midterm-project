@@ -1,6 +1,4 @@
 $(document).ready(function () {
-    console.log("shafa")
-
     updateTable();
     
     $('#add_info').click(function(){
@@ -44,6 +42,7 @@ $(document).ready(function () {
 function updateTable(){
     // fill table
     $.get('/periksa/json/', function(data) {
+        console.log('masuk ke update')
         for(var i = 0; i < data.length; i++){
         // buat row
         var tr = document.createElement("tr");
