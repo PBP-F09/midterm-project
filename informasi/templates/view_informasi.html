@@ -26,16 +26,7 @@
 
 
 
-<style>
-    p {
-        margin-left: 470px;  
-      }
-    
-    p3 {
-        margin: 35px;
-        margin-left: 595px;
-      }
-    
+<style>        
     h3 {
         text-align: center;
         margin-top:35px;
@@ -69,13 +60,18 @@
 
 </div>
 {% else %}
-
-<p class="mb-3 text-sm">Login untuk melihat informasi posyandu & vaksin!</p>
-
-<p3 button type="button" class="bg-merah-muda w-fit text-white p-2 font-bold rounded-lg flex items-center justify-center" id="login-now"><a
-    href="{% url 'login:login_user' %}">Login</a></button></p3>
+<div class="flex justify-center items-center mt-10 container">
+    <div>
+        <p class="mb-3 text-sm">Login untuk melihat informasi posyandu & vaksin!</p>
+        <div class="flex justify-center items-center">
+            <p3 button type="button" class="bg-merah-tua hover:bg-merah-muda w-fit text-white p-2 font-bold rounded-lg" id="login-now"><a
+                href="{% url 'login:login_user' %}">Login</a></button></p3>
+        </div>
+    </div>
+</div>
 
 {% endif %}
+
 
 
 

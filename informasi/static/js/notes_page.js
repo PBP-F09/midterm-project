@@ -42,7 +42,9 @@ $(document).ready(function () {
 
 function updateTable(){
     // fill table
-    $.get('/periksa/json/', function(data) {
+    console.log('masuk ke update')
+    $.get('/periksa/json', function(data) {
+        console.log('masuk ke update 2')
         for(var i = 0; i < data.length; i++){
         // buat row
         var tr = document.createElement("tr");
