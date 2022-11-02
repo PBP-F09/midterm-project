@@ -1,7 +1,5 @@
-from socket import fromshare
 from django import forms
 from catatbund.models import CatatbundModel
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
 # class TambahCatatanForm(forms.Form):
