@@ -1,5 +1,4 @@
 from django.shortcuts import get_object_or_404, render
-from login.decorators import allowed_users
 from qna.models import Answer, Question
 from django.http import HttpResponse, JsonResponse
 from django.core import serializers
@@ -10,8 +9,6 @@ from django.contrib.auth.models import User
 import datetime
 
 # Create your views here.
-# @login_required(login_url='/account/login')
-# @allowed_users(allowed_roles=['admin', 'bumil', 'faskes'])
 def show_qna(request):
     question_form = QuestionForm()
     answer_form = AnswerForm()
@@ -34,6 +31,7 @@ def json_answers(request):
     answers = Answer.objects.all()
     return HttpResponse(serializers.serialize("json", answers, use_natural_foreign_keys=True, use_natural_primary_keys=True), content_type="application/json")
 
+@login_required(login_url='/login')
 @csrf_exempt
 def create_question(request):
     question = QuestionForm()
@@ -66,6 +64,7 @@ def create_question(request):
 
             return JsonResponse(result)
 
+@login_required(login_url='/login')
 @csrf_exempt
 def create_answer(request, id):
     answer = AnswerForm()
@@ -103,20 +102,26 @@ def create_answer(request, id):
             return JsonResponse(result)
     return HttpResponse(status=400)
 
+@login_required(login_url='/login')
 @csrf_exempt
 def delete_question(request, id):
     if request.method == "DELETE":
         question = get_object_or_404(Question, id = id)
-        if request.user == question.user:
+        if 'user_type' in request.session:
+                role_user = request.session['user_type']
+        if request.user == question.user or role_user == 'admin':
             question.delete()
             return HttpResponse(status=202)
     return HttpResponse(status=400)
 
+@login_required(login_url='/login')
 @csrf_exempt
 def delete_answer(request, id):
     if request.method == "DELETE":
         answer = get_object_or_404(Answer, id = id)
-        if request.user == answer.user:
+        if 'user_type' in request.session:
+                role_user = request.session['user_type']
+        if request.user == answer.user or role_user == 'admin':
             question = get_object_or_404(Question, id = answer.question.pk)
             question.total_answer -= 1
             question.save()
@@ -128,6 +133,7 @@ def delete_answer(request, id):
             return JsonResponse(status=202, data=result)
     return HttpResponse(status=400)
 
+@login_required(login_url='/login')
 @csrf_exempt
 def like_question(request, id):
     if request.method == "PATCH":
