@@ -48,3 +48,8 @@ def show_artikel_by_id(request, id):
 def show_artikel_json(request):
     artikel = Artikel.objects.all()
     return HttpResponse(serializers.serialize('json', artikel), content_type='application/json')
+
+def hapus_artikel(request, id):
+    artikel = Artikel.objects.get(pk=id)
+    artikel.delete()
+    return HttpResponse(status=202)

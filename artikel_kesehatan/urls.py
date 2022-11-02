@@ -9,4 +9,5 @@ urlpatterns = [
     path('artikel/<int:id>/', show_artikel_by_id, name='show_artikel_by_id'),
     path('tambah-artikel/', tambah_artikel, name='tambah_artikel'),
     path('json/', show_artikel_json, name='show_artikel_json'),
+    path('hapus/<int:id>/', hapus_artikel, name='hapus_artikel'),
 ]
