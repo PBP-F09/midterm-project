@@ -6,6 +6,7 @@ from artikel_kesehatan.models import Artikel
 from django.contrib.auth.decorators import login_required
 from login.decorators import allowed_users
 from artikel_kesehatan.forms import TambahArtikelForm
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 def show_artikel(request):
@@ -22,6 +23,7 @@ def show_artikel(request):
     }
     return render(request, 'artikel.html', context)
 
+@csrf_exempt
 @login_required(login_url='/login')
 @allowed_users(allowed_roles=['admin'])
 def tambah_artikel(request):
