@@ -37,7 +37,7 @@ def tambah_artikel(request):
                 'judul': judul,
                 'isi': isi,
                 'tanggal': new_artikel.tanggal,
-                'author: request.user.id,
+                'author': request.user.id,
             }
         }
         return JsonResponse(result)
