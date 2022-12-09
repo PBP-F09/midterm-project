@@ -24,7 +24,6 @@ def show_artikel(request):
     return render(request, 'artikel.html', context)
 
 @csrf_exempt
-@login_required(login_url='/login')
 @allowed_users(allowed_roles=['admin'])
 def tambah_artikel(request):
     if request.method == 'POST':
