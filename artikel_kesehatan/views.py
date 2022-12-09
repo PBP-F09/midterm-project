@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.core import serializers
 from artikel_kesehatan.models import Artikel
 from django.contrib.auth.decorators import login_required
@@ -31,8 +31,18 @@ def tambah_artikel(request):
         author = request.user
         new_artikel = Artikel(judul=judul, isi=isi, author=author)
         new_artikel.save()
-        return redirect('artikel_kesehatan:show_artikel')
-    return render(request, 'artikel.html')
+        result = {
+            'pk': new_artikel.pk,
+            'fields': {
+                'judul': judul,
+                'isi': isi,
+                'tanggal': new_artikel.tanggal,
+                'author: request.user.id,
+            }
+        }
+        return JsonResponse(result)
+#         return redirect('artikel_kesehatan:show_artikel')
+#     return render(request, 'artikel.html')
 
 def show_artikel_json_by_id(request, id):
     artikel = Artikel.objects.get(pk=id)
