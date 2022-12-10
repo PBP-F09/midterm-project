@@ -68,8 +68,13 @@ def delete_ajax(request, id):
         DiaryBund.objects.filter(id=id).delete()
         return HttpResponse(status=202)
 
+@login_required(login_url='/account/login/')
 def show_json(request):
     data_diary = DiaryBund.objects.filter(user = request.user)
+    return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
+
+def show_json_flutter(request):
+    data_diary = DiaryBund.objects.all()
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
 
 @login_required(login_url='/account/login/')
