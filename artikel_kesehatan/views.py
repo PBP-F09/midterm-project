@@ -29,7 +29,7 @@ def tambah_artikel(request):
     if request.method == 'POST':
         judul = request.POST.get('judul')
         isi = request.POST.get('isi')
-        author = request.user
+        author = request.user.username
         new_artikel = Artikel(judul=judul, isi=isi, author=author)
         new_artikel.save()
         result = {
@@ -38,7 +38,7 @@ def tambah_artikel(request):
                 'judul': judul,
                 'isi': isi,
                 'tanggal': new_artikel.tanggal,
-                'author': request.user.id,
+                'author': author,
             }
         }
         return JsonResponse(result)
