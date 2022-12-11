@@ -77,6 +77,7 @@ def login_flutter(request):
             "data":{
                 "username":username,
                 "role_user":user_type,
+                "pk_user":user.pk,
             }}, status=200)
         else:
             return JsonResponse({
@@ -120,3 +121,10 @@ def register_flutter(request):
             "status": False,
             "message": "Password dan Confirm Password tidak sama!"
             }, status=401)
+
+def logout_user_flutter(request):
+    logout(request)
+    response = {
+        'status':'success'
+    }
+    return JsonResponse(response)
