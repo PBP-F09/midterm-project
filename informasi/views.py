@@ -45,12 +45,59 @@ def index(request):
    }
    return render(request, "notes_page.html", context)
 
+
+def getJsonNote(request):
+   note = Note.objects.all()
+   note = note.values()
+   data = list(note)
+   print(data)
+   print("TEST")
+   return JsonResponse(data)
+
+
+@allowed_users(allowed_roles=['faskes'], path='/periksa/main')
+def index1(request):
+   # create object of note
+   user_type = ''
+
+   if request.user.is_authenticated:
+      user_type = request.user.groups.all()[0].name
+
+   form = NoteForm()
+   if request.method == "PUT" :
+      form = NoteForm(request.POST or None, request.FILES or None)
+      user = request.user
+      
+      # check if form data is valid
+
+      if form.is_valid():
+         # save the form data to model
+         instance = form.save()
+         return JsonResponse({
+            'lokasi': instance.lokasi,
+            'tanggal': instance.tanggal,
+            'waktu': instance.waktu,
+            'kapasitas_balita': instance.kapasitas_balita
+         })
+
+   result = {
+
+      'lokasi': instance.lokasi,
+      'tanggal': instance.tanggal,
+      'waktu': instance.waktu,
+      'kapasitas_balita': instance.kapasitas_balita,
+      'form': form,
+      "user_type" : user_type,
+      "username":request.user,
+      
+   }
+   return JsonResponse(result)
+
 def viewInformasi(request):
    # create object of note
    form = NoteForm(request.POST or None, request.FILES or None)
    user_type = ''
    user = request.user
-   
         
    context = {
       'form': form,

@@ -14,5 +14,7 @@ urlpatterns = [
 
     path('ajax/submit/', ajax_add, name='ajax_add'),
 
-    path('edit/<int:id>', editInfos, name='editInfos')
+    path('edit/<int:id>', editInfos, name='editInfos'),
+
+    path('getJsonNote/', getJsonNote, name='get-json-note')
 ]

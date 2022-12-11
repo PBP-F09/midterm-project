@@ -38,8 +38,6 @@ $(document).ready(function () {
     })
 })
 
-
-
 function updateTable(){
     // fill table
     $.get('/periksa/json', function(data) {
@@ -114,7 +112,7 @@ function updateTable(){
 async function editInfo(id){
     
     await fetch(`/periksa/edit/${id}`, {
-        method: "POST",
+        method: "caPOST",
         body: new FormData(document.querySelector("#note-form-edit"))
     })
     return false
