@@ -1,3 +1,4 @@
+import json
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -9,6 +10,8 @@ from django.core import serializers
 from diarybund.forms import TambahDiaryForm
 from login.decorators import allowed_users
 from django.shortcuts import get_object_or_404
+from django.core.serializers.json import DjangoJSONEncoder
+
 
 # Create your views here.
 @login_required(login_url='/account/login/')
@@ -106,10 +109,20 @@ def show_json(request):
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
 
 # @login_required(login_url='/account/login-flutter/')
+@csrf_exempt
 def show_json_flutter(request):
-    data_diary = DiaryBund.objects.filter(user = request.user)
-    return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
-
+    user = request.POST.get('username')
+    data_diary = DiaryBund.objects.filter(user__username = request.user)
+    print(data_diary)
+    data = data_diary.values()
+    data = (list(data))
+    # for i in data :
+    #     print(i)
+    return JsonResponse({
+                    "status":"succes",
+                    "data":data
+                    })
+    
 @login_required(login_url='/account/login/')
 def show_diarybund(request):
     modelDiary = DiaryBund.objects.filter(user = request.user)
