@@ -36,7 +36,7 @@ def create_diary_ajax(request):
             return JsonResponse(context)
         return JsonResponse({'error': True})
 
-@login_required(login_url='/account/login-flutter/')
+# @login_required(login_url='/account/login-flutter/')
 @csrf_exempt
 def create_diary_ajax_flutter(request):
     if request.method == 'POST':
@@ -93,7 +93,7 @@ def delete_ajax(request, id):
         DiaryBund.objects.filter(id=id).delete()
         return HttpResponse(status=202)
 
-@login_required(login_url='/account/login-flutter/')
+# @login_required(login_url='/account/login-flutter/')
 @csrf_exempt
 def delete_ajax_flutter(request, id):
     if (request.method == 'DELETE'):
@@ -105,7 +105,7 @@ def show_json(request):
     data_diary = DiaryBund.objects.filter(user = request.user)
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
 
-@login_required(login_url='/account/login-flutter/')
+# @login_required(login_url='/account/login-flutter/')
 def show_json_flutter(request):
     data_diary = DiaryBund.objects.filter(user = request.user)
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
