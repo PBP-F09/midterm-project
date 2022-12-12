@@ -18,6 +18,7 @@ class TestingViews(TestCase):
             height  = 1.2,
             bmi = 22 / (1.2*1.2)
         )
+        self.catatbund.save()
         self.client = Client()
         self.catatbund_html = reverse('catatbund:show_catatbund')
         self.catatbund_json = reverse('catatbund:show_json')

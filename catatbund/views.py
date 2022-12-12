@@ -6,6 +6,7 @@ import datetime
 from django.views.decorators.csrf import csrf_exempt
 from .forms import TambahCatatanForm
 
+import json;
 # sdfghjkm,.
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -15,6 +16,7 @@ from django.urls import reverse
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponseBadRequest
 
 from django.contrib.auth.decorators import login_required
@@ -39,6 +41,44 @@ def show_catatbund(request):
 def show_json(request):
     model_catatbund = CatatbundModel.objects.filter(user = request.user)
     return HttpResponse(serializers.serialize("json", model_catatbund), content_type="application/json")
+
+def show_json_flutter(request, current_username):
+    list_of_data = []
+    current_user = User.objects.filter(username = current_username)[0]
+    model_catatbund = CatatbundModel.objects.filter(user = current_user)
+
+    for catat in model_catatbund:
+        list_of_data.append({
+            'user' : catat.user.pk,
+            'date' : catat.date,
+            'weight' : catat.weight,
+            'height' : catat.height,
+            'bmi' : catat.bmi,
+        })
+    return JsonResponse(list_of_data,safe=False)
+
+@csrf_exempt
+def add_request_flutter(request):
+    data = json.loads(request.body)
+    username = data['username']
+    thisUser = User.objects.filter(username=username)[0]
+    weight = data['weight']
+    height = data['height']
+    catat = CatatbundModel.objects.create(weight = weight, height = height, date = datetime.date.today(), user = thisUser)
+    print(catat)
+    bmi = catat.count_bmi()
+    catat.bmi = round(catat.count_bmi(),2)
+    bmi = round(catat.bmi, 2)
+    catat.save()
+    result = {
+        
+        'weight':catat.weight,
+        'height':catat.height,
+        'bmi':bmi,
+        'date':catat.date,      
+        'pk':catat.pk
+    }
+    return JsonResponse(result)
 
 @login_required(login_url='/login/')
 @csrf_exempt
