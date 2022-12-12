@@ -124,7 +124,7 @@ def register_flutter(request):
 
 def logout_user_flutter(request):
     logout(request)
-    response = {
-        'status':'success'
-    }
-    return JsonResponse(response, status=200)
+    return JsonResponse({
+            "status": True,
+            "message": "Akun berhasil log out!"
+            }, status=200)
