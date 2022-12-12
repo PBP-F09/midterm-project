@@ -218,6 +218,8 @@ def create_answer_flutter(request, uid, role, qid):
             new_answer = Answer.objects.create(text=text, question=question, user=user, date=datetime.date.today(), role_user=role)
             new_answer.save()
 
+            print(new_answer.user.username)
+
             result = {
                 'fields':{
                     'text':new_answer.text,
@@ -234,11 +236,13 @@ def create_answer_flutter(request, uid, role, qid):
     return HttpResponse(status=400)
 
 @csrf_exempt
-def delete_answer_flutter(request, role, id):
+def delete_answer_flutter(request, uid, role, id):
     if request.method == "DELETE":
         answer = get_object_or_404(Answer, id = id)
         role_user = role
-        if request.user == answer.user or role_user == 'admin':
+        user = get_object_or_404(User, id = uid)
+        if user == answer.user or role_user == 'Admin':
+            print('masuk')
             question = get_object_or_404(Question, id = answer.question.pk)
             question.total_answer -= 1
             question.save()
@@ -250,4 +254,15 @@ def delete_answer_flutter(request, role, id):
                 'message':'Successfully deleted answer.'
             }
             return JsonResponse(status=202, data=result)
+    return HttpResponse(status=400)
+
+@csrf_exempt
+def delete_question_flutter(request, uid, role, id):
+    if request.method == "DELETE":
+        question = get_object_or_404(Question, id = id)
+        role_user = role
+        user = get_object_or_404(User, id = uid)
+        if user == question.user or role_user == 'Admin':
+            question.delete()
+            return HttpResponse(status=202)
     return HttpResponse(status=400)

@@ -14,8 +14,9 @@ urlpatterns = [
     path('answer/<int:id>', create_answer, name='create_answer'),
     path('answer-flutter/<int:uid>/<role>/<int:qid>', create_answer_flutter, name='create_answer_flutter'),
     path('delete/<int:id>', delete_question, name='delete_question'),
+    path('delete-flutter/<uid>/<role>/<int:id>', delete_question_flutter, name='delete_question_flutter'),
     path('delete2/<int:id>', delete_answer, name='delete_answer'),
-    path('delete2/<role>/<int:id>', delete_answer_flutter, name='delete_answer_flutter'),
+    path('delete2-flutter/<uid>/<role>/<int:id>', delete_answer_flutter, name='delete_answer_flutter'),
     path('like/<int:id>', like_question, name='like_question'),
     path('like-flutter/<int:id>', like_question_flutter, name='like_question_flutter'),
 ]
