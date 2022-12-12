@@ -122,6 +122,7 @@ def register_flutter(request):
             "message": "Password dan Confirm Password tidak sama!"
             }, status=401)
 
+@csrf_exempt  
 def logout_user_flutter(request):
     logout(request)
     return JsonResponse({

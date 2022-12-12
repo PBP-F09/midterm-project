@@ -9,5 +9,5 @@ urlpatterns = [
     path('logout/', logout_user, name='logout_user'),
     path('login-flutter/', login_flutter, name='login_flutter'),
     path('signup-flutter/', register_flutter, name='register_flutter'),
-    path('logout-flutter/', logout_user_flutter, name='logout_user_flutter'),
+    path('logout-flutter', logout_user_flutter, name='logout_user_flutter'),
 ]
