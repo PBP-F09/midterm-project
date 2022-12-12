@@ -12,6 +12,20 @@ from login.decorators import allowed_users
 from django.shortcuts import get_object_or_404
 from django.core.serializers.json import DjangoJSONEncoder
 
+from django.shortcuts import render
+from django.http import HttpResponse,JsonResponse
+from django.core import serializers
+import datetime
+from django.views.decorators.csrf import csrf_exempt
+
+import json;
+from django.http import HttpResponse,JsonResponse
+from django.contrib.auth.models import User
+
+from django.contrib.auth.decorators import login_required
+
+from django.shortcuts import get_object_or_404, render
+
 
 # Create your views here.
 @login_required(login_url='/account/login/')
@@ -34,6 +48,7 @@ def create_diary_ajax(request):
                     'abstract' : diary.abstract,
                     'emotion' : diary.emotion,
                     'date' : diary.date,
+                    'user' : diary.user.username,
                 }
             }
             return JsonResponse(context)
@@ -42,16 +57,16 @@ def create_diary_ajax(request):
 # @login_required(login_url='/account/login-flutter/')
 @csrf_exempt
 def create_diary_ajax_flutter(request):
-    if request.method == 'POST':
-        form = TambahDiaryForm(request.POST)
-        if form.is_valid():
-            title = form.cleaned_data.get('title')
-            description = form.cleaned_data.get('description')
-            abstract = form.cleaned_data.get('abstract')
-            emotion = form.cleaned_data.get('emotion')
-            diary = DiaryBund.objects.create(title = title, abstract = abstract, description = description, emotion = emotion, date = datetime.datetime.now(), user = request.user)
-            diary.save()
-            context = {
+    data = json.loads(request.body)
+    username = data['username']
+    thisUser = User.objects.filter(username=username)[0]
+    title = data['title']
+    description = data['description']
+    abstract = data['abstract']
+    emotion = data['emotion']
+    diary = DiaryBund.objects.create(title = title, abstract = abstract, description = description, emotion = emotion, date = datetime.datetime.now(), user = thisUser)
+    diary.save()
+    context = {
                 'pk' : diary.pk,
                 'fields' : {
                     'title' : diary.title,
@@ -59,10 +74,10 @@ def create_diary_ajax_flutter(request):
                     'abstract' : diary.abstract,
                     'emotion' : diary.emotion,
                     'date' : diary.date,
+                    'user' : diary.user.username,
                 }
             }
-            return JsonResponse(context)
-        return JsonResponse({'error': True})
+    return JsonResponse(context)
 
 @login_required(login_url='/account/login/')
 @csrf_exempt
@@ -84,6 +99,7 @@ def edit_diary_ajax(request, id):
                     'abstract' : diaryBaru.abstract,
                     'emotion' : diaryBaru.emotion,
                     'date' : diaryBaru.date,
+                    'user' : diaryBaru.user.username,
                 }
             } 
             return JsonResponse(context)
@@ -107,21 +123,27 @@ def delete_ajax_flutter(request, id):
 def show_json(request):
     data_diary = DiaryBund.objects.filter(user = request.user)
     return HttpResponse(serializers.serialize("json", data_diary), content_type="application/json")
-
-# @login_required(login_url='/account/login-flutter/')
+ 
+# @login_required(login_url='/account/login-flutter/')   
 @csrf_exempt
-def show_json_flutter(request):
-    user = request.POST.get('username')
-    data_diary = DiaryBund.objects.filter(user__username = request.user)
-    print(data_diary)
-    data = data_diary.values()
-    data = (list(data))
-    # for i in data :
-    #     print(i)
-    return JsonResponse({
-                    "status":"succes",
-                    "data":data
-                    })
+def show_json_flutter(request, current_username):
+    list_of_data = []
+    current_user = User.objects.filter(username = current_username)[0]
+    model_diarybund = DiaryBund.objects.filter(user = current_user)
+
+    for diary in model_diarybund:
+        list_of_data.append({
+            'pk' : diary.pk,
+                'fields' : {
+                    'title' : diary.title,
+                    'description' : diary.description,
+                    'abstract' : diary.abstract,
+                    'emotion' : diary.emotion,
+                    'date' : diary.date,
+                    'user' : diary.user.username,
+                }
+        })
+    return JsonResponse(list_of_data,safe=False)
     
 @login_required(login_url='/account/login/')
 def show_diarybund(request):
