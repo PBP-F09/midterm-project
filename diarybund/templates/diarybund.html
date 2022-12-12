@@ -40,7 +40,7 @@
             if (data.hasOwnProperty('error')) {
               useAlert()
             } else {
-              useSuccess()
+              useTambah()
               cardDiary(data)
               $('#title').val('')
               $('#description').val('')
@@ -121,7 +121,7 @@
     </div>
   </div>
 
-  <!-- Toast Success -->
+  <!-- Toast Success Ubah -->
   <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
     <div id="toastSuccess" class="toast hide bg-cream-muda" role="alert" aria-live="assertive" aria-atomic="true">
       <div class="toast-header bg-cream-tua">
@@ -132,6 +132,36 @@
       </div>
       <div class="toast-body text-black">
         Perubahan berhasil disimpan!
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Success Ubah -->
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
+    <div id="toastTambah" class="toast hide bg-cream-muda" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-cream-tua">
+          <svg class="flex-shrink-0 w-5 h-5 text-black" fill="black" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <strong class="me-auto text-black ml-2">Success!</strong>
+        <small class="text-black">Just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body text-black">
+        Diary berhasil ditambah!
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Success Ubah -->
+  <div class="position-fixed top-20 end-0 p-3" style="z-index: 99999">
+    <div id="toastHapus" class="toast hide bg-cream-muda" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header bg-cream-tua">
+          <svg class="flex-shrink-0 w-5 h-5 text-black" fill="black" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path></svg>
+        <strong class="me-auto text-black ml-2">Success!</strong>
+        <small class="text-black">Just now</small>
+        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+      </div>
+      <div class="toast-body text-black">
+        Diary berhasil dihapus!
       </div>
     </div>
   </div>
