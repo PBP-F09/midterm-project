@@ -127,4 +127,4 @@ def logout_user_flutter(request):
     response = {
         'status':'success'
     }
-    return JsonResponse(response)
+    return JsonResponse(response, status=200)
